@@ -1,3 +1,1 @@
 # nomination-dashboard
-
-Test
