@@ -1,11 +1,11 @@
 import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({fetch, params}) => {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${params.id}`);
+  const res = await fetch(`http://localhost:8000/nominations/${params.id}`);
   if (res.ok) {
     const nomination = await res.json();
     return {
-      props: {nomination: nomination}
+      props: {n: nomination}
     };
   }
 };

@@ -4,9 +4,9 @@
 </script>
 
 <ul>
-  {#each nominations as {userId, id, title}}
+  {#each Object.entries(nominations) as [id, nomination]}
     <li>
-      #{id} by {userId}: "{title}"
+      <a href="/nominations/{id}">({id}) {nomination.nominee.firstName} {nomination.nominee.lastName}.</a>
     </li>
   {/each}
 </ul>
