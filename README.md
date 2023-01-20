@@ -6,7 +6,8 @@ The backend server uses Express and TypeScrypt.
 
 The following commands are to be run in the `/backend` directory.
 ### Setup
-Run `npm install`
+1. Run `npm install`
+2. Create a `.env` file in the `/backend` file; put `PORT=8000` in it.
 
 ### Run for development
 Run `npm run dev`
