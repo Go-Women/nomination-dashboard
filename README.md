@@ -24,4 +24,3 @@ Run `npm install`
 
 ### Run for development
 Run `npm run dev`
-
