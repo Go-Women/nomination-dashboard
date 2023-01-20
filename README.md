@@ -25,3 +25,6 @@ Run `npm install`
 
 ### Run for development
 Run `npm run dev`
+
+## Notes
+The project contains some placeholder database files for initial local setup that will be replaced upon cloud storage configuration.
