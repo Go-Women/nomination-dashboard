@@ -67,14 +67,14 @@
   <body>
     <Container class="mt-4">
       <Row cols={2}>
-        <Col class="d-flex justify-content-center">
+        <Col class="d-flex justify-content-center align-items-start">
           <NominationOverview
             totalNominations={totalCount}
             validNominations={valid}
             uniqueNominations={unique}
           />
         </Col>
-        <Col class="d-flex justify-content-center">
+        <Col class="d-flex justify-content-center align-items-start">
           <JudgeProgress
             notOpen={judgeNotOpen}
             inProgress={judgeInProgress}
@@ -82,10 +82,10 @@
           />
         </Col>
  
-        <Col class="d-flex justify-content-center">
+        <Col class="d-flex justify-content-center align-items-start">
           <NominationCategory {categories} />
         </Col>
-        <Col class="d-flex justify-content-center">
+        <Col class="d-flex justify-content-center align-items-start">
           <NominationSubCategory {subCategories} />
         </Col>
       </Row>
