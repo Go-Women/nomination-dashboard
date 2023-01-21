@@ -6,8 +6,8 @@
   export let uniqueNominations;
 </script>
 
-<Toast>
-  <ToastHeader>Nomination Overview</ToastHeader>
+<Toast class="p-3 mb-3">
+  <ToastHeader><h5>Nomination Overview</h5></ToastHeader>
   <ToastBody>
     <Row>
       <Col>{totalNominations}</Col>

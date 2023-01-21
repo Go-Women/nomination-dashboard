@@ -6,8 +6,8 @@
   export let completed;
 </script>
 
-<Toast>
-  <ToastHeader>Judge Progress</ToastHeader>
+<Toast class="p-3 mb-3">
+  <ToastHeader><h5>Judge Progress</h5></ToastHeader>
   <ToastBody>
     <Row>
       <Col>{notOpen}</Col>

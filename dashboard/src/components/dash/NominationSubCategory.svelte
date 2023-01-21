@@ -1,13 +1,13 @@
 <script>
   import { Toast, ToastHeader, ToastBody, Col, Row } from "sveltestrap";
 
-  export let categories;
+  export let subCategories;
 </script>
 
 <Toast class="p-3 mb-3">
-  <ToastHeader><h5>Nomination Overview</h5></ToastHeader>
+  <ToastHeader><h5>Nominees By Subcategory</h5></ToastHeader>
   <ToastBody>
-    {#each [...categories] as [key, value]}
+    {#each [...subCategories] as [key, value]}
       <Row>
         <Col>{key}</Col>
         <Col>{value}</Col>
