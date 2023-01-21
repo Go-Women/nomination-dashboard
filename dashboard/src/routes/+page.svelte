@@ -31,9 +31,6 @@
       categories.set(val, 1);
     }
   });
-
-  export let subcat = new Map();
-  let subcatNum = 1;
 </script>
 
 <main>
