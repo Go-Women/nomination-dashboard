@@ -8,7 +8,7 @@ const app: Express = express();
 const port = process.env.PORT;
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Express + TypeScript Server');
+  res.json(nominations);
 });
 
 app.get('/nominations', (req: Request, res: Response) => {
