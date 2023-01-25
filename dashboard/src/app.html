@@ -4,6 +4,11 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
+    <script>
+      let theme = "g10"; // "white" | "g10" | "g80" | "g90" | "g100"
+    
+      $: document.documentElement.setAttribute("theme", theme);
+    </script>
 		%sveltekit.head%
 	</head>
 	<body>
