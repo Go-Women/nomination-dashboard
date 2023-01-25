@@ -1,0 +1,6 @@
+/* Custom CSS File for Dashboard */
+
+.bx--content {
+  padding: 4rem;
+  will-change: margin-left;
+}
