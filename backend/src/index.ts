@@ -7,7 +7,7 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT;
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/home', (req: Request, res: Response) => {
   res.json(nominations);
 });
 

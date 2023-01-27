@@ -22,7 +22,6 @@ The following commands are to be run in the `/dashboard` directory.
 
 ### Setup
 1. Run `npm install`
-2. Go to `/dashboard/node_modules/@popperjs/core/package.json` directory and add the following line `"type": "module",`
 
 ### Run for development
 Run `npm run dev`

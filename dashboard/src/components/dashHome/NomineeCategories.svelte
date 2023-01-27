@@ -1,12 +1,5 @@
 <script lang="js">
-  import {
-    Content,
-    Grid,
-    Row,
-    Column,
-    Tile,
-    DataTable,
-  } from "carbon-components-svelte";
+  import { Content, Tile, DataTable } from "carbon-components-svelte";
 
   // the header for the DataTable
   let dataTableHeader = [{ key: "name", value: "Categories" }];
