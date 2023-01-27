@@ -8,14 +8,14 @@
     <Grid>
       <Row>
         <Column>
-          <Row><h4 /></Row>
-          <Row><h4 /></Row>
-          <Row><h4 /></Row>
+          <Row><h4></h4></Row>
+          <Row><h4></h4></Row>
+          <Row><h4></h4></Row>
         </Column>
         <Column>
-          <Row><h4 /></Row>
-          <Row><h4 /></Row>
-          <Row><h4 /></Row>
+          <Row><h4></h4></Row>
+          <Row><h4></h4></Row>
+          <Row><h4></h4></Row>
         </Column>
       </Row>
     </Grid>
