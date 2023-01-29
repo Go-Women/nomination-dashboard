@@ -1,11 +1,5 @@
 <script>
-  import {
-    Header,
-    SideNav,
-    SideNavItems,
-    SideNavLink,
-    SkipToContent,
-  } from "carbon-components-svelte";
+  import { Header, SideNav, SideNavItems, SideNavLink, SkipToContent } from "carbon-components-svelte";
   import Home from "carbon-icons-svelte/lib/Home.svelte";
   import Result from "carbon-icons-svelte/lib/Result.svelte";
   import UserMultiple from "carbon-icons-svelte/lib/UserMultiple.svelte";
@@ -28,6 +22,6 @@
   <SideNavItems>
     <SideNavLink icon={Home} text="Dashboard" href="/home" isSelected />
     <SideNavLink icon={Result} text="Nominees" href="/nominations" />
-    <SideNavLink icon={UserMultiple} text="Judges" href="/" />
+    <SideNavLink icon={UserMultiple} text="Judges" href="/judges" />
   </SideNavItems>
 </SideNav>

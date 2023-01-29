@@ -1,5 +1,5 @@
 <script lang="js">
-  import { Content, Grid, Row, Column, Tile } from "carbon-components-svelte";
+  import { Content, Grid, Row, Column, Tile, Link } from "carbon-components-svelte";
 
   let notOpenedCount = 50;
   let inProgressCount = 10;
@@ -20,6 +20,7 @@
           <Row><h5>Not Opened</h5></Row>
           <Row><h5>In-Progress</h5></Row>
           <Row><h5>Completed</h5></Row>
+          <Row style="justify-content: right;"><Link href="/judges">View all</Link></Row>
         </Column>
       </Row>
     </Grid>
