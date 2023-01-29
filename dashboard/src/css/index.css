@@ -4,3 +4,13 @@
   padding: 4rem;
   will-change: margin-left;
 }
+
+.bx--content--main {
+  padding: 4rem 0 4rem 0;
+}
+
+.bx--content--judge-overview {
+  padding: 0;
+  justify-items: center;
+  display: grid; 
+}

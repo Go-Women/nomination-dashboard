@@ -5,28 +5,28 @@
   import {
     Content,
     Grid,
+    Column,
+    Row,
     Breadcrumb,
     BreadcrumbItem,
-    DataTable,
-    Toolbar,
-    ToolbarContent,
-    ToolbarSearch,
-    Pagination,
-    Button,
   } from "carbon-components-svelte";
-
-  import View from "carbon-icons-svelte/lib/View.svelte";
-  import { CellTower } from "carbon-icons-svelte";
+  import JudgesInformation from "../../components/judges/JudgesInformation.svelte";
+  import JudgeOverview from "../../components/judges/JudgeOverview.svelte";
 
   export let data;
   export let { judges } = data.props;
+  let activeCount = 0;
+  var incrementActiveCount = () => {
+    return activeCount++;
+  };
 
-  let getDataTable = () => {
+  var getInformation = (judges) => {
     let rows = [];
+    let rowID = 1;
     Object.entries(judges).forEach(([key, judge], index) => {
-      if (judge.type == "judge") {
+      if (judge.type === "judge") {
         let data = {
-          id: judge.id,
+          id: rowID++,
           type: judge.type,
           name: judge.firstName + " " + judge.lastName,
           email: judge.email,
@@ -44,15 +44,18 @@
             type: judge.activityLog.type,
           },
         };
+
+        if (judge.active === true) {
+          incrementActiveCount();
+        }
         rows.push(data);
       }
     });
 
     return rows;
   };
-
-  let pageSize = 10;
-  let page = 1;
+  export const rowsData = getInformation(judges);
+  export const active = activeCount;
 </script>
 
 <main>
@@ -63,43 +66,12 @@
       <BreadcrumbItem>Judges</BreadcrumbItem>
     </Breadcrumb>
     <Grid>
-      <h1>Judges</h1>
-      <DataTable
-        style="justify-text: center;"
-        sortable
-        headers={[
-          { key: "id", value: "#" },
-          { key: "name", value: "Name" },
-          { key: "email", value: "Email" },
-          { key: "active", value: "Active" },
-          { key: "data.id", empty: true },
-        ]}
-        rows={getDataTable()}
-        {pageSize}
-        {page}
-      >
-        <Toolbar>
-          <ToolbarContent>
-            <ToolbarSearch persistent shouldFilterRows />
-          </ToolbarContent>
-        </Toolbar>
-        <svelte:fragment slot="cell" let:cell>
-          {#if cell.key === "data.id"}
-            <Button
-              iconDescription="View"
-              icon={View}
-              href="/judges/{cell.value}"
-            />
-          {:else}{cell.value}{/if}
-        </svelte:fragment>
-      </DataTable>
+      <Column>
+        <Row><h1>Judges</h1></Row>
+        <JudgeOverview {activeCount} />
 
-      <Pagination
-        bind:pageSize
-        bind:page
-        totalItems={getDataTable().length}
-        pageSizeInputDisabled
-      />
+        <JudgesInformation {rowsData} />
+      </Column>
     </Grid>
   </Content>
 </main>
