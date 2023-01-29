@@ -19,7 +19,7 @@
 </script>
 
 <main>
-  <header><Navigation /></header>
+  <header><Navigation /></header> 
   <Content>
     <Grid>
       <Row>

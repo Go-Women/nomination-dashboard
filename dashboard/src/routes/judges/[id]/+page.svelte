@@ -5,6 +5,9 @@
   import {
     Content,
     Column,
+    Row,
+    Breadcrumb,
+    BreadcrumbItem,
   } from "carbon-components-svelte";
   export let data;
   export let { j } = data.props;
@@ -15,12 +18,16 @@
   <body>
     <Content style="padding-left: $spacing-05">
       <Column>
+        <Breadcrumb>
+          <BreadcrumbItem href="/home">Home</BreadcrumbItem>
+          <BreadcrumbItem href="/judges">Judges</BreadcrumbItem>
+          <BreadcrumbItem>{j.firstName} {j.lastName}</BreadcrumbItem>
+        </Breadcrumb>
+        <Row />
         <h1>Judge</h1>
         <h2>{j.firstName} {j.lastName}</h2>
 
-        <h3>
-          Information
-        </h3>
+        <h3>Information</h3>
 
         <p>Skill: <b>{j.data.skill}</b></p>
 
