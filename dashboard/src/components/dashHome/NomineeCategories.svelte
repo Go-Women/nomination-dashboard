@@ -8,43 +8,42 @@
   let dataTableRows = [
     {
       id: "1",
-      name: "Load Balancer 3",
-      subcategory: "HTTP",
+      name: "Art",
+      subcategory: "Architecture, Art History, Cinema, Design, Literature, Music, Painting/Drawing, Sculpting, Theater/Dance, Other",
     },
     {
       id: "2",
-      name: "Load Balancer 1",
-      subcategory: "HTTP",
+      name: "Athletics",
+      subcategory: "Competition Sports, individual Sports, Team Sports, Sports/Team Management, Other",
     },
     {
       id: "3",
-      name: "Load Balancer 2",
-      subcategory: "HTTP",
-    },
-    {
-      id: "4",
-      name: "Load Balancer 6",
-      subcategory: "HTTP",
+      name: "Business",
+      subcategory: "CEO",
     },
     {
       id: "5",
-      name: "Load Balancer 4",
-      subcategory: "HTTP",
+      name: "Eduction",
+      subcategory: "Early Eduaction",
     },
     {
       id: "6",
-      name: "Load Balancer 5",
-      subcategory: "HTTP",
+      name: "Humanities",
+      subcategory: "Ancient/Modern Languages",
     },
     {
       id: "7",
-      name: "Load Balancer 5",
-      subcategory: "HTTP",
+      name: "Public Service/Government",
+      subcategory: "Activism",
     },
     {
       id: "8",
-      name: "Load Balancer 5",
-      subcategory: "HTTP",
+      name: "STEM",
+      subcategory: "Astronomy",
+    },
+    {
+      id: "9",
+      name: "Other",
     },
   ];
 </script>
