@@ -14,7 +14,7 @@
 
   let pageSize = 10;
   let page = 1;
-  var getPageSizes = (totalItems) => {
+  var getPageSizes = (totalItems: number) => {
     let pages = Math.ceil(totalItems / 10);
     let pageArray = Array.from({ length: pages }).map((_, i) => (i + 1) * 10);
     return pageArray;

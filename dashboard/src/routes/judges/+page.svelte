@@ -20,8 +20,8 @@
     return activeCount++;
   };
 
-  var getInformation = (judges) => {
-    let rows = [];
+  var getInformation = (judges: JSON) => {
+    let rows = new Array();
     let rowID = 1;
     Object.entries(judges).forEach(([key, judge], index) => {
       if (judge.type === "judge") {

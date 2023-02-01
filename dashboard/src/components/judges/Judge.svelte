@@ -24,6 +24,7 @@
   import Cancel from "carbon-icons-svelte/lib/Close.svelte";
   import { dataset_dev } from "svelte/internal";
   export let judge;
+
   let categories = [
     "Art",
     "Athletics",
