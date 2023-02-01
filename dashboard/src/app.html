@@ -9,7 +9,7 @@
       href="https://unpkg.com/carbon-components-svelte/css/g10.css"
     />
     <meta name="viewport" content="width=device-width" />
-    <script>
+    <script lang="ts">
       let theme = "g10"; // "white" | "g10" | "g80" | "g90" | "g100"
 
       $: document.documentElement.setAttribute("theme", theme);

@@ -1,19 +1,17 @@
-<script lang="js">
-  import { Content, Grid, Row, Column, Tile } from "carbon-components-svelte";
+<script lang="ts">
+  import {
+    Content,
+    Row,
+    Column,
+    ClickableTile,
+  } from "carbon-components-svelte";
 </script>
 
 <Content>
-  <Tile>
-    <h3>Nominee Subcategories</h3>
-    <Grid>
-      <Row>
-        <Column>
-          <Row><h4></h4></Row>
-        </Column>
-        <Column>
-          <Row><h4></h4></Row>
-        </Column>
-      </Row>
-    </Grid>
-  </Tile>
+  <ClickableTile href="/nominations">
+    <h3>Nominees</h3>
+    <Column>
+      <Row><h4>View More</h4></Row>
+    </Column>
+  </ClickableTile>
 </Content>

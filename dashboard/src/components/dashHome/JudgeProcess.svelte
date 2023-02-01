@@ -1,4 +1,4 @@
-<script lang="js">
+<script lang="ts">
   import {
     Content,
     Grid,
