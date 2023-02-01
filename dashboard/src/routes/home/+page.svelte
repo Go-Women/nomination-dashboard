@@ -6,7 +6,6 @@
     Column,
     ImageLoader,
   } from "carbon-components-svelte";
-  import "carbon-components-svelte/css/all.css";
   import "../../css/index.css";
   import Navigation from "../../components/Navigation.svelte";
   import NominationOverview from "../../components/dashHome/NominationOverview.svelte";

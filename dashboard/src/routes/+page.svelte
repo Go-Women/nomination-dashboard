@@ -1,6 +1,5 @@
 <script lang="ts">
   import { Content, ImageLoader } from "carbon-components-svelte";
-  import "carbon-components-svelte/css/all.css";
   import "../css/index.css";
   import Navigation from "../components/Navigation.svelte";
 

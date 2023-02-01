@@ -8,8 +8,8 @@
 </script>
 
 <Header
-  company={"Women's Nation Hall of Fame"}
-  platformName="Nomination Selection Process"
+  company={"National Women's Hall of Fame"}
+  platformName="| Selection Process"
   href="/home"
   bind:isSideNavOpen
 >
