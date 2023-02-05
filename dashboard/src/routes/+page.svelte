@@ -1,12 +1,5 @@
 <script lang="ts">
-  import {
-    Content,
-    Grid,
-    Row,
-    Column,
-    ImageLoader,
-  } from "carbon-components-svelte";
-  import "carbon-components-svelte/css/all.css";
+  import { Content, ImageLoader } from "carbon-components-svelte";
   import "../css/index.css";
   import Navigation from "../components/Navigation.svelte";
 
@@ -16,11 +9,9 @@
 
 <main>
   <header><Navigation /></header>
+
   <Content>
-    <Grid>
-      <Row>
-        <ImageLoader style="height: 8rem; width: 20rem;" src={logo} />
-      </Row>
-    </Grid>
+    <ImageLoader style="height: 8rem; width: 20rem;" src={logo} />
+    <h1>ROOT PAGE</h1>
   </Content>
 </main>

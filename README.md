@@ -21,7 +21,7 @@ The frontend uses SvelteKit and TypeScript.
 The following commands are to be run in the `/dashboard` directory.
 
 ### Setup
-Run `npm install`
+1. Run `npm install`
 
 ### Run for development
 Run `npm run dev`
