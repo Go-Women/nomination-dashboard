@@ -18,7 +18,7 @@
 <main>
   <header><Navigation /></header>
   <body>
-    <Content style="padding-left: $spacing-05">
+    <Content>
       <Column>
         <Breadcrumb>
           <BreadcrumbItem href="/home">Home</BreadcrumbItem>

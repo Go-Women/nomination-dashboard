@@ -7,7 +7,7 @@
   export let completedCount = 6;
 </script>
 
-<main class="bx--content--main">
+<main class="bx--content--overview">
   <Row><h3>Overview</h3></Row>
   <Row>
     <Column>

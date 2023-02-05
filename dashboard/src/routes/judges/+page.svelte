@@ -49,7 +49,7 @@
 
 <main>
   <header><Navigation /></header>
-  <Content>
+  <Content class="bx--content--main">
     <Grid>
       <Breadcrumb>
         <BreadcrumbItem href="/home">Home</BreadcrumbItem>

@@ -1,18 +1,23 @@
 /* Custom CSS File for Dashboard */
 
-.bx--content {
-  padding: 4rem;
-  will-change: margin-left;
+.bx--content--info {
+  width: 100%; 
+  padding: 2rem 0 1rem 0;
 }
 
-.bx--content--main {
+.bx--content {
   padding: 4rem;
+}
+
+.bx--content--overview {
+  padding: 2rem 0 2rem 0;
 }
 
 .bx--content--judge-overview {
   padding: 0;
   justify-items: center;
-  display: grid; 
+  display: grid;
+  text-align: center;
 }
 
 .logo-home {

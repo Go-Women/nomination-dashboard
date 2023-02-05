@@ -15,6 +15,7 @@
     NumberInput,
     Toggle,
     Grid,
+    Content,
   } from "carbon-components-svelte";
   import Edit from "carbon-icons-svelte/lib/Edit.svelte";
   import Save from "carbon-icons-svelte/lib/Save.svelte";
@@ -71,9 +72,10 @@
   // TODO: create handle save action
 </script>
 
-<main class="bx--content-main">
+<div class="bx--content--overview">
   <Row><h2>{judge["first-name"]} {judge["last-name"]}</h2></Row>
-  <Row><h3>Information</h3></Row>
+  <div>
+  <Row class="bx--content--info"><h3>Information</h3></Row>
   <Tile>
     {#if judgeEdit === true}
       <StructuredList flush>
@@ -186,4 +188,5 @@
       <Button iconDescription="Edit" icon={Edit} on:click|once={handleEdit}>Edit</Button>
     {/if}
   </Tile>
-</main>
+</div>
+</div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Header, SideNav, SideNavItems, SideNavLink, SkipToContent } from "carbon-components-svelte";
+  import { Header, HeaderNavItem, HeaderUtilities, SideNav, SideNavItems, SideNavLink, SkipToContent } from "carbon-components-svelte";
   import Home from "carbon-icons-svelte/lib/Home.svelte";
   import Result from "carbon-icons-svelte/lib/Result.svelte";
   import UserMultiple from "carbon-icons-svelte/lib/UserMultiple.svelte";
@@ -16,6 +16,9 @@
   <svelte:fragment slot="skip-to-content">
     <SkipToContent />
   </svelte:fragment>
+  <HeaderUtilities>
+    <HeaderNavItem href="/" text="Nomination Form"/>
+  </HeaderUtilities>
 </Header>
 
 <SideNav bind:isOpen={isSideNavOpen} rail>

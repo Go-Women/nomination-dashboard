@@ -5,6 +5,7 @@
     Row,
     Column,
     ImageLoader,
+    ClickableTile,
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
   import "../../css/index.css";
@@ -20,10 +21,13 @@
 
 <main>
   <header><Navigation /></header> 
-  <Content>
+  <Content class="bx--content--main">
     <Grid>
       <Row>
-        <ImageLoader style="height: 8rem; width: 28rem;" src={logo} class="logo-home"/>
+        <ClickableTile href="/" style="width: 100%; background-color: #0068b3;">
+          <ImageLoader style="height: 8rem; width: 28rem;" src={logo} class="logo-home" />
+        </ClickableTile>
+        
       </Row>
       <Row>
         <Column><NominationOverview /></Column>
