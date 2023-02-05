@@ -6,11 +6,17 @@
 }
 
 .bx--content--main {
-  padding: 4rem 0 4rem 0;
+  padding: 4rem;
 }
 
 .bx--content--judge-overview {
   padding: 0;
   justify-items: center;
   display: grid; 
+}
+
+.logo-home {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }

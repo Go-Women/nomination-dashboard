@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "carbon-components-svelte/css/all.css";
   import "../../../css/index.css";
   import Navigation from "../../../components/Navigation.svelte";
   import Judge from "../../../components/judges/Judge.svelte";
@@ -22,7 +23,7 @@
         <Breadcrumb>
           <BreadcrumbItem href="/home">Home</BreadcrumbItem>
           <BreadcrumbItem href="/judges">Judges</BreadcrumbItem>
-          <BreadcrumbItem>{j.firstName} {j.lastName}</BreadcrumbItem>
+          <BreadcrumbItem>{j['first-name']} {j['last-name']}</BreadcrumbItem>
         </Breadcrumb>
 
         <Grid>

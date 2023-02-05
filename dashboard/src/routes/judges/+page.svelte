@@ -1,5 +1,5 @@
 <script lang="ts">
-  // import "carbon-components-svelte/css/all.css";
+  import "carbon-components-svelte/css/all.css";
   import "../../css/index.css";
   import Navigation from "../../components/Navigation.svelte";
   import {
@@ -24,32 +24,21 @@
     let rows = new Array();
     let rowID = 1;
     Object.entries(judges).forEach(([key, judge], index) => {
-      if (judge.type === "judge") {
-        let data = {
-          id: rowID++,
-          type: judge.type,
-          name: judge.firstName + " " + judge.lastName,
-          email: judge.email,
-          active: judge.active,
-          data: {
-            id: judge.data.id,
-            User: judge.data.User,
-            skill: judge.data.skill,
-            weight: judge.data.weight,
-          },
-          activityLog: {
-            id: judge.activityLog.id,
-            user: judge.activityLog.user,
-            nominee: judge.activityLog.nominee,
-            type: judge.activityLog.type,
-          },
-        };
+      let data = {
+        id: judge.id,
+        name: judge["first-name"] + " " + judge["last-name"],
+        pronouns: judge.pronouns,
+        email: judge.email,
+        "phone-num": judge["phone-number"],
+        active: judge.interested,
+        category: judge.category,
+        subcategory: judge.subcategory,
+      };
 
-        if (judge.active === true) {
-          incrementActiveCount();
-        }
-        rows.push(data);
+      if (judge.interested === true) {
+        incrementActiveCount();
       }
+      rows.push(data);
     });
 
     return rows;
@@ -61,16 +50,17 @@
 <main>
   <header><Navigation /></header>
   <Content>
-    <Breadcrumb>
-      <BreadcrumbItem href="/home">Home</BreadcrumbItem>
-      <BreadcrumbItem>Judges</BreadcrumbItem>
-    </Breadcrumb>
     <Grid>
+      <Breadcrumb>
+        <BreadcrumbItem href="/home">Home</BreadcrumbItem>
+        <BreadcrumbItem>Judges</BreadcrumbItem>
+      </Breadcrumb>
+
       <Column>
         <Row><h1>Judges</h1></Row>
         <JudgeOverview {activeCount} />
 
-        <JudgesInformation {rowsData} />
+        <JudgesInformation rows={rowsData} />
       </Column>
     </Grid>
   </Content>

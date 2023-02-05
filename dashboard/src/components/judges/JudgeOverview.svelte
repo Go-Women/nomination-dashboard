@@ -2,9 +2,9 @@
   import { Column, Row, Tile, Content } from "carbon-components-svelte";
 
   export let activeCount;
-  export let matchedCount = 5;
-  export let inProgressCount = 0;
-  export let completedCount = 12;
+  export let matchedCount = 20;
+  export let inProgressCount = 10;
+  export let completedCount = 6;
 </script>
 
 <main class="bx--content--main">
@@ -21,7 +21,7 @@
     <Column>
       <Tile>
         <Content class="bx--content--judge-overview">
-          <Row><h4>Total Matched</h4></Row>
+          <Row><h4>Total Matches</h4></Row>
           <Row><h5>{matchedCount}</h5></Row>
         </Content>
       </Tile>
