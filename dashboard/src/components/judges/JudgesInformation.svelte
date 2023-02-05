@@ -10,7 +10,6 @@
     Toggle,
     MultiSelect,
   } from "carbon-components-svelte";
-  import { LogicalPartition } from "carbon-icons-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
 
   export let rows;
@@ -47,7 +46,6 @@
 
 <main class="bx--content-main">
   <Row><h3>Information</h3></Row>
-  <!-- <Test rows={rows}/> -->
   <DataTable style="justify-text: center;" {headers} {rows} {pageSize} {page} sortable>
     <Toolbar>
       <ToolbarContent>

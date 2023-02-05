@@ -15,7 +15,6 @@
     NumberInput,
     Toggle,
     Grid,
-    Content,
   } from "carbon-components-svelte";
   import Edit from "carbon-icons-svelte/lib/Edit.svelte";
   import Save from "carbon-icons-svelte/lib/Save.svelte";
@@ -33,8 +32,24 @@
     "Other",
   ];
 
-  const skill = judge.category;
+  let firstName = judge["first-name"];
+  let lastName = judge["last-name"];
+  let name = firstName + " " + lastName;
+  let pronoun = judge.pronouns;
+  let email = judge.email;
+  let skill = judge.category;
+  let capacity = judge.capacity;
+  let previousCheck = judge["previous-judge"];
+  let active = judge.interested;
+
+  let pronouns = ["she/her", "he/him", "they/them"];
+
   // TODO: can be replaced later on with backend api call
+  // TODO: create this for subcategory
+  function setCategory(id:string) {
+    skill = categories[parseInt(id)];
+  };
+
   const categoryID = function (): string {
     let category = "0";
     categories.forEach((cat, index) => {
@@ -45,9 +60,10 @@
     return category;
   };
 
-  let pronouns = ["she/her", "he/him", "they/them"];
-  const pronoun = judge.pronouns;
-  
+  function setPronoun(id:string) {
+    pronoun = pronouns[parseInt(id)];
+  };
+
   // TODO: can be replaced later on with backend api call
   const pronounID = function (): string {
     let pn = "other";
@@ -59,11 +75,6 @@
     return pn;
   };
 
-  // TODO: create this for subcategory
-
-  let previousCheck = judge["previous-judge"];
-  let active = judge.interested;
-
   let judgeEdit = false;
   function handleEdit() {
     judgeEdit = !judgeEdit;
@@ -73,9 +84,9 @@
 </script>
 
 <div class="bx--content--overview">
-  <Row><h2>{judge["first-name"]} {judge["last-name"]}</h2></Row>
-  <div>
-  <Row class="bx--content--info"><h3>Information</h3></Row>
+  <Row><h2>{name}</h2></Row>
+  <div class="bx--content--info">
+  <Row><h3>Information</h3></Row>
   <Tile>
     {#if judgeEdit === true}
       <StructuredList flush>
@@ -86,7 +97,7 @@
               id="select-pronouns"
               value="pronouns"
               selected={pronounID()}
-              on:change={(e) => console.log("value", e.target.value)}
+              on:change={(e) => setPronoun(e.target.value)}
             >
               {#each pronouns as noun, index}
                 <SelectItem value={index.toString()} text={noun} />
@@ -94,14 +105,14 @@
             </Select>
             <br /><strong>Email</strong>
             
-            <TextInput type="email" value={judge.email} />
+            <TextInput type="email" bind:value={email} />
             
             <br /><strong>Category</strong>
             <Select
               id="select-judge-category"
               value="categories"
               selected={categoryID()}
-              on:change={(e) => console.log("value", e.target.value)}
+              on:change={(e) => setCategory(e.target.value)}
             >
               {#each categories as category, index}
                 <SelectItem value={index.toString()} text={category} />
@@ -111,7 +122,7 @@
             <br /><strong>Capacity</strong>
             <NumberInput
               min={4}
-              value={judge.capacity}
+              bind:value={capacity}
               invalidText="Number must be greater than 4."
               label="minimum of 4"
             />
@@ -151,23 +162,19 @@
         <StructuredListBody>
           <StructuredListRow>
             <StructuredListCell noWrap><strong>Pronouns</strong></StructuredListCell>
-            <StructuredListCell>{judge.pronouns}</StructuredListCell>
+            <StructuredListCell>{pronoun}</StructuredListCell>
           </StructuredListRow>
           <StructuredListRow>
             <StructuredListCell noWrap><strong>Email</strong></StructuredListCell>
-            <StructuredListCell>{judge.email}</StructuredListCell>
+            <StructuredListCell>{email}</StructuredListCell>
           </StructuredListRow>
           <StructuredListRow>
             <StructuredListCell noWrap><strong>Category</strong></StructuredListCell>
-            <StructuredListCell>{judge.category}</StructuredListCell>
+            <StructuredListCell>{skill}</StructuredListCell>
           </StructuredListRow>
           <StructuredListRow>
             <StructuredListCell noWrap><strong>Capacity</strong></StructuredListCell>
-            <StructuredListCell>{judge.capacity}</StructuredListCell>
-          </StructuredListRow>
-          <StructuredListRow>
-            <StructuredListCell noWrap><strong>Email</strong></StructuredListCell>
-            <StructuredListCell>{judge.email}</StructuredListCell>
+            <StructuredListCell>{capacity}</StructuredListCell>
           </StructuredListRow>
           <StructuredListRow>
             <StructuredListCell>
