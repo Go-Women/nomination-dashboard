@@ -1,18 +1,13 @@
 <script lang="ts">
-  import { Form, FormGroup, Row, StructuredList, StructuredListBody, StructuredListCell, StructuredListRow, TextInput, Tile, Toggle } from 'carbon-components-svelte'
+  import { Row, SkeletonText, StructuredList, StructuredListBody, StructuredListCell, StructuredListRow, Tile, Toggle } from 'carbon-components-svelte'
   export let nom;
-
-  let nomEdit = false;
-  function handleEdit() {
-    nomEdit = !nomEdit;
-  }
 
   let firstName = nom['nom-first'];
   let lastName = nom['nom-last'];
   let name = firstName + ' ' + lastName;
   let nomBy = nom['author-first'] + ' ' + nom['author-last'];
   let date = nom.date;
-  let matched = false;
+  let matched = false;  // TODO: replace with backend value
 </script>
 
 <div class="bx--content--overview">
@@ -32,11 +27,11 @@
             </StructuredListRow>
             <StructuredListRow>
               <StructuredListCell noWrap><strong>Category</strong></StructuredListCell>
-              <StructuredListCell>Placeholder</StructuredListCell>
+              <StructuredListCell><SkeletonText /></StructuredListCell>
             </StructuredListRow>
             <StructuredListRow>
               <StructuredListCell noWrap><strong>Subcategory</strong></StructuredListCell>
-              <StructuredListCell>Placeholder</StructuredListCell>
+              <StructuredListCell><SkeletonText /></StructuredListCell>
             </StructuredListRow>
             <StructuredListRow>
               <StructuredListCell>
