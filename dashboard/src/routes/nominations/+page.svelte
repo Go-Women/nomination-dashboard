@@ -2,7 +2,7 @@
   import "carbon-components-svelte/css/all.css";
   import "../../css/index.css";
   import Navigation from "../../components/Navigation.svelte";
-  import { Content, DataTable, OverflowMenu, OverflowMenuItem } from "carbon-components-svelte";
+  import { Breadcrumb, BreadcrumbItem, Content, DataTable, Grid, OverflowMenu, OverflowMenuItem } from "carbon-components-svelte";
   import NominationInformation from "../../components/nominations/NominationInformation.svelte";
 
   export let data;
@@ -38,8 +38,15 @@
 
 <main>
   <header><Navigation /></header>
-  <Content>
+  <Content class="bx--content--main">
+    <Grid>
+      <Breadcrumb>
+        <BreadcrumbItem href="/home">Home</BreadcrumbItem>
+        <BreadcrumbItem>Nominations</BreadcrumbItem>
+      </Breadcrumb>
+    
     <h1>Nominations</h1>
     <NominationInformation {rows}/>
+    </Grid>
   </Content>
 </main>

@@ -24,7 +24,7 @@
 <SideNav bind:isOpen={isSideNavOpen} rail>
   <SideNavItems>
     <SideNavLink icon={Home} text="Dashboard" href="/home" isSelected />
-    <SideNavLink icon={Result} text="Nominees" href="/nominations" />
+    <SideNavLink icon={Result} text="Nominations" href="/nominations" />
     <SideNavLink icon={UserMultiple} text="Judges" href="/judges" />
   </SideNavItems>
 </SideNav>
