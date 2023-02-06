@@ -9,49 +9,49 @@
     {
       id: "1",
       name: "Art",
-      subcategory: ["Architecture", "Art History", "Cinema", "Design", "Literature", "Music", "Painting/Drawing", "Sculpting", "Theater/Dance", "Other"],
+      subcategory: ["Architecture", "Art History", "Cinema", "Design", "Literature", "Music", "Painting / Drawing", "Sculpting", "Theater / Dance", "Other"],
       value: "3",
       subcategoryCount: ["1", "2", "0", "0", "0", "0", "0", "0", "0", "0"],
     },
     {
       id: "2",
       name: "Athletics",
-      subcategory: ["Competition Sports", "individual Sports", "Team Sports", "Sports/Team Management", "Other"],
+      subcategory: ["Competition Sports", "Individual Sports", "Team Sports", "Sports / Team Management", "Other"],
       value: "4",
       subcategoryCount: ["1", "2", "1", "0", "0"],
     },
     {
       id: "3",
       name: "Business",
-      subcategory: ["CEO/corporate leadership", "Entrepreneurship", "Inventing/patent holding", "Other"],
+      subcategory: ["CEO / Corporate Leadership", "Entrepreneurship", "Inventing / Patent Holding", "Other"],
       value: "0",
       subcategoryCount: ["0", "0", "0", "0"],
     },
     {
       id: "5",
-      name: "Eduaction",
-      subcategory: ["Early Eduaction", "Higher Education", "Research", "Other"],
+      name: "Education",
+      subcategory: ["Early Education", "Higher Education", "Research", "Other"],
       value: "0",
       subcategoryCount: ["0", "0", "0", "0"],
     },
     {
       id: "6",
       name: "Humanities",
-      subcategory: ["Ancient/Modern Languages", "Literature", "Philosophy/religion", "Social reformation", "Other"],
+      subcategory: ["Ancient / Modern Languages", "Literature", "Philosophy / Religion", "Social reformation", "Other"],
       value: "3",
       subcategoryCount: ["3", "0", "0", "0", "0"],
     },
     {
       id: "7",
-      name: "Public Service/Government",
-      subcategory: ["Activism", "Legal/judical", "Military", "Politics", "Other"],
+      name: "Public Service / Government",
+      subcategory: ["Activism", "Legal / Judicial", "Military", "Politics", "Other"],
       value: "12",
       subcategoryCount: ["12", "0", "0", "0", "0"],
     },
     {
       id: "8",
       name: "STEM",
-      subcategory: ["Astronomy", "Architecture", "Biology", "Chemistry", "Climate/Earth Sciences", "Computer Science", "Mathematics", "Medicine", "Engineering", "Physics", " Technology", "Other"],
+      subcategory: ["Astronomy", "Architecture", "Biology", "Chemistry", "Climate / Earth Sciences", "Computer Science", "Mathematics", "Medicine", "Engineering", "Physics", " Technology", "Other"],
       value: "5",
       subcategoryCount: ["5", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
     },
@@ -66,7 +66,14 @@
 <Content>
   <Tile>
     <h3>Nominee Categories</h3>
-    <DataTable expandable headers={dataTableHeader} rows={dataTableRows}>
+    <DataTable  
+      headers={dataTableHeader}
+      rows={dataTableRows}
+      batchExpansion
+      nonExpandableRowIds={dataTableRows
+        .filter((row) => row.name == 'Other')
+        .map((row) => row.id)}
+    >
       <svelte:fragment slot="expanded-row" let:row>
         <Row>
           <Column>
