@@ -17,7 +17,7 @@ const Nomination = function(nomination) {
   this.nomQ3Description = nomination.nomQ3Description;
   this.nomDeceased = nomination.nomDeceased;
   this.nomAchieved = nomination.nomAchieved;
-  this.nomAdditionalInfo = this.nomAdditionalInfo;
+  this.nomAdditionalInfo = nomination.nomAdditionalInfo;
 };
 
 Nomination.create = (newNomination, result) => {
