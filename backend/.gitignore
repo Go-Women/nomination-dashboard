@@ -4,9 +4,6 @@ dist/
 /build
 /.svelte-kit
 /package
-.env
-.env.*
-!.env.example
 initDB.sql
 createDB.sql
 config/db.config.js
