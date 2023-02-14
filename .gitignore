@@ -2,3 +2,4 @@
 backend/initDB.sql
 backend/createDB.sql
 backend/config/db.config.js
+.DS_Store
