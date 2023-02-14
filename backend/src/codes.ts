@@ -44,7 +44,7 @@ const codes = {
   "s701": "Astronomy",
   "s702": "Architecture",
   "s703": "Biology",
-  "s704": "Chemestry",
+  "s704": "Chemistry",
   "s705": "Climate / Earth Sciences",
   "s706": "Computer Science",
   "s707": "Mathematics",
@@ -64,7 +64,12 @@ const codes = {
   "q203": "The nominee's contributions created national and/or global change/impact",
 
   "q301": "The nominee's achievements created a change that has (or will) endure over time",
-  "q302": "The nominee's achievements created and maintained historical changes for society at large"
+  "q302": "The nominee's achievements created and maintained historical changes for society at large",
+
+  "s100": "created",
+  "s200": "review",
+  "s300": "matched",
+  "s400": "selected"
 }
 
 export default codes;
