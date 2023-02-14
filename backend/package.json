@@ -1,7 +1,7 @@
 {
   "name": "dashboard-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Women's National Hall of Fame - Selection Process API",
   "main": "server.js",
   "scripts": {
     "build": "npx tsc",
