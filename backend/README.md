@@ -50,11 +50,16 @@
 
    ​	**NOTE:** replace `PLACEHOLDER` with your local db username and password
 
-3. Use database schema **`createDB.sql`** to create tables
+3. Place the following queries into the `backend/app/tests/` folder to create and initialize tables
+    **`createDB.sql`** -- used to create tables
 
-4. Use database **`initDB.sql`** to run a query and populate some tables with static information.
+    **`setupDB.sql`** -- to run a query and populate some tables with static information
 
-5. Within the **`backend`** directory run the following commands:
+    **`Nominations.sql`** -- dummy data
+
+    **`Judges.sql`** -- dummy data
+
+4. Within the **`backend`** directory run the following commands:
 
    ```bash
    npm install
@@ -64,6 +69,6 @@
    npm run dev
    ```
 
-6. Go to [Nomination Test Connection](http://localhost:8080/nominations) and you should see at least one nomination populated.
+5. Go to [Nomination Test Connection](http://localhost:8080/nominations) and you should see at least one nomination populated.
 
    

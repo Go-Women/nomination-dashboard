@@ -4,6 +4,4 @@ dist/
 /build
 /.svelte-kit
 /package
-initDB.sql
-createDB.sql
-config/db.config.js
+tests/*.sql
