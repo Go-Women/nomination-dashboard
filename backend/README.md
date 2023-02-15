@@ -33,7 +33,7 @@
 
       ​	**Database:** `selectionprocess`
 
-      ![image-2023021380414639 PM](/Users/celestegambardella/OneDrive - rit.edu/ Current Semester/SWEN 561/nomination-dashboard/assets/backendsetup1.png)
+      ![DBSetup](../assets/backendsetup1.png)
 
 
 2. In the **`backend/config`** directory create a file called **`db.config.js`**:
