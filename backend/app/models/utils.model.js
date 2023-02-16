@@ -35,16 +35,28 @@ exports.getCategories = (res, cat, subCat) => {
   return res;
 };
 
+exports.setJSON = (res, name) => {
+  res[name] = JSON.parse(res[name])[0];
+  return res;
+};
+
 // format data when individually being accessed
-exports.formatSingleData = (res) => {
+exports.formatSingleData = (res, type) => {
   let cat;
   let subCat;
-  if (res.type) {
+  if (type === 'judge') {
     // Handle Code Formats
-    let info = JSON.parse(res.info)[0];
-    cat = info.category;
-    subCat = info.subcategory;
-    res.info = this.getCategories(info, cat, subCat);
+    res = this.setJSON(res, 'info');
+    cat = res.info.category;
+    subCat = res.info.subcategory;
+    res.info = this.getCategories(res.info, cat, subCat);
+  } else if (type === 'nominee') {
+    // Handle Code Formats
+    res = this.setJSON(res, 'nominations');
+
+    cat = res.category;
+    subCat = res.subcategory;
+    res = this.getCategories(res, cat, subCat);
   } else {
     res.date = this.formatDate(res);
 
@@ -59,6 +71,6 @@ exports.formatSingleData = (res) => {
 // format data when all values are being accessed
 exports.formatAllData = (res, type) => {
   Object.entries(res).forEach((data, value) => {
-    this.formatSingleData(data[1]);
+    this.formatSingleData(data[1], type);
   });
 };

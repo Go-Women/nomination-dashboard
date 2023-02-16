@@ -1,6 +1,6 @@
-const Judge = require("../models/judges.model.js");
+const Nominee = require("../models/nominees.model.js");
 
-// Create and Save a new Judge
+// Create and Save a new Nominee
 exports.create = (req, res) => {
     // Validate request
     if (!req.body) {
@@ -9,43 +9,45 @@ exports.create = (req, res) => {
       });
     }
   
-    // Create a Judge
-    const judge = new Judge({
+    // Create a Nominee
+    const judge = new Nominee({
       id: req.body.ID,
-      type: req.body.type,
-      email: req.body.email,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
-      active: req.body.active,
-      info: req.body.data
+      cohort: req.body.cohort,
+      status: req.body.data,
+      yob: req.body.yob,
+      category: req.body.category,
+      subcategory: req.body.subcategory,
+      nominations: req.body.nominations
     });
   
-    // Save Judge in the database
-    Judge.create(nomination, (err, data) => {
+    // Save Nominee in the database
+    Nominee.create(nomination, (err, data) => {
       if (err)
         res.status(500).send({
           message:
-            err.message || "Some error occurred while creating the Judge."
+            err.message || "Some error occurred while creating the Nominee."
         });
       else res.send(data);
     });
 };
 
-// Retrieve all Judges from the database
+// Retrieve all Nominees from the database
 exports.findAll = (req, res) => {
-  Judge.getAll((err, data) => {
+  Nominee.getAll((err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving Judges."
+          err.message || "Some error occurred while retrieving Nominees."
       });
     else res.send(data);
   });
 };
 
-// Find a single Judge with a id
+// Find a single Nominee with a id
 exports.findOne = (req, res) => {
-  Judge.findById(req.params.id, (err, data) => {
+  Nominee.findById(req.params.id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
@@ -53,14 +55,14 @@ exports.findOne = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message: "Error retrieving Judge with id " + req.params.id
+          message: "Error retrieving Nominee with id " + req.params.id
         });
       }
     } else res.send(data);
   });
 };
 
-// Update a Judge identified by the id in the request
+// Update a Nominee identified by the id in the request
 exports.update = (req, res) => {
   // TODO: Implement
 };
