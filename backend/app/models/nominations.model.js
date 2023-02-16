@@ -44,7 +44,7 @@ Nomination.findById = (id, result) => {
 
     if (res.length) {
       utils.formatSingleData(res[0])
-      console.log("found nomination: ", res[0]);
+      console.log(`GET /nominations/${id}`);
       result(null, res[0]);
       return;
     }
@@ -63,7 +63,7 @@ Nomination.getAll = result => {
     }
     
     utils.formatAllData(res);
-    // console.log("nominations: ", res);
+    console.log("GET /nominations");
     result(null, res);
   });
 };

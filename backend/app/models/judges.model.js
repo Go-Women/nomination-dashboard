@@ -36,7 +36,7 @@ Judge.findById = (id, result) => {
     if (res.length) {
       
       util.formatSingleData(res[0]);
-      console.log("found judge: ", res[0]);
+      console.log(`GET /judges/${id}`);
       result(null, res[0]);
       return;
     }
@@ -54,8 +54,8 @@ Judge.getAll = result => {
       return;
     }
 
-    console.log("TEST:", util.formatAllData(res));
-    console.log("judges: ", res);
+    util.formatAllData(res);
+    console.log("GET /judges");
     result(null, res);
   });
 };
