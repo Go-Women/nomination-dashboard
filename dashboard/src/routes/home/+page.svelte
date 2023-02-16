@@ -21,14 +21,13 @@
 
 <main>
   <header><Navigation /></header> 
+  <Row style="justify-content: center; background-color:#0068b3; padding-top: 2rem;">
+    <ClickableTile href="/" style="background-color: #0068b3; width: 100%;">
+      <ImageLoader style="height: 8rem; width: 20rem;" src={logo} class="logo-home" />
+    </ClickableTile>
+  </Row>
   <Content class="bx--content--main">
     <Grid>
-      <Row>
-        <ClickableTile href="/" style="width: 100%; background-color: #0068b3;">
-          <ImageLoader style="height: 8rem; width: 28rem;" src={logo} class="logo-home" />
-        </ClickableTile>
-        
-      </Row>
       <Row>
         <Column><NominationOverview /></Column>
         <Column><JudgeProcess /></Column>
