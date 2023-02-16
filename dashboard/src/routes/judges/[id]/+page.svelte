@@ -2,10 +2,17 @@
   import "carbon-components-svelte/css/all.css";
   import "../../../css/index.css";
   import Navigation from "../../../components/Navigation.svelte";
-  import Nomination from "../../../components/nominations/Nomination.svelte";
-  import { Breadcrumb, BreadcrumbItem, Column, Content, Grid, Row} from "carbon-components-svelte";
+  import Judge from "../../../components/judges/Judge.svelte";
+  import {
+    Content,
+    Column,
+    Row,
+    Breadcrumb,
+    BreadcrumbItem,
+    Grid,
+  } from "carbon-components-svelte";
   export let data;
-  export let { n } = data.props;
+  export let { j } = data.props;
 </script>
 
 <main>
@@ -15,14 +22,14 @@
       <Column>
         <Breadcrumb>
           <BreadcrumbItem href="/home">Home</BreadcrumbItem>
-          <BreadcrumbItem href="/nominations">Nominations</BreadcrumbItem>
-          <BreadcrumbItem>{n['nom-first']} {n['nom-last']}</BreadcrumbItem>
+          <BreadcrumbItem href="/judges">Judges</BreadcrumbItem>
+          <BreadcrumbItem>{j['first-name']} {j['last-name']}</BreadcrumbItem>
         </Breadcrumb>
 
         <Grid>
           <Column>
-            <Row><h1>Nomination</h1></Row>
-            <Nomination nom={n} />
+            <Row><h1>Judge</h1></Row>
+            <Judge judge={j} />
           </Column>
         </Grid>
       </Column>
