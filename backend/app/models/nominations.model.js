@@ -1,4 +1,5 @@
 const sql = require("../../config/db.js");
+const utils = require("./utils.model.js");
 
 // constructor
 const Nomination = function(nomination) {
@@ -10,8 +11,8 @@ const Nomination = function(nomination) {
   this.nomLast = nomination.nomLast;
   this.nomYOB = nomination.nomYOB;
   this.cohort = nomination.cohort;
-  this.nomCategory = nomination.nomCategory;
-  this.nomSubcategory = nomination.nomSubcategory;
+  this.category = nomination.category;
+  this.subcategory = nomination.subcategory;
   this.nomQ1Description = nomination.nomQ1Description;
   this.nomQ2Description = nomination.nomQ2Description;
   this.nomQ3Description = nomination.nomQ3Description;
@@ -21,7 +22,7 @@ const Nomination = function(nomination) {
 };
 
 Nomination.create = (newNomination, result) => {
-  sql.query("INSERT INTO nominations SET ?", newNomination, (err, res) => {
+  sql.query("INSERT INTO Nominations SET ?", newNomination, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -34,7 +35,7 @@ Nomination.create = (newNomination, result) => {
 };
 
 Nomination.findById = (id, result) => {
-  sql.query(`SELECT * FROM nominations WHERE id = ${id}`, (err, res) => {
+  sql.query(`SELECT * FROM Nominations WHERE id = ${id}`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -42,6 +43,7 @@ Nomination.findById = (id, result) => {
     }
 
     if (res.length) {
+      utils.formatSingleData(res[0])
       console.log("found nomination: ", res[0]);
       result(null, res[0]);
       return;
@@ -59,8 +61,9 @@ Nomination.getAll = result => {
       result(null, err);
       return;
     }
-
-    console.log("nominations: ", res);
+    
+    utils.formatAllData(res);
+    // console.log("nominations: ", res);
     result(null, res);
   });
 };
@@ -68,7 +71,7 @@ Nomination.getAll = result => {
 Nomination.updateById = (id, nomination, result) => {
   // TODO: Needs to be implemented
   // sql.query(
-  //   "UPDATE nominations ",
+  //   "UPDATE Nominations ",
   //   [],
   //   (err, res) => {
   //     if (err) {

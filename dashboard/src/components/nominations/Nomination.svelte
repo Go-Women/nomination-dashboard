@@ -2,10 +2,10 @@
   import { Row, SkeletonText, StructuredList, StructuredListBody, StructuredListCell, StructuredListRow, Tile, Toggle } from 'carbon-components-svelte'
   export let nom;
 
-  let firstName = nom['nom-first'];
-  let lastName = nom['nom-last'];
+  let firstName = nom['nomFirst'];
+  let lastName = nom['nomLast'];
   let name = firstName + ' ' + lastName;
-  let nomBy = nom['author-first'] + ' ' + nom['author-last'];
+  let nomBy = nom['authorFirst'] + ' ' + nom['authorLast'];
   let date = nom.date;
   let matched = false;  // TODO: replace with backend value
 </script>

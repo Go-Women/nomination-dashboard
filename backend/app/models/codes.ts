@@ -1,4 +1,4 @@
-const codes = {
+module.exports = {
   "c100": "Art",
   "c200": "Athletics",
   "c300": "Business",
@@ -8,6 +8,7 @@ const codes = {
   "c700": "STEM",
   "c800": "Other",
 
+  "s100": "General",
   "s101": "Architecture",
   "s102": "Art History",
   "s103": "Cinema",
@@ -66,10 +67,10 @@ const codes = {
   "q301": "The nominee's achievements created a change that has (or will) endure over time",
   "q302": "The nominee's achievements created and maintained historical changes for society at large",
 
-  "s100": "created",
-  "s200": "review",
-  "s300": "matched",
-  "s400": "selected"
+  "t100": "created",
+  "t200": "review",
+  "t300": "matched",
+  "t400": "selected"
 }
 
-export default codes;
+// export default codes;

@@ -8,8 +8,9 @@ exports.create = (req, res) => {
         message: "Content can not be empty!"
       });
     }
-  
+
     // Create a Nomination
+    // we should format the data here
     const nomination = new Nomination({
       date: req.body.date || new Date(),
       authorFirst: req.body.authorFirst,
@@ -19,8 +20,8 @@ exports.create = (req, res) => {
       nomLast: req.body.nomLast,
       nomYOB: req.body.nomYOB,
       cohort: req.body.cohort || 1,
-      nomCategory: req.body.nomCategory,
-      nomSubcategory: req.body.nomSubcategory,
+      category: req.body.category,
+      subcategory: req.body.subcategory,
       nomQ1Description: req.body.nomQ1Description,
       nomQ2Description: req.body.nomQ2Description,
       nomQ3Description: req.body.nomQ3Description,
@@ -54,7 +55,19 @@ exports.findAll = (req, res) => {
 
 // Find a single Nomination with a id
 exports.findOne = (req, res) => {
-  // TODO: Implement
+  Nomination.findById(req.params.id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `No found Nomination with id ${req.params.id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Nomination with id " + req.params.id
+        });
+      }
+    } else res.send(data);
+  });
 };
 
 // Update a Nomination identified by the id in the request
