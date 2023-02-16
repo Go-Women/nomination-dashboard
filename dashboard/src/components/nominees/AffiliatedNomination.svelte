@@ -47,10 +47,10 @@
         <Column>Contribution Areas</Column>
         <Column>{kg(nomination['nom-contrib-area'])}</Column>
       </Row>
-      {#if nomination['nom-contrib-area-description']}
+      {#if nomination['nom-contrib-area-sub-description']}
       <Row>
         <Column>User-Submitted Area</Column>
-        <Column>{kg(nomination['nom-contrib-area-description'])}</Column>
+        <Column>{kg(nomination['nom-contrib-area-sub-description'])}</Column>
       </Row>
       {/if}
       <Row>
