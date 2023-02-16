@@ -2,6 +2,8 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import nominations from './dummydb';
 import judges from './dummyJudgeDB';
+import nominees from './dummyNomineeDB';
+import codes from './codes';
 
 dotenv.config();
 
@@ -12,6 +14,10 @@ app.use(express.json());
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server');
+});
+
+app.get('/keys', (req: Request, res: Response) => {
+  res.json((codes as any));
 });
 
 app.get('/home', (req: Request, res: Response) => {
@@ -39,6 +45,11 @@ app.get('/judges', (req: Request, res: Response) => {
 app.get('/judges/:id', (req: Request, res: Response) => {
   let id = req.params['id'];
   res.json((judges as any)[id]);
+});
+
+app.get('/nominees/:id', (req: Request, res: Response) => {
+  let id = req.params['id'];
+  res.json((nominees as any)[id]);
 });
 
 app.listen(port, () => {
