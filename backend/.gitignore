@@ -6,3 +6,4 @@ dist/
 /package
 tests/*.sql
 .env
+config/db.config.js

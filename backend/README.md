@@ -50,7 +50,7 @@
 
    ​	**NOTE:** replace `PLACEHOLDER` with your local db username and password
 
-3. Place the following queries into the `backend/app/tests/` folder to create and initialize tables
+3. Create a folder call `test` in the backend root directory the following queries into the `backend/app/tests/` folder to create and initialize tables
     **`createDB.sql`** -- used to create tables
 
     **`setupDB.sql`** -- to run a query and populate some tables with static information

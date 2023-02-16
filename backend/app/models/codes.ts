@@ -67,10 +67,14 @@ module.exports = {
   "q301": "The nominee's achievements created a change that has (or will) endure over time",
   "q302": "The nominee's achievements created and maintained historical changes for society at large",
 
-  "t100": "created",
-  "t200": "review",
-  "t300": "matched",
-  "t400": "selected"
-}
+  "t100": "Created",
+  "t200": "Review",
+  "t300": "Matched",
+  "t400": "Selected",
+  "t500": "Rejected",
 
-// export default codes;
+  "m100": "Review",
+  "m200": "Deny",
+  "m300": "Matched",
+  "m400": "Unmatched"
+}
