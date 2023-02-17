@@ -56,6 +56,9 @@ exports.formatSingleData = (res, type) => {
 
     cat = res.category;
     subCat = res.subcategory;
+    if (subCat == null) {
+      subCat = res.subcategoryOther;
+    }
     res = this.getCategories(res, cat, subCat);
   } else {
     res.date = this.formatDate(res);
@@ -63,6 +66,9 @@ exports.formatSingleData = (res, type) => {
     // Handle Code Formats
     cat = res.category;
     subCat = res.subcategory;
+    if (subCat == null) {
+      subCat = res.subcategoryOther;
+    }
     res = this.getCategories(res, cat, subCat);
   }
     return res;

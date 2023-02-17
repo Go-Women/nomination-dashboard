@@ -13,6 +13,7 @@ const Nomination = function(nomination) {
   this.cohort = nomination.cohort;
   this.category = nomination.category;
   this.subcategory = nomination.subcategory;
+  this.subcategoryOther = nomination.subcategoryOther;
   this.nomQ1Description = nomination.nomQ1Description;
   this.nomQ2Description = nomination.nomQ2Description;
   this.nomQ3Description = nomination.nomQ3Description;

@@ -22,6 +22,7 @@ exports.create = (req, res) => {
       cohort: req.body.cohort || 1,
       category: req.body.category,
       subcategory: req.body.subcategory,
+      subcategoryOther: req.body.subcategoryOther,
       nomQ1Description: req.body.nomQ1Description,
       nomQ2Description: req.body.nomQ2Description,
       nomQ3Description: req.body.nomQ3Description,
