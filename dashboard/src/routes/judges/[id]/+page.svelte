@@ -23,7 +23,7 @@
         <Breadcrumb>
           <BreadcrumbItem href="/home">Home</BreadcrumbItem>
           <BreadcrumbItem href="/judges">Judges</BreadcrumbItem>
-          <BreadcrumbItem>{j['first-name']} {j['last-name']}</BreadcrumbItem>
+          <BreadcrumbItem>{j.firstName} {j.lastName}</BreadcrumbItem>
         </Breadcrumb>
 
         <Grid>
