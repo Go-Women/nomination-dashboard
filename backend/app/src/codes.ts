@@ -1,4 +1,4 @@
-const codes = {
+module.exports = {
   "c100": "Art",
   "c200": "Athletics",
   "c300": "Business",
@@ -8,6 +8,7 @@ const codes = {
   "c700": "STEM",
   "c800": "Other",
 
+  "s100": "General",
   "s101": "Architecture",
   "s102": "Art History",
   "s103": "Cinema",
@@ -44,7 +45,7 @@ const codes = {
   "s701": "Astronomy",
   "s702": "Architecture",
   "s703": "Biology",
-  "s704": "Chemestry",
+  "s704": "Chemistry",
   "s705": "Climate / Earth Sciences",
   "s706": "Computer Science",
   "s707": "Mathematics",
@@ -64,7 +65,16 @@ const codes = {
   "q203": "The nominee's contributions created national and/or global change/impact",
 
   "q301": "The nominee's achievements created a change that has (or will) endure over time",
-  "q302": "The nominee's achievements created and maintained historical changes for society at large"
-}
+  "q302": "The nominee's achievements created and maintained historical changes for society at large",
 
-export default codes;
+  "t100": "Created",
+  "t200": "Review",
+  "t300": "Matched",
+  "t400": "Selected",
+  "t500": "Rejected",
+
+  "m100": "Review",
+  "m200": "Deny",
+  "m300": "Matched",
+  "m400": "Unmatched"
+}
