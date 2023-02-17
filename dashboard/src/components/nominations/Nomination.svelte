@@ -1,21 +1,28 @@
 <script lang="ts">
-  import { Row, SkeletonText, StructuredList, StructuredListBody, StructuredListCell, StructuredListRow, Tile, Toggle } from 'carbon-components-svelte'
+  import { Row, StructuredList, StructuredListBody, StructuredListCell, StructuredListRow, Tile, Toggle } from 'carbon-components-svelte'
   export let nom;
+  export let showHeader = true;
 
-  let firstName = nom['nom-first'];
-  let lastName = nom['nom-last'];
+  let firstName = nom['nomFirst'];
+  let lastName = nom['nomLast'];
   let name = firstName + ' ' + lastName;
-  let nomBy = nom['author-first'] + ' ' + nom['author-last'];
+  let nomBy = nom['authorFirst'] + ' ' + nom['authorLast'];
   let date = nom.date;
+  let category = nom.category;
+  let subcategory = nom.subcategory;
   let matched = false;  // TODO: replace with backend value
 </script>
 
 <div class="bx--content--overview">
-  <Row><h2>{name}</h2></Row>
+  {#if showHeader}
+    <Row><h2>{name}</h2></Row>
+  {/if}
   <div class="bx--content--info">
-    <Row><h3>Information</h3></Row>
+    {#if showHeader}
+      <Row><h3>Information</h3></Row>
+    {/if}
     <Tile>
-        <StructuredList flush>
+        <StructuredList condensed>
           <StructuredListBody>
             <StructuredListRow>
               <StructuredListCell noWrap><strong>Nominated By</strong></StructuredListCell>
@@ -27,11 +34,11 @@
             </StructuredListRow>
             <StructuredListRow>
               <StructuredListCell noWrap><strong>Category</strong></StructuredListCell>
-              <StructuredListCell><SkeletonText /></StructuredListCell>
+              <StructuredListCell>{category}</StructuredListCell>
             </StructuredListRow>
             <StructuredListRow>
               <StructuredListCell noWrap><strong>Subcategory</strong></StructuredListCell>
-              <StructuredListCell><SkeletonText /></StructuredListCell>
+              <StructuredListCell>{subcategory}</StructuredListCell>
             </StructuredListRow>
             <StructuredListRow>
               <StructuredListCell>

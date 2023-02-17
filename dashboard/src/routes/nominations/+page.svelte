@@ -15,15 +15,15 @@
     let rows: any[] = [];
     let rowID = 1;
     Object.entries(nominations).forEach(([key, nomination], index) => {
+      // console.log(typeof nomination.date)
       let data = {
         data: {
           id: rowID
         },
         id: rowID++,
-        nominee: nomination["nom-first"] + " " + nomination["nom-last"],
-        category: nomination['nom-contrib-area'],
-        nominator: nomination["author-first"] + " " + nomination["author-last"],
-        date: nomination.date,
+        nominee: nomination["nomFirst"] + " " + nomination["nomLast"],
+        nominator: nomination["authorFirst"] + " " + nomination["authorLast"],
+        date: nomination.date
       }
       rows.push(data);
     });
