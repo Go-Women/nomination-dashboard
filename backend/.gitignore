@@ -8,3 +8,4 @@ tests/*.sql
 config/db.config.js
 .env.*
 !.env.example
+.env
