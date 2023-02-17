@@ -16,7 +16,7 @@
         <Breadcrumb>
           <BreadcrumbItem href="/home">Home</BreadcrumbItem>
           <BreadcrumbItem href="/nominations">Nominations</BreadcrumbItem>
-          <BreadcrumbItem>{n['nom-first']} {n['nom-last']}</BreadcrumbItem>
+          <BreadcrumbItem>{n['nomFirst']} {n['nomLast']}</BreadcrumbItem>
         </Breadcrumb>
 
         <Grid>

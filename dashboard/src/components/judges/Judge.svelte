@@ -32,15 +32,15 @@
     "Other",
   ];
 
-  let firstName = judge["first-name"];
-  let lastName = judge["last-name"];
+  let firstName = judge.firstName;
+  let lastName = judge.lastName;
   let name = firstName + " " + lastName;
-  let pronoun = judge.pronouns;
+  let pronoun = judge.info.pronouns;
   let email = judge.email;
-  let skill = judge.category;
-  let capacity = judge.capacity;
-  let previousCheck = judge["previous-judge"];
-  let active = judge.interested;
+  let skill = judge.info.category;
+  let capacity = judge.info.capacity;
+  let previousCheck = judge.info.previousJudge;
+  let active = judge.info.interested;
 
   let pronouns = ["she/her", "he/him", "they/them"];
 
