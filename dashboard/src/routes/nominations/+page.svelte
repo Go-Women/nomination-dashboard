@@ -22,6 +22,7 @@
         },
         id: rowID++,
         nominee: nomination["nomFirst"] + " " + nomination["nomLast"],
+        category: nomination['nomCategory'],
         nominator: nomination["authorFirst"] + " " + nomination["authorLast"],
         date: nomination.date
       }
@@ -49,7 +50,9 @@
     <div id="half-right">
       <h2>Review Nomination</h2>
       <AcceptReject 
-        bind:incomingRowIds={selectedRowIds} bind:nominations />
+        bind:incomingRowIds={selectedRowIds}
+        bind:nominations
+      />
     </div>
   </div>
 </main>

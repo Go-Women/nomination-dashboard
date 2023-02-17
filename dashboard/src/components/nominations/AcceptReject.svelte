@@ -24,18 +24,18 @@
   ]
 
   let selectedRowIds: number[] = [0];
-  $: nom = nominations[incomingRowIds[0]] || {};
+  $: nom = nominations[incomingRowIds[0] - 1] || {};
 </script>
 
 <main>
   <div class="nom-information">
     <ul class="no-style">
-      <li>Name: {nom['nom-first']} {nom['nom-last']} &mdash; Born: {nom['nom-yob']}</li>
-      <li class="break">Contribution Areas: {nom['nom-contrib-area']}</li>
-      {#if nom['nom-contrib-area-sub-description']}
+      <li>Name: {nom['nomFirst']} {nom['nomLast']} &mdash; Born: {nom['nomYOB']}</li>
+      <li class="break">Contribution Areas: {nom['nomCategory']}</li>
+      <!-- {#if nom['nom-contrib-area-sub-description']}
       <li>User-Submitted Area: {nom['nom-contrib-area-sub-description']}</li>
-      {/if}
-      <li>Contribution Subcategories: {nom['nom-contrib-area-sub']}</li>
+      <!-- {/if} -->  <!-- TODO -->
+      <li>Contribution Subcategories: {nom['nomSubcategory']}</li>
     </ul>
   </div>
 
@@ -44,21 +44,21 @@
     <TextArea 
       style="color: black;cursor: default;"
       rows={3}
-      value={nom['nom-q1-description']}
+      value={nom['nomQ1Description']}
       disabled
     />
     <h4>Question 2</h4>
     <TextArea
       style="color: black;cursor: default;"
       rows={3}
-      value={nom['nom-q2-description']}
+      value={nom['nomQ2Description']}
       disabled
     />
     <h4>Question 3</h4>
     <TextArea
       style="color: black;cursor: default;"
       rows={3}
-      value={nom['nom-q3-description']}
+      value={nom['nomQ3Description']}
       disabled
     />
     {#if nom['nom-additional-info-description']}
@@ -66,7 +66,7 @@
     <TextArea
       style="color: black;cursor: default;"
       rows={3}
-      value={nom['nom-additional-info-description']}
+      value={nom['nomAdditionalInfo']}
       disabled
     />
     {/if}
