@@ -1,4 +1,4 @@
-module.exports = {
+const codes = {
   "c100": "Art",
   "c200": "Athletics",
   "c300": "Business",
@@ -77,4 +77,6 @@ module.exports = {
   "m200": "Deny",
   "m300": "Matched",
   "m400": "Unmatched"
-}
+};
+
+export default codes;

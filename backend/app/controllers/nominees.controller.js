@@ -10,7 +10,7 @@ exports.create = (req, res) => {
     }
   
     // Create a Nominee
-    const judge = new Nominee({
+    const nominee = new Nominee({
       id: req.body.ID,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -51,7 +51,7 @@ exports.findOne = (req, res) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `No judge found with id ${req.params.id}.`
+          message: `No nominee found with id ${req.params.id}.`
         });
       } else {
         res.status(500).send({
