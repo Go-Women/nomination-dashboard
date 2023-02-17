@@ -15,6 +15,7 @@
 
   export let data;
   export let { judges } = data.props;
+  
   let activeCount = 0;
   var incrementActiveCount = () => {
     return activeCount++;
@@ -24,18 +25,20 @@
     let rows = new Array();
     let rowID = 1;
     Object.entries(judges).forEach(([key, judge], index) => {
+      // let info = JSON.parse(judge.info)[0];     // TODO: clean this on the backend instead of front end
+
       let data = {
-        id: judge.id,
-        name: judge["first-name"] + " " + judge["last-name"],
-        pronouns: judge.pronouns,
+        id: judge.ID,
+        name: judge.firstName + " " + judge.lastName,
+        pronouns: judge.info.pronouns,
         email: judge.email,
-        "phone-num": judge["phone-number"],
-        active: judge.interested,
-        category: judge.category,
-        subcategory: judge.subcategory,
+        phoneNumber: judge.info.phoneNumber,
+        active: judge.info.interested,
+        category: judge.info.category,
+        subcategory: judge.info.subcategory,
       };
 
-      if (judge.interested === true) {
+      if (judge.info.interested === true) {
         incrementActiveCount();
       }
       rows.push(data);
