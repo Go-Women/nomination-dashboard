@@ -9,7 +9,7 @@
 
 <Header
   company={"National Women's Hall of Fame"}
-  platformName="| Selection Process"
+  platformName="Nomination Portal"
   href="/home"
   bind:isSideNavOpen
 >

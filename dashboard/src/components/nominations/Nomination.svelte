@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Row, StructuredList, StructuredListBody, StructuredListCell, StructuredListRow, Tile, Toggle } from 'carbon-components-svelte'
   export let nom;
+  export let showHeader = true;
 
   let firstName = nom['nomFirst'];
   let lastName = nom['nomLast'];
@@ -13,11 +14,15 @@
 </script>
 
 <div class="bx--content--overview">
-  <Row><h2>{name}</h2></Row>
+  {#if showHeader}
+    <Row><h2>{name}</h2></Row>
+  {/if}
   <div class="bx--content--info">
-    <Row><h3>Information</h3></Row>
+    {#if showHeader}
+      <Row><h3>Information</h3></Row>
+    {/if}
     <Tile>
-        <StructuredList flush>
+        <StructuredList condensed>
           <StructuredListBody>
             <StructuredListRow>
               <StructuredListCell noWrap><strong>Nominated By</strong></StructuredListCell>
