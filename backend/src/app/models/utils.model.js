@@ -1,4 +1,4 @@
-const codes = require("./codes.ts");
+const codes = require("./codes.js");
 // File used to clean and validate the data
 
 exports.formatDate = (res) => {
