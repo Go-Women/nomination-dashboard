@@ -1,5 +1,5 @@
 const sql = require("../../config/db.js");
-const util = require("./utils.model.js");
+const utils = require("./utils.model.js");
 
 // constructor
 const Judge = function(judge) {
@@ -35,7 +35,7 @@ Judge.findById = (id, result) => {
 
     if (res.length) {
       
-      util.formatSingleData(res[0], 'judge');
+      utils.formatSingleData(res[0], 'judge');
       console.log(`GET /judges/${id}`);
       result(null, res[0]);
       return;
@@ -54,7 +54,7 @@ Judge.getAll = result => {
       return;
     }
 
-    util.formatAllData(res, 'judge');
+    utils.formatAllData(res, 'judge');
     console.log("GET /judges");
     result(null, res);
   });

@@ -6,11 +6,9 @@ exports.formatDate = (res) => {
   let date = new Date(res.date);
 
   let day = date.getDate();
-  // TODO: fix bug in days that start with 1
   day = day >= 10 ? day : '0' + day;
 
-  let month = date.getMonth();
-  // TODO: fix bug in days that start with 1
+  var month = date.getUTCMonth() + 1;
   month = month >= 10 ? month : '0' + month;
 
   let year = date.getFullYear();
@@ -39,6 +37,17 @@ exports.setJSON = (res, name) => {
   res[name] = JSON.parse(res[name])[0];
   return res;
 };
+
+exports.clean = (nomination) => {
+  // TODO: figure out how to handle if BOTH category is chosen without a subcategory and the Other category
+  // sets subcategory default to General is if other is not chosen
+  // this assumes that the other field requires the user to type something in that field
+  if (nomination.subcategory == undefined && nomination.subcategoryOther == undefined) {
+    nomination.subcategory = 's100';
+  }
+
+  return nomination;
+}
 
 // format data when individually being accessed
 exports.formatSingleData = (res, type) => {

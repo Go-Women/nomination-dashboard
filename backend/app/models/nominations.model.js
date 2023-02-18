@@ -14,6 +14,10 @@ const Nomination = function(nomination) {
   this.category = nomination.category;
   this.subcategory = nomination.subcategory;
   this.subcategoryOther = nomination.subcategoryOther;
+  this.nomQ1 = nomination.nomQ1;
+  this.nomQ2 = nomination.nomQ2;
+  this.nomQ3 = nomination.nomQ3;
+  this.subcategoryOther = nomination.subcategoryOther;
   this.nomQ1Description = nomination.nomQ1Description;
   this.nomQ2Description = nomination.nomQ2Description;
   this.nomQ3Description = nomination.nomQ3Description;
@@ -23,6 +27,7 @@ const Nomination = function(nomination) {
 };
 
 Nomination.create = (newNomination, result) => {
+  utils.clean(newNomination);
   sql.query("INSERT INTO Nominations SET ?", newNomination, (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -30,6 +35,7 @@ Nomination.create = (newNomination, result) => {
       return;
     }
 
+    
     console.log("created nomination: ", { ...newNomination });
     result(null, { ...newNomination });
   });

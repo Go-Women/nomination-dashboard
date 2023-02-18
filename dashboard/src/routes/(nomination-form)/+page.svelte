@@ -109,74 +109,74 @@
       </FormGroup>
       {#if sec_art}
         <FormGroup legendText="My nominee made contributions within this subcategory: Art">
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s101" labelText="Architecture" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s102" labelText="Art History" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s103" labelText="Cinema" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s104" labelText="Design" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s105" labelText="Literature" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s106" labelText="Music" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s107" labelText="Painting / Drawing" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s108" labelText="Sculpting" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s109" labelText="Theater / Dance" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s101" labelText="Architecture" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s102" labelText="Art History" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s103" labelText="Cinema" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s104" labelText="Design" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s105" labelText="Literature" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s106" labelText="Music" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s107" labelText="Painting / Drawing" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s108" labelText="Sculpting" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s109" labelText="Theater / Dance" />
         </FormGroup>
       {/if}
       {#if sec_athletics}
         <FormGroup legendText="My nominee made contributions within this subcategory: Athletics">
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s201" labelText="Competition Sports" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s202" labelText="Individual Sports" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s203" labelText="Team Sports" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s204" labelText="Sports / Team Management" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s201" labelText="Competition Sports" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s202" labelText="Individual Sports" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s203" labelText="Team Sports" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s204" labelText="Sports / Team Management" />
         </FormGroup>
       {/if}
       {#if sec_business}
         <FormGroup legendText="My nominee made contributions within this subcategory: Business">
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s301" labelText="CEO / Corporate Leadership" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s302" labelText="Entrepreneurship" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s303" labelText="Inventing / Patent Holding" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s301" labelText="CEO / Corporate Leadership" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s302" labelText="Entrepreneurship" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s303" labelText="Inventing / Patent Holding" />
         </FormGroup>
       {/if}
       {#if sec_edu}
         <FormGroup legendText="My nominee made contributions within this subcategory: Education">
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s401" labelText="Early Education" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s402" labelText="Higher Education" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s403" labelText="Research" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s401" labelText="Early Education" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s402" labelText="Higher Education" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s403" labelText="Research" />
         </FormGroup>
       {/if}
       {#if sec_humanities}
         <FormGroup legendText="My nominee made contributions within this subcategory: Humanities">
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s501" labelText="Ancient / Modern Languages" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s502" labelText="Literature" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s503" labelText="Philosophy / Religion" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s504" labelText="Social Reformation" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s501" labelText="Ancient / Modern Languages" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s502" labelText="Literature" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s503" labelText="Philosophy / Religion" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s504" labelText="Social Reformation" />
         </FormGroup>
       {/if}
       {#if sec_gov}
         <FormGroup legendText="My nominee made contributions within this subcategory: Public Service / Government">
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s601" labelText="Activism" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s602" labelText="Legal / Judicial" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s603" labelText="Military" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s604" labelText="Politics" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s601" labelText="Activism" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s602" labelText="Legal / Judicial" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s603" labelText="Military" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s604" labelText="Politics" />
         </FormGroup>
       {/if}
       {#if sec_stem}
         <FormGroup legendText="My nominee made contributions within this subcategory: STEM">
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s701" labelText="Astronomy" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s702" labelText="Architecture" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s703" labelText="Biology" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s704" labelText="Chemestry" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s705" labelText="Climate / Earch Science" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s706" labelText="Computer Science" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s707" labelText="Mathematics" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s708" labelText="Medicine" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s709" labelText="Engineering" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s710" labelText="Physics" />
-          <Checkbox name="category-sub" bind:group={contribsSub} value="s711" labelText="Technology" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s701" labelText="Astronomy" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s702" labelText="Architecture" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s703" labelText="Biology" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s704" labelText="Chemestry" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s705" labelText="Climate / Earch Science" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s706" labelText="Computer Science" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s707" labelText="Mathematics" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s708" labelText="Medicine" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s709" labelText="Engineering" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s710" labelText="Physics" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s711" labelText="Technology" />
         </FormGroup>
       {/if}
-      <input type="hidden" name="category-sub" bind:value={contribsSub}>
+      <input type="hidden" name="subcategory" bind:value={contribsSub}>
       {#if sec_other}
         <FormGroup legendText="My nominee made contributions within this subcategory: Other">
-          <TextInput name="category-sub-description" placeholder="Please type another option here" required />
+          <TextInput name="subcategoryOther" placeholder="Please type another option here" required />
         </FormGroup>
       {/if}
       <h4>Question 1: Have the nominee's contributions been of the greatest value to society and/or the empowerment of women?</h4>
@@ -186,7 +186,7 @@
         <Checkbox name="nomQ1" bind:group={q1ck} value="q103" labelText="The nominee's contributions have significant and lasting impact" />
         <Checkbox name="nomQ1" bind:group={q1ck} value="q104" labelText="The nominee's contributions significantly impacts/inspires others" />
         <Checkbox name="nomQ1" bind:group={q1ck} value="q105" labelText="The nominee contributed to the empowerment of women and/or contributed to the empowerment of women nationally" />
-        <TextArea name="nomQ1-description" labelText="Please briefly explain how your nominee meets this requirement" placeholder="Type here..." required />
+        <TextArea name="nomQ1Description" labelText="Please briefly explain how your nominee meets this requirement" placeholder="Type here..." required />
         <input type="hidden" name="nomQ1" bind:value={q1ck}>
       </FormGroup>
       <h4>Question 2: Has the nominee's achievements had significicant national and/or global impact? (Local/Regional achievements do not qualify)</h4>
@@ -194,38 +194,36 @@
         <Checkbox name="nomQ2" bind:group={q2ck} value="q201" labelText="The nominee had a significant impact on their field of accomplishment" />
         <Checkbox name="nomQ2" bind:group={q2ck} value="q202" labelText="The nominee's contributions inspired change, either within their field or for society as a whole" />
         <Checkbox name="nomQ2" bind:group={q2ck} value="q203" labelText="The nominee's contributions created national and/or global change/impact" />
-        <TextArea name="nomQ2-description" labelText="Please briefly explain how your nominee meets this requirement" placeholder="Type here..." required />
+        <TextArea name="nomQ2Description" labelText="Please briefly explain how your nominee meets this requirement" placeholder="Type here..." required />
         <input type="hidden" name="nomQ2" bind:value={q2ck}>
       </FormGroup>
       <h4>Question 3: Present evidence that the nominee's achievements have (will have) enduring value. Focus your narrative on change that has been (or will be) created, and how that change is expected to last over time.</h4>
       <FormGroup legendText="Check the boxes if you agree with the statements.">
         <Checkbox name="nomQ3" bind:group={q3ck} value="q301" labelText="The nominee's achievements created a change that has (or will) endure over time" />
         <Checkbox name="nomQ3" bind:group={q3ck} value="q302" labelText="The nominee's achievements created and maintained historical changes for society at large" />
-        <TextArea name="nomQ3-description" labelText="Please briefly explain how your nominee meets this requirement" placeholder="Type here..." required />
+        <TextArea name="nomQ3Description" labelText="Please briefly explain how your nominee meets this requirement" placeholder="Type here..." required />
         <input type="hidden" name="nomQ3" bind:value={q3ck}>
       </FormGroup>
       <h4>Is the nominee deceased?</h4>
       <FormGroup>
         <RadioButtonGroup name="nomDeceased-rb-group">
-          <RadioButton name="nomDeceased" value="yes" labelText="Yes" bind:checked={sec_deceased} required />
-          <RadioButton name="nomDeceased" value="no" labelText="No" bind:checked={sec_alive} />
+          <RadioButton name="nomDeceased" value=1 labelText="Yes" bind:checked={sec_deceased} required />
+          <RadioButton name="nomDeceased" value=0 labelText="No" bind:checked={sec_alive} />
         </RadioButtonGroup>
       </FormGroup>
       {#if sec_deceased}
         <FormGroup legendText="The nominee's achievements are (or will be) felt at least two generations after their death" required>
           <RadioButtonGroup name="nomDeceased-achieve-rb-group">
-            <RadioButton name="nomDeceased-achieve" value="yes" labelText="Yes" required />
-            <RadioButton name="nomDeceased-achieve" value="no" labelText="No" />
-            <RadioButton name="nomDeceased-achieve" value="unsure" labelText="Unsure" />
+            <RadioButton name="nomAchieved" value=1 labelText="Yes" required />
+            <RadioButton name="nomAchieved" value=0 labelText="No" />
           </RadioButtonGroup>
         </FormGroup>
       {/if}
       {#if sec_alive}
         <FormGroup legendText="The nominee's achievements are currently influencing and inspiring the next generation">
           <RadioButtonGroup name="nomAchieved-rb-group" required>
-            <RadioButton name="nomAchieved" value="yes" labelText="Yes" />
-            <RadioButton name="nomAchieved" value="no" labelText="No" />
-            <RadioButton name="nomAchieved" value="unsure" labelText="Unsure" />
+            <RadioButton name="nomAchieved" value=1 labelText="Yes" />
+            <RadioButton name="nomAchieved" value=0 labelText="No" />
           </RadioButtonGroup>
         </FormGroup>
       {/if}
