@@ -5,7 +5,6 @@
     Select,
     Button,
     Row,
-    Column,
     StructuredList,
     StructuredListCell,
     StructuredListRow,
@@ -40,16 +39,29 @@
   setCategory();
 
   function setCategory() {
-    // console.log(categories);
-    Object.entries(categories).forEach((data, value) => {
-      if (data[1].label == judge.info.category) {
-        let item = { value: data[1].value, label: data[1].label };
-        selectedCategories.push(item);
-        // console.log(data[1].label)
-      }
-    });
+    let cat = judge.info.category;
+    if (cat.length > 4) {
+        Object.entries(categories).forEach((data, value) => {
+          let items = data[1];
+          let split = cat.split(',');
+          for (const i in split) {
+              if (items.label == split[i]) {
+                let item = { value: items.value, label: items.label };
+                selectedCategories.push(item);
+              }    
+          }
+          return selectedCategories;   
+        });
+    } else {
+        Object.entries(categories).forEach((data, value) => {
+          if (data[1].label == judge.info.category) {
+            let item = { value: data[1].value, label: data[1].label };
+            selectedCategories.push(item);
+          }
+        });
+    }
     return selectedCategories;
-  }
+  };
 
   // Form sections
   let firstName = judge.firstName;
@@ -82,7 +94,6 @@
     pronoun = pronouns[parseInt(id)];
   }
 
-  // TODO: can be replaced later on with backend api call
   const pronounID = function (): string {
     let pn = "other";
     pronouns.forEach((noun, index) => {

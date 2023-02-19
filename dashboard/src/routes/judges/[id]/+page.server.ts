@@ -1,5 +1,4 @@
 import type { Actions, PageServerLoad } from "./$types";
-import { page } from '$app/stores';
 
 export const load: PageServerLoad = async ({fetch, params}) => {
   const res = await fetch(`http://localhost:8000/judges/${params.id}`);
@@ -35,6 +34,14 @@ function getCategoryValues(categories: {value: string, label: string}[]) {
   return cleaned.join(",");
 }
 
+function getTrueFalseValues(value: boolean) {
+  if (value) {
+    return '1';
+  } else {
+    return '0';
+  }
+}
+
 export const actions: Actions = {
   default: async ({request, params}) => {
     const formData = await request.formData();
@@ -46,13 +53,7 @@ export const actions: Actions = {
         data[key] = pronouns[value];
       } else if (key == 'category') {
         data[key] = getCategoryValues(JSON.parse(value));
-      } else if (key == 'previousJudge') {
-        if (value) {
-          data[key] = '1';
-        } else {
-          data[key] = '0';
-        } 
-      } else if (key == 'interested') {
+      } else if (key == 'previousJudge' || key == 'interested' || key == 'active') {
         if (value) {
           data[key] = '1';
         } else {
@@ -63,6 +64,7 @@ export const actions: Actions = {
       };
     }
 
+    console.log(data);
     const res = await fetch(`http://localhost:8000/judges/${params.id}`, {
       method: 'PUT',
       body: JSON.stringify({data}),
@@ -71,6 +73,5 @@ export const actions: Actions = {
       }
     })
     .then(res => res.json())
-    .then(res => console.log(res));
   }
 };

@@ -21,14 +21,27 @@ exports.formatDate = (res) => {
 };
 
 exports.getCategories = (res, cat, subCat) => {
+  let resultCat = [];
   Object.entries(codes).forEach((code, value) => {
-      
-    if (code[0] === cat) {
+    if (code[0] === cat && cat.length == 4) {
       res.category = code[1];
+    } else if (cat.length > 4){
+      let cats = cat.split(',');
+      for (const i in cats) {
+        if (code[0] === cats[i]) {
+          resultCat.push(code[1]);
+        }
+      }
+      res.category = resultCat.join(",");
     }
 
-    if (code[0] === subCat) {
-      res.subcategory = code[1];
+    // TODO: fix this once judge subcategory is supported on the frontend
+    if (subCat != null || subCat !== undefined) {
+      if (code[0] === subCat && subCat.length == 4) {
+            res.subcategory = code[1];
+      } else if (subCat.length > 4){
+
+      }
     }
   });
 
@@ -56,7 +69,9 @@ exports.formatSingleData = (res, type) => {
     res = this.setJSON(res, 'info');
     cat = res.info.category;
     subCat = res.info.subcategory;
+    console.log(subCat);
     res.info = this.getCategories(res.info, cat, subCat);
+
   } else if (type === 'nominee') {
     // Handle Code Formats
     res = this.setJSON(res, 'nominations');

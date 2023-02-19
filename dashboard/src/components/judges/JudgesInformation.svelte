@@ -42,6 +42,13 @@
   var selectAll = () => {
     selected = [0, 1, 2, 3, 4, 5, 6, 7];
   };
+
+  function formatCategories(value: string) {
+    if (value.length > 4) {
+      return value.replaceAll(',', ', ');
+    }
+    return value;
+  }
 </script>
 
 <main class="bx--content-main">
@@ -50,21 +57,6 @@
     <Toolbar>
       <ToolbarContent>
         <ToolbarSearch persistent shouldFilterRows />
-
-        <!-- <MultiSelect
-          spellcheck="false"
-          filterable
-          size="sm"
-          bind:selectedIds={selected}
-          titleText="Categories"
-          placeholder="Filter judge categories..."
-          items={categories}
-        />
-        <Button
-          iconDescription="Select All"
-          icon={Checkmark}
-          on:click={(e) => selectAll()}
-        /> -->
       </ToolbarContent>
     </Toolbar>
     <svelte:fragment slot="cell" let:cell>
@@ -75,7 +67,9 @@
           href={"judges/" + cell.value}
         />
       {:else if cell.key === "active"}
-      <Checkbox checked={cell.value} disabled/>
+        <Checkbox checked={cell.value} disabled/>
+      {:else if cell.key === "category"}
+        {formatCategories(cell.value)}
       {:else}
         {cell.value}
       {/if}
