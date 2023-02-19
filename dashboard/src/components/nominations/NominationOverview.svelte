@@ -104,7 +104,7 @@
               <div class="info-data">
                 <!-- TODO: change this later for now this checks just reviewed -->
                 <!-- this would nominations minus status of reviewed, matched, selected, or rejected -->
-                <Row><h4>Need to be Reviewed</h4></Row>
+                <Row><h4>Needs Review</h4></Row>
                 <Row><h5>{totalLefttoReview}</h5></Row>
               </div>
             </Content>
