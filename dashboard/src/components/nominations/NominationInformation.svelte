@@ -60,4 +60,10 @@
   </svelte:fragment>
 
   </DataTable>
+  <Pagination
+  bind:pageSize
+  bind:page
+  totalItems={rows.length}
+  pageSizes={getPageSizes(rows.length)}
+/>
 </main>

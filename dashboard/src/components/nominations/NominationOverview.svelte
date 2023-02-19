@@ -1,16 +1,79 @@
 <script lang="ts">
+  import { BarChartSimple } from "@carbon/charts-svelte";
+
+  import "@carbon/styles/css/styles.css";
+  import "@carbon/charts/styles.css";
   import { Column, Row, Tile, Content, Grid } from "carbon-components-svelte";
 
   export let totalNominations: number;
   export let reviewCount = 0;
   export let artCount: number;
   export let athleticsCount: number;
-  export let businessCount: number;;
+  export let businessCount: number;
   export let eduCount: number;
   export let humanitiesCount: number;
   export let govCount: number;
   export let stemCount: number;
   export let otherCount: number;
+
+  const totalLefttoReview = totalNominations - reviewCount;
+
+  let data = [
+    {
+      group: "Art",
+      value: 0,
+    },
+    {
+      group: "Athletics",
+      value: 0,
+    },
+    {
+      group: "Business",
+      value: 0,
+    },
+    {
+      group: "Education",
+      value: 0,
+    },
+    {
+      group: "Humanities",
+      value: 0,
+    },
+    {
+      group: "Public Service / Government",
+      value: 0,
+    },
+    {
+      group: "STEM",
+      value: 0,
+    },
+    {
+      group: "Other",
+      value: { otherCount },
+    },
+  ];
+  data[0].value = artCount;
+  data[1].value = athleticsCount;
+  data[2].value = businessCount;
+  data[3].value = eduCount;
+  data[4].value = humanitiesCount;
+  data[5].value = govCount;
+  data[6].value = stemCount;
+  data[7].value = otherCount;
+
+  let options = {
+    title: "Categories",
+    axes: {
+      left: {
+        mapsTo: "value",
+      },
+      bottom: {
+        mapsTo: "group",
+        scaleType: "labels",
+      },
+    },
+    height: "400px",
+  };
 </script>
 
 <main class="bx--content--overview">
@@ -20,89 +83,55 @@
       <Row>
         <Column>
           <Tile>
-            <Content class="bx--content--judge-overview">
-              <!-- this would nominations with a status of "created" -->
-              <Row><h4>Total Nominations</h4></Row>
-              <Row><h5>{totalNominations}</h5></Row>
-            </Content>
+            <BarChartSimple {data} {options} />
           </Tile>
         </Column>
         <Column>
-          <Tile>
-            <Content class="bx--content--judge-overview">
-              <Row><h4>Total Reviewed</h4></Row>
-              <Row><h5>{reviewCount}</h5></Row>
-            </Content>
-          </Tile>
-        </Column>
-      </Row>
-      <Row><h4>Categories Totals</h4></Row>
-      <Row>
-        <Column>
-          <Tile>
-            <Content class="bx--content--judge-overview">
-              <Row><h4>Art</h4></Row>
-              <Row><h5>{artCount}</h5></Row>
-            </Content>
-          </Tile>
-        </Column>
-        <Column>
-          <Tile>
-            <Content class="bx--content--judge-overview">
-              <Row><h4>Athletics</h4></Row>
-              <Row><h5>{athleticsCount}</h5></Row>
-            </Content>
-          </Tile>
-        </Column>
-        <Column>
-          <Tile>
-            <Content class="bx--content--judge-overview">
-              <Row><h4>Business</h4></Row>
-              <Row><h5>{businessCount}</h5></Row>
-            </Content>
-          </Tile>
-        </Column>
-        <Column>
-          <Tile>
-            <Content class="bx--content--judge-overview">
-              <Row><h4>Education</h4></Row>
-              <Row><h5>{eduCount}</h5></Row>
-            </Content>
-          </Tile>
-        </Column>
-        <Column>
-          <Tile>
-            <Content class="bx--content--judge-overview">
-              <Row><h4>Humanities</h4></Row>
-              <Row><h5>{humanitiesCount}</h5></Row>
-            </Content>
-          </Tile>
-        </Column>
-        <Column>
-          <Tile>
-            <Content class="bx--content--judge-overview">
-              <Row><h5>Public Service / Government</h5></Row>
-              <Row><h6>{govCount}</h6></Row>
-            </Content>
-          </Tile>
-        </Column>
-        <Column>
-          <Tile>
-            <Content class="bx--content--judge-overview">
-              <Row><h4>STEM</h4></Row>
-              <Row><h5>{stemCount}</h5></Row>
-            </Content>
-          </Tile>
-        </Column>
-        <Column>
-          <Tile>
-            <Content class="bx--content--judge-overview">
-              <Row><h4>Other</h4></Row>
-              <Row><h5>{otherCount}</h5></Row>
-            </Content>
-          </Tile>
+          <Row>
+            <div class="info">
+            <Tile>
+              <Content style="padding: 2rem 0 2rem 0;">
+                <div class="info-data">
+                <!-- this would nominations with a status of "Reviewed" -->
+                <Row><h4>Total Reviewed</h4></Row>
+                <Row><h5>{reviewCount}</h5></Row>
+               </div></Content>
+           
+            </Tile>
+          </div>
+          </Row>
+          <Row>
+            <div class="info">
+            <Tile>
+              <Content style="padding: 2rem 0 2rem 0;">
+                <div class="info-data">
+                <!-- TODO: change this later for now this checks just reviewed -->
+                <!-- this would nominations minus status of reviewed, matched, selected, or rejected -->
+                <Row><h4>Need to be Reviewed</h4></Row>
+                <Row><h5>{totalLefttoReview}</h5></Row>
+                </div>
+              </Content>
+            </Tile>
+            </div>
+          </Row>
         </Column>
       </Row>
     </Column>
   </Grid>
 </main>
+
+
+<style>
+  .info {
+    padding: 2rem 0 2rem 0;
+    width: 100%;
+    display: grid;
+  }
+
+  .info-data {
+    padding: 0;
+    justify-items: center;
+    display: grid;
+    text-align: center;
+  }
+</style>

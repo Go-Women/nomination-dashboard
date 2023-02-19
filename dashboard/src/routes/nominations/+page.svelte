@@ -9,6 +9,7 @@
 
   export let data;
   export let { nominations } = data.props;
+  export let reviewCount:number = 0;
   export let artCount: number = 0;
   export let athleticsCount: number = 0;
   export let eduCount: number = 0;
@@ -23,7 +24,6 @@
   var populateRows = (nominations: any) => {
     let rows: any[] = [];
     Object.entries(nominations).forEach(([key, nomination], index) => {
-      // console.log(typeof nomination.date)
       let data = {
         id: nomination.ID,
         nominee: nomination.nomFirst + " " + nomination.nomLast,
@@ -31,12 +31,18 @@
         nominator: nomination.authorFirst + " " + nomination.authorLast,
         date: nomination.date
       }
+      if (nominations.status == 'Reviewed')
+        reviewCount++;
+
       switch(nomination.category) {
         case 'Art':
           artCount++;
           break;
         case 'Athletics':
           athleticsCount++;
+          break;
+        case 'Business':
+          businessCount++;
           break;
         case 'Education':
           eduCount++;
@@ -45,7 +51,7 @@
           humanitiesCount++;
           break;
         case 'Public Service / Government':
-          humanitiesCount++;
+          govCount++;
           break;
         case 'STEM':
           stemCount++;
@@ -68,16 +74,16 @@
 <main>
   <header><Navigation /></header>
   <Grid>
-    <!-- <Row> -->
-    <div id="breadcrumb-container">
+    <div id="container">
       <Breadcrumb>
         <BreadcrumbItem href="/home">Home</BreadcrumbItem>
         <BreadcrumbItem>Nominations</BreadcrumbItem>
       </Breadcrumb>
-    </div> 
-  <!-- </Row> -->
+ 
+    <h1>Nominations</h1>
     <NominationOverview 
       totalNominations={rows.length} 
+      {reviewCount}
       {artCount} 
       {athleticsCount} 
       {businessCount}
@@ -85,13 +91,14 @@
       {humanitiesCount}
       {govCount}
       {stemCount}
-      {otherCount}
+      {otherCount}  
       />
+    </div> 
   </Grid>
   <div class="half-container">
       
     <div id="half-left">
-      <h2>Nominations</h2>
+      <h2>Information</h2>
       <NominationInformation {rows} bind:selectedRowIds />
     </div>
     <div id="half-right">
@@ -107,7 +114,8 @@
 <style>
 
   main {
-    padding-top: 6em;
+    padding-top: 4rem;
+    padding-left: 2rem;
   }
   .half-container {
     width: 100%;
@@ -118,10 +126,12 @@
     column-gap: 1em;
   }
 
-  #breadcrumb-container {
+  #container {
     /* grid-column: 2;
     grid-row: 1; */
-    padding: 0 2rem 0 2rem;
+    /* padding-top: 4rem; */
+    padding-left: 2rem;
+    /* padding: 4rem 2rem 0 2rem; */
   }
 
   #half-left {
