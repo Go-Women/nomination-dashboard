@@ -2,8 +2,8 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import nominations from './dummydb';
 import judges from './dummyJudgeDB';
-import nominees from './dummyNomineeDB';
 import codes from './codes';
+const nominees = require("./dummyNomineeDB");
 
 dotenv.config();
 

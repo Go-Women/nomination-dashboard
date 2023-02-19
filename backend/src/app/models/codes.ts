@@ -77,4 +77,4 @@ module.exports = {
   "m200": "Deny",
   "m300": "Matched",
   "m400": "Unmatched"
-}
+};

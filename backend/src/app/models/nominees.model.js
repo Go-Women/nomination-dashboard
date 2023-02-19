@@ -11,6 +11,7 @@ const Nominee = function(nominee) {
   this.yob = nominee.yob;
   this.category = nominee.category;
   this.subcategory = nominee.subcategory;
+  this.subcategoryOther = nominee.subcategoryOther;
   this.nominations = nominee.nominations;
 };
 

@@ -1,4 +1,4 @@
-const nominees = {
+module.exports = {
   "1": {
     "id": 1,
     "first-name": "Liz",
@@ -54,4 +54,4 @@ const nominees = {
   }
 }
 
-export default nominees;
+// export default nominees;
