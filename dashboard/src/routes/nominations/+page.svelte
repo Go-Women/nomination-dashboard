@@ -2,30 +2,61 @@
   import "carbon-components-svelte/css/all.css";
   import "../../css/index.css";
   import Navigation from "../../components/Navigation.svelte";
-  import { Breadcrumb, BreadcrumbItem, Content, DataTable, Grid, OverflowMenu, OverflowMenuItem } from "carbon-components-svelte";
+  import { Breadcrumb, BreadcrumbItem, Content, DataTable, Grid, OverflowMenu, OverflowMenuItem, Column, Row } from "carbon-components-svelte";
+  import NominationOverview from "../../components/nominations/NominationOverview.svelte";
   import NominationInformation from "../../components/nominations/NominationInformation.svelte";
   import AcceptReject from "../../components/nominations/AcceptReject.svelte";
 
   export let data;
   export let { nominations } = data.props;
+  export let artCount: number = 0;
+  export let athleticsCount: number = 0;
+  export let eduCount: number = 0;
+  export let businessCount: number = 0;
+  export let humanitiesCount: number = 0;
+  export let govCount: number = 0;
+  export let stemCount: number = 0;
+  export let otherCount: number = 0;
 
   let selectedRowIds: number[] = [1];
 
   var populateRows = (nominations: any) => {
     let rows: any[] = [];
-    let rowID = 1;
     Object.entries(nominations).forEach(([key, nomination], index) => {
       // console.log(typeof nomination.date)
       let data = {
-        data: {
-          id: rowID
-        },
-        id: rowID++,
-        nominee: nomination["nomFirst"] + " " + nomination["nomLast"],
-        category: nomination['nomCategory'],
-        nominator: nomination["authorFirst"] + " " + nomination["authorLast"],
+        id: nomination.ID,
+        nominee: nomination.nomFirst + " " + nomination.nomLast,
+        category: nomination.category,
+        nominator: nomination.authorFirst + " " + nomination.authorLast,
         date: nomination.date
       }
+      switch(nomination.category) {
+        case 'Art':
+          artCount++;
+          break;
+        case 'Athletics':
+          athleticsCount++;
+          break;
+        case 'Education':
+          eduCount++;
+          break;
+        case 'Humanities':
+          humanitiesCount++;
+          break;
+        case 'Public Service / Government':
+          humanitiesCount++;
+          break;
+        case 'STEM':
+          stemCount++;
+          break;
+        case 'Other':
+          otherCount++;
+          break;
+        default:
+          break;
+      }
+      
       rows.push(data);
     });
     return rows;
@@ -36,13 +67,29 @@
 
 <main>
   <header><Navigation /></header>
-  <div class="half-container">
+  <Grid>
+    <!-- <Row> -->
     <div id="breadcrumb-container">
       <Breadcrumb>
         <BreadcrumbItem href="/home">Home</BreadcrumbItem>
         <BreadcrumbItem>Nominations</BreadcrumbItem>
       </Breadcrumb>
-    </div>
+    </div> 
+  <!-- </Row> -->
+    <NominationOverview 
+      totalNominations={rows.length} 
+      {artCount} 
+      {athleticsCount} 
+      {businessCount}
+      {eduCount}
+      {humanitiesCount}
+      {govCount}
+      {stemCount}
+      {otherCount}
+      />
+  </Grid>
+  <div class="half-container">
+      
     <div id="half-left">
       <h2>Nominations</h2>
       <NominationInformation {rows} bind:selectedRowIds />
@@ -72,8 +119,9 @@
   }
 
   #breadcrumb-container {
-    grid-column: 2;
-    grid-row: 1;
+    /* grid-column: 2;
+    grid-row: 1; */
+    padding: 0 2rem 0 2rem;
   }
 
   #half-left {

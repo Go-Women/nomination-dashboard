@@ -31,11 +31,11 @@
   <div class="nom-information">
     <ul class="no-style">
       <li>Name: {nom['nomFirst']} {nom['nomLast']} &mdash; Born: {nom['nomYOB']}</li>
-      <li class="break">Contribution Areas: {nom['nomCategory']}</li>
+      <li class="break">Contribution Areas: {nom.category}</li>
       <!-- {#if nom['nom-contrib-area-sub-description']}
       <li>User-Submitted Area: {nom['nom-contrib-area-sub-description']}</li>
       <!-- {/if} -->  <!-- TODO -->
-      <li>Contribution Subcategories: {nom['nomSubcategory']}</li>
+      <li>Contribution Subcategories: {nom.subcategory}</li>
     </ul>
   </div>
 
