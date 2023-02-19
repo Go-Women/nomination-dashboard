@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const codes = require("./app/models/codes.ts");
 
 const app = express();
 
@@ -20,16 +21,13 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to the Hall!" });
 });
 
+app.get('/keys', (req, res) => {
+  res.json((codes));
+});
+
 require("./app/routes/nominations.routes.js")(app);
 require("./app/routes/judges.routes.js")(app);
-// require("./app/routes/nominees.routes.js")(app);
-
-// const nominees = require("./app/src/dummyNomineeDB.ts");
-// app.use(express.json());
-// app.get('/nominees/:id', (req, res) => {
-//   let id = req.params['id'];
-//   res.json((nominees)[id]);
-// });
+require("./app/routes/nominees.routes.js")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8000;

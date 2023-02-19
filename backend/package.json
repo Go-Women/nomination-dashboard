@@ -2,11 +2,11 @@
   "name": "dashboard-backend",
   "version": "1.0.0",
   "description": "Women's National Hall of Fame - Selection Process API",
-  "main": "src/index.js",
+  "main": "server.js",
   "scripts": {
     "build": "npx tsc",
-    "start": "node src/index.js",
-    "dev": "npx tsc && node src/index.js",
+    "start": "node server.js",
+    "dev": "npx tsc && node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

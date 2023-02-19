@@ -1,6 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const nominees = {
+module.exports = {
     "1": {
         "id": 1,
         "first-name": "Liz",
@@ -55,4 +54,4 @@ const nominees = {
         ]
     }
 };
-exports.default = nominees;
+// export default nominees;

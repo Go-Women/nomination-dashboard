@@ -3,13 +3,12 @@
   import "carbon-components-svelte/css/all.css";
     import NomineeInfo from "../../../components/nominees/NomineeInfo.svelte";
   import Navigation from "../../../components/Navigation.svelte";
-  import Nomination from "../../../components/nominations/Nomination.svelte";
   import "../../../css/index.css";
 
   export let data;
   export let { n, keys } = data.props;
 
-  let fullName = `${n['first-name']} ${n['last-name']}`;
+  let fullName = `${n.firstName} ${n.lastName}`;
 </script>
 
 <main>

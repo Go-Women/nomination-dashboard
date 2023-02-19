@@ -7,8 +7,8 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const dummydb_1 = __importDefault(require("./dummydb"));
 const dummyJudgeDB_1 = __importDefault(require("./dummyJudgeDB"));
-const dummyNomineeDB_1 = __importDefault(require("./dummyNomineeDB"));
 const codes_1 = __importDefault(require("./codes"));
+const nominees = require("./dummyNomineeDB");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
@@ -42,7 +42,7 @@ app.get('/judges/:id', (req, res) => {
 });
 app.get('/nominees/:id', (req, res) => {
     let id = req.params['id'];
-    res.json(dummyNomineeDB_1.default[id]);
+    res.json(nominees[id]);
 });
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
