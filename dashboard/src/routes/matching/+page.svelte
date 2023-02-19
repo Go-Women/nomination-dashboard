@@ -5,7 +5,7 @@
     BreadcrumbItem,
     Grid,
     Button,
-    InlineNotification
+    InlineNotification,
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
   import "../../css/index.css";
@@ -13,19 +13,22 @@
 </script>
 
 <main>
-  <header><Navigation /></header> 
+  <header><Navigation /></header>
   <Content class="bx--content--main">
     <Grid>
       <Breadcrumb>
         <BreadcrumbItem href="/home">Home</BreadcrumbItem>
         <BreadcrumbItem>Matching</BreadcrumbItem>
       </Breadcrumb>
+
+      <h1>Matching</h1>
+      <InlineNotification
+        lowContrast
+        kind="error"
+        subtitle="There aren't any potential matches yet. Click below to generate new matches."
+      />
+      <Button iconDescription="View" href={"/home"}>Generate New Matches</Button
+      >
     </Grid>
-    <h1>Matching</h1>
-    <InlineNotification
-      lowContrast
-      kind="error"
-      subtitle="There aren't any potential matches yet. Click below to generate new matches." />
-    <Button iconDescription="View" href={"/home"}>Generate New Matches</Button>
   </Content>
 </main>
