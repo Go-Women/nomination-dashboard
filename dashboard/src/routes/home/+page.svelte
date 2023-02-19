@@ -33,7 +33,6 @@
   var populateRows = (nominations: any) => {
     let rows: any[] = [];
     Object.entries(nominations).forEach(([key, nomination], index) => {
-      // console.log(typeof nomination.date)
       let data = {
         id: nomination.ID,
         nominee: nomination.nomFirst + " " + nomination.nomLast,
