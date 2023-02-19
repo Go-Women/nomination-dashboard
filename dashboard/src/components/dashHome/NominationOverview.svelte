@@ -1,6 +1,6 @@
 <script lang="js">
   import { Content, Grid, Row, Column, Tile } from "carbon-components-svelte";
-  let totalCount = 600;
+  export let totalNominations;
   let validCount = 587;
   let uniqueCount = 200;
 </script>
@@ -10,7 +10,7 @@
     <h3>Nomination Overview</h3>
     <Grid>
       <Row>
-        <Column><Row><h4>{totalCount}</h4></Row></Column>
+        <Column><Row><h4>{totalNominations}</h4></Row></Column>
         <Column><Row><h5>Total Nominations</h5></Row></Column>
       </Row>
       <Row>
