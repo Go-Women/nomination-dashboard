@@ -6,7 +6,7 @@
   import "../../../css/index.css";
 
   export let data;
-  export let { n, keys } = data.props;
+  export let { n, nominations, keys } = data.props;
 
   let fullName = `${n.firstName} ${n.lastName}`;
 </script>
@@ -21,7 +21,7 @@
           <BreadcrumbItem href="/nominees">Nominees</BreadcrumbItem>
           <BreadcrumbItem>{fullName}</BreadcrumbItem>
         </Breadcrumb>
-        <NomineeInfo nominee={n} keys={keys}/>
+        <NomineeInfo nominee={n} nominations={nominations} keys={keys}/>
       </Column>
     </Content>
   </body>

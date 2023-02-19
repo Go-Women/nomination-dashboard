@@ -4,6 +4,7 @@
 
   export let nominee: any;
   export let keys: any;
+  export let nominations: any[];
   let fullName = `${nominee.firstName} ${nominee.lastName}`;
 </script>
 
@@ -23,13 +24,21 @@
         <Column>Contribution Areas</Column>
         <Column>{nominee.category}</Column>
       </Row>
+      {#if nominee.subcategoryOther}
+      <Row>
+        <Column>User-Submitted Area</Column>
+        <Column>{nominee.subcategoryOther}</Column>
+      </Row>
+      {/if}
+      {#if nominee.subcategory}
       <Row>
         <Column>Contribution Subcategories</Column>
         <Column>{nominee.subcategory}</Column>
       </Row>
+      {/if}
     </Grid>
     <h3>Submitted Nominations</h3>
-    {#each nominee.nominations as nomination}
+    {#each nominations as nomination}
       <AffiliatedNomination nomination={nomination} keys={keys} />
     {/each}
   </div>

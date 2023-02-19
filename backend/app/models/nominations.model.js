@@ -36,7 +36,7 @@ Nomination.create = (newNomination, result) => {
 };
 
 Nomination.findById = (id, result) => {
-  sql.query(`SELECT * FROM Nominations WHERE id = ${id}`, (err, res) => {
+  sql.query(`SELECT * FROM Nominations WHERE id = ?`, id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);

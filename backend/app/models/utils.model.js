@@ -52,7 +52,7 @@ exports.formatSingleData = (res, type) => {
     res.info = this.getCategories(res.info, cat, subCat);
   } else if (type === 'nominee') {
     // Handle Code Formats
-    res = this.setJSON(res, 'nominations');
+    // res = this.setJSON(res, 'nominations');
 
     cat = res.category;
     subCat = res.subcategory;

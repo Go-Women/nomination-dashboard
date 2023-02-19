@@ -26,7 +26,7 @@ Judge.create = (newJudge, result) => {
 };
 
 Judge.findById = (id, result) => {
-  sql.query(`SELECT * FROM Users WHERE id = ${id} AND type='judge'`, (err, res) => {
+  sql.query(`SELECT * FROM Users WHERE id = ? AND type='judge'`, id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);

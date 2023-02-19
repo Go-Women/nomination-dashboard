@@ -53,18 +53,20 @@
         <Column>{nomination.subcategoryOther}</Column>
       </Row>
       {/if}
+      {#if nomination.subcategory}
       <Row>
         <Column>Contribution Subcategories</Column>
         <Column>{nomination.subcategory}</Column>
       </Row>
-      {#if nomination.nomDeceased == 'no'}
+      {/if}
+      {#if nomination.nomDeceased == 1}
         <Row>
           <Column>Nominee is alive?</Column>
           <Column>Yes, nominee is alive.</Column>
         </Row>
         <Row>
           <Column>Nominee will be influential?</Column>
-          <Column>{nomination.nomAchieved}</Column>
+          <Column>{nomination.nomAchieved == 0 ? "Yes" : "No"}</Column>
         </Row>
       {:else}
         <Row>
@@ -73,7 +75,7 @@
         </Row>
         <Row>
           <Column>Nominee has been / is influential?</Column>
-          <Column>{nomination.nomAchieved}</Column>
+          <Column>{nomination.nomAchieved == 0 ? "Yes" : "No"}</Column>
         </Row>
       {/if}
       <Row style="margin-top: 1em;"><Column style="font-weight: bold;">Question 1</Column></Row>
@@ -116,7 +118,7 @@
           <TextArea style="color: black" rows={3} value={nomination. nomQ3Description} disabled />
         </Column>
       </Row>
-      {#if nomination.nomAdditionalInfo.length > 0}
+      {#if nomination.nomAdditionalInfo && nomination.nomAdditionalInfo.length > 0}
         <Row style="margin-top: 1em;">
           <Column>Additional Information</Column>
           <Column>
