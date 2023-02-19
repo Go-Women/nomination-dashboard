@@ -15,11 +15,8 @@ export const actions: Actions = {
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       }
-    });
-    if (res.ok) {
-      // console.log(res);
-    } else {
-      // console.log('Failed! :(');
-    }
+    })
+    .then(res => res.json())
+    .then(res => console.log(res))
   }
 };

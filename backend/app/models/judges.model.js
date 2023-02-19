@@ -1,5 +1,5 @@
 const sql = require("../../config/db.js");
-const util = require("./utils.model.js");
+const utils = require("./utils.model.js");
 
 // constructor
 const Judge = function(judge) {
@@ -26,16 +26,17 @@ Judge.create = (newJudge, result) => {
 };
 
 Judge.findById = (id, result) => {
+  
   sql.query(`SELECT * FROM Users WHERE id = ${id} AND type='judge'`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
-
+    console.log(res);
     if (res.length) {
       
-      util.formatSingleData(res[0], 'judge');
+      utils.formatSingleData(res[0], 'judge');
       console.log(`GET /judges/${id}`);
       result(null, res[0]);
       return;
@@ -53,35 +54,36 @@ Judge.getAll = result => {
       result(null, err);
       return;
     }
-
-    util.formatAllData(res, 'judge');
+    console.log(res);
+    utils.formatAllData(res, 'judge');
     console.log("GET /judges");
     result(null, res);
   });
 };
 
 Judge.updateById = (id, judge, result) => {
-  // TODO: Needs to be implemented
-  // sql.query(
-  //   "UPDATE nominations ",
-  //   [],
-  //   (err, res) => {
-  //     if (err) {
-  //       console.log("error: ", err);
-  //       result(null, err);
-  //       return;
-  //     }
+  utils.formatJudgeInput(judge);
+  console.log(judge);
+  sql.query(
+    "UPDATE Users SET info = ?, active = ?, email = ? WHERE id = ? AND type ='judge'",
+    [judge.info, judge.active, judge.email, id],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
 
-  //     if (res.affectedRows == 0) {
-  //       // not found Judge with the id
-  //       result({ kind: "not_found" }, null);
-  //       return;
-  //     }
+      if (res.affectedRows == 0) {
+        // not found Judge with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
 
-  //     console.log("updated nomination: ", { id: id, ...nomination });
-  //     result(null, { id: id, ...nomination });
-  //   }
-  // );
+      console.log("updated judge: ", { id: id, ...judge });
+      result(null, { id: id, ...judge });
+    }
+  );
 };
 
 module.exports = Judge;

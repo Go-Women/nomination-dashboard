@@ -7,7 +7,7 @@
     Pagination,
     Button,
     Row,
-    Toggle,
+    Checkbox,
     MultiSelect,
   } from "carbon-components-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
@@ -75,13 +75,7 @@
           href={"judges/" + cell.value}
         />
       {:else if cell.key === "active"}
-        <Toggle
-          toggled={cell.value}
-          on:toggle={(e) => (cell.value = e.detail.toggled)}
-        >
-          <span slot="labelA" style="color: red">Not Active</span>
-          <span slot="labelB" style="color: green">Active</span>
-        </Toggle>
+      <Checkbox checked={cell.value} disabled/>
       {:else}
         {cell.value}
       {/if}

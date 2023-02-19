@@ -40,6 +40,13 @@ exports.setJSON = (res, name) => {
   return res;
 };
 
+exports.formatJudgeInput = (judge) => {
+    judge.email = judge.info.email;
+    judge.active = judge.info.active;
+    judge.info = JSON.stringify([judge.info]);
+    return judge;
+}
+
 // format data when individually being accessed
 exports.formatSingleData = (res, type) => {
   let cat;
