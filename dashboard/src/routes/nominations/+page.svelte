@@ -2,14 +2,19 @@
   import "carbon-components-svelte/css/all.css";
   import "../../css/index.css";
   import Navigation from "../../components/Navigation.svelte";
-  import { Breadcrumb, BreadcrumbItem, Content, DataTable, Grid, OverflowMenu, OverflowMenuItem, Column, Row } from "carbon-components-svelte";
+  import {
+    Breadcrumb,
+    BreadcrumbItem,
+    Grid,
+    Column,
+  } from "carbon-components-svelte";
   import NominationOverview from "../../components/nominations/NominationOverview.svelte";
   import NominationInformation from "../../components/nominations/NominationInformation.svelte";
   import AcceptReject from "../../components/nominations/AcceptReject.svelte";
 
   export let data;
   export let { nominations } = data.props;
-  export let reviewCount:number = 0;
+  export let reviewCount: number = 0;
   export let artCount: number = 0;
   export let athleticsCount: number = 0;
   export let eduCount: number = 0;
@@ -29,90 +34,87 @@
         nominee: nomination.nomFirst + " " + nomination.nomLast,
         category: nomination.category,
         nominator: nomination.authorFirst + " " + nomination.authorLast,
-        date: nomination.date
-      }
-      if (nominations.status == 'Reviewed')
-        reviewCount++;
+        date: nomination.date,
+      };
+      if (nominations.status == "Reviewed") reviewCount++;
 
-      switch(nomination.category) {
-        case 'Art':
+      switch (nomination.category) {
+        case "Art":
           artCount++;
           break;
-        case 'Athletics':
+        case "Athletics":
           athleticsCount++;
           break;
-        case 'Business':
+        case "Business":
           businessCount++;
           break;
-        case 'Education':
+        case "Education":
           eduCount++;
           break;
-        case 'Humanities':
+        case "Humanities":
           humanitiesCount++;
           break;
-        case 'Public Service / Government':
+        case "Public Service / Government":
           govCount++;
           break;
-        case 'STEM':
+        case "STEM":
           stemCount++;
           break;
-        case 'Other':
+        case "Other":
           otherCount++;
           break;
         default:
           break;
       }
-      
+
       rows.push(data);
     });
     return rows;
-  }
+  };
 
   export const rows = populateRows(nominations);
 </script>
 
 <main>
   <header><Navigation /></header>
-  <Grid>
-    <div id="container">
-      <Breadcrumb>
-        <BreadcrumbItem href="/home">Home</BreadcrumbItem>
-        <BreadcrumbItem>Nominations</BreadcrumbItem>
-      </Breadcrumb>
- 
+  <div id="container">
+    <Breadcrumb>
+      <BreadcrumbItem href="/home">Home</BreadcrumbItem>
+      <BreadcrumbItem>Nominations</BreadcrumbItem>
+    </Breadcrumb>
+
     <h1>Nominations</h1>
-    <NominationOverview 
-      totalNominations={rows.length} 
-      {reviewCount}
-      {artCount} 
-      {athleticsCount} 
-      {businessCount}
-      {eduCount}
-      {humanitiesCount}
-      {govCount}
-      {stemCount}
-      {otherCount}  
+    <h2 style="padding-top: 1rem;">Overview</h2>
+  </div>
+  <Grid>
+    <Column>
+      <NominationOverview
+        totalNominations={rows.length}
+        {reviewCount}
+        {artCount}
+        {athleticsCount}
+        {businessCount}
+        {eduCount}
+        {humanitiesCount}
+        {govCount}
+        {stemCount}
+        {otherCount}
       />
-    </div> 
+    </Column>
   </Grid>
   <div class="half-container">
-      
     <div id="half-left">
       <h2>Information</h2>
       <NominationInformation {rows} bind:selectedRowIds />
     </div>
     <div id="half-right">
       <h2>Review Nomination</h2>
-      <AcceptReject 
-        bind:incomingRowIds={selectedRowIds}
-        bind:nominations
-      />
+      <AcceptReject bind:incomingRowIds={selectedRowIds} bind:nominations />
     </div>
   </div>
 </main>
 
 <style>
-
   main {
     padding-top: 4rem;
     padding-left: 2rem;
@@ -127,11 +129,7 @@
   }
 
   #container {
-    /* grid-column: 2;
-    grid-row: 1; */
-    /* padding-top: 4rem; */
-    padding-left: 2rem;
-    /* padding: 4rem 2rem 0 2rem; */
+    padding-left: 4rem;
   }
 
   #half-left {

@@ -3,7 +3,7 @@
 
   import "@carbon/styles/css/styles.css";
   import "@carbon/charts/styles.css";
-  import { Column, Row, Tile, Content, Grid } from "carbon-components-svelte";
+  import { Column, Row, Tile, Content } from "carbon-components-svelte";
 
   export let totalNominations: number;
   export let reviewCount = 0;
@@ -76,52 +76,50 @@
   };
 </script>
 
-<main class="bx--content--overview">
-  <Grid>
+<main class="content--overview">
+  <Row>
     <Column>
-      <Row><h3>Overview</h3></Row>
+      <Tile>
+        <BarChartSimple {data} {options} />
+      </Tile>
+    </Column>
+    <Column>
       <Row>
-        <Column>
+        <div class="info">
           <Tile>
-            <BarChartSimple {data} {options} />
-          </Tile>
-        </Column>
-        <Column>
-          <Row>
-            <div class="info">
-            <Tile>
-              <Content style="padding: 2rem 0 2rem 0;">
-                <div class="info-data">
+            <Content style="padding: 2rem 0 2rem 0;">
+              <div class="info-data">
                 <!-- this would nominations with a status of "Reviewed" -->
                 <Row><h4>Total Reviewed</h4></Row>
                 <Row><h5>{reviewCount}</h5></Row>
-               </div></Content>
-           
-            </Tile>
-          </div>
-          </Row>
-          <Row>
-            <div class="info">
-            <Tile>
-              <Content style="padding: 2rem 0 2rem 0;">
-                <div class="info-data">
+              </div></Content
+            >
+          </Tile>
+        </div>
+      </Row>
+      <Row>
+        <div class="info">
+          <Tile>
+            <Content style="padding: 2rem 0 2rem 0;">
+              <div class="info-data">
                 <!-- TODO: change this later for now this checks just reviewed -->
                 <!-- this would nominations minus status of reviewed, matched, selected, or rejected -->
                 <Row><h4>Need to be Reviewed</h4></Row>
                 <Row><h5>{totalLefttoReview}</h5></Row>
-                </div>
-              </Content>
-            </Tile>
-            </div>
-          </Row>
-        </Column>
+              </div>
+            </Content>
+          </Tile>
+        </div>
       </Row>
     </Column>
-  </Grid>
+  </Row>
 </main>
 
-
 <style>
+  .content--overview {
+    padding: 1rem 0 2rem 0;
+  }
+
   .info {
     padding: 2rem 0 2rem 0;
     width: 100%;
