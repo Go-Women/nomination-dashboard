@@ -72,7 +72,7 @@
         scaleType: "labels",
       },
     },
-    height: "400px",
+    height: "200%",
   };
 </script>
 
@@ -86,7 +86,7 @@
     <Column>
       <Row>
         <div class="info">
-          <Tile>
+          <Tile style="padding:0">
             <Content style="padding: 2rem 0 2rem 0;">
               <div class="info-data">
                 <!-- this would nominations with a status of "Reviewed" -->
@@ -99,7 +99,7 @@
       </Row>
       <Row>
         <div class="info">
-          <Tile>
+          <Tile style="padding:0">
             <Content style="padding: 2rem 0 2rem 0;">
               <div class="info-data">
                 <!-- TODO: change this later for now this checks just reviewed -->
@@ -117,12 +117,14 @@
 
 <style>
   .content--overview {
-    padding: 1rem 0 2rem 0;
+    display: grid;
+    justify-content: center;
   }
 
   .info {
-    padding: 2rem 0 2rem 0;
+    padding: 1rem 0 1rem 0;
     width: 100%;
+    height: 20%;
     display: grid;
   }
 

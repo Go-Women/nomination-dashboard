@@ -1,13 +1,16 @@
 <script lang="ts">
   import "carbon-components-svelte/css/all.css";
   import "../../css/index.css";
-  import Navigation from "../../components/Navigation.svelte";
   import {
     Breadcrumb,
     BreadcrumbItem,
     Grid,
     Column,
+    Accordion,
+    AccordionItem
   } from "carbon-components-svelte";
+
+  import Navigation from "../../components/Navigation.svelte";
   import NominationOverview from "../../components/nominations/NominationOverview.svelte";
   import NominationInformation from "../../components/nominations/NominationInformation.svelte";
   import AcceptReject from "../../components/nominations/AcceptReject.svelte";
@@ -84,24 +87,31 @@
     </Breadcrumb>
 
     <h1>Nominations</h1>
-    <h2 style="padding-top: 1rem;">Overview</h2>
+    
   </div>
-  <Grid>
-    <Column>
-      <NominationOverview
-        totalNominations={rows.length}
-        {reviewCount}
-        {artCount}
-        {athleticsCount}
-        {businessCount}
-        {eduCount}
-        {humanitiesCount}
-        {govCount}
-        {stemCount}
-        {otherCount}
-      />
-    </Column>
-  </Grid>
+  <div id="container">
+  <Accordion>
+    <AccordionItem>
+      <svelte:fragment slot="title">
+      <h3>Overview</h3>
+      </svelte:fragment>
+        <Column>
+          <NominationOverview
+            totalNominations={rows.length}
+            {reviewCount}
+            {artCount}
+            {athleticsCount}
+            {businessCount}
+            {eduCount}
+            {humanitiesCount}
+            {govCount}
+            {stemCount}
+            {otherCount}
+          />
+        </Column>
+    </AccordionItem>
+  </Accordion>
+  </div>
   <div class="half-container">
     <div id="half-left">
       <h2>Information</h2>
@@ -130,6 +140,11 @@
 
   #container {
     padding-left: 4rem;
+    padding-right: 2rem;
+  }
+
+  #accordion-item-container{
+    padding-right: 0;
   }
 
   #half-left {
@@ -142,5 +157,10 @@
     width: 100%;
     grid-column: 3;
     grid-row: 2;
+  }
+
+  .ul {
+    padding-top: 4rem;
+    padding-left: 2rem;
   }
 </style>
