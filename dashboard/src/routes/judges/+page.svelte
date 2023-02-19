@@ -36,6 +36,7 @@
         active: judge.info.interested,
         category: judge.info.category,
         subcategory: judge.info.subcategory,
+        capacity: judge.info.capacity
       };
 
       if (judge.info.interested === true) {
