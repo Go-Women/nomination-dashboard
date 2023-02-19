@@ -84,41 +84,36 @@
     <Breadcrumb>
       <BreadcrumbItem href="/home">Home</BreadcrumbItem>
       <BreadcrumbItem>Nominations</BreadcrumbItem>
-    </Breadcrumb>
-
-    <h1>Nominations</h1>
-    
-  </div>
-  <div id="container">
-  <Accordion>
-    <AccordionItem>
-      <svelte:fragment slot="title">
-      <h3>Overview</h3>
-      </svelte:fragment>
-        <Column>
-          <NominationOverview
-            totalNominations={rows.length}
-            {reviewCount}
-            {artCount}
-            {athleticsCount}
-            {businessCount}
-            {eduCount}
-            {humanitiesCount}
-            {govCount}
-            {stemCount}
-            {otherCount}
-          />
-        </Column>
-    </AccordionItem>
-  </Accordion>
+    </Breadcrumb>    
   </div>
   <div class="half-container">
     <div id="half-left">
-      <h2>Information</h2>
+      <h3>Submitted Nominations</h3>
+      <Accordion size="sm">
+        <AccordionItem>
+          <svelte:fragment slot="title">
+          <h4>Overview</h4>
+          </svelte:fragment>
+          <Column>
+            <NominationOverview
+              totalNominations={rows.length}
+              {reviewCount}
+              {artCount}
+              {athleticsCount}
+              {businessCount}
+              {eduCount}
+              {humanitiesCount}
+              {govCount}
+              {stemCount}
+              {otherCount}
+            />
+          </Column>
+        </AccordionItem>
+      </Accordion>
       <NominationInformation {rows} bind:selectedRowIds />
     </div>
     <div id="half-right">
-      <h2>Review Nomination</h2>
+      <h3>Review Nomination</h3>
       <AcceptReject bind:incomingRowIds={selectedRowIds} bind:nominations />
     </div>
   </div>
@@ -142,11 +137,6 @@
     padding-left: 4rem;
     padding-right: 2rem;
   }
-
-  #accordion-item-container{
-    padding-right: 0;
-  }
-
   #half-left {
     width: 100%;
     grid-column: 2;
@@ -157,10 +147,5 @@
     width: 100%;
     grid-column: 3;
     grid-row: 2;
-  }
-
-  .ul {
-    padding-top: 4rem;
-    padding-left: 2rem;
   }
 </style>

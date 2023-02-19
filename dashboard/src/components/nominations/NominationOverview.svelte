@@ -77,55 +77,62 @@
 </script>
 
 <main class="content--overview">
-  <Row>
-    <Column>
-      <Tile>
-        <BarChartSimple {data} {options} />
-      </Tile>
-    </Column>
-    <Column>
-      <Row>
-        <div class="info">
-          <Tile style="padding:0">
-            <Content style="padding: 2rem 0 2rem 0;">
-              <div class="info-data">
-                <!-- this would nominations with a status of "Reviewed" -->
-                <Row><h4>Total Reviewed</h4></Row>
-                <Row><h5>{reviewCount}</h5></Row>
-              </div></Content
-            >
-          </Tile>
-        </div>
-      </Row>
-      <Row>
-        <div class="info">
-          <Tile style="padding:0">
-            <Content style="padding: 2rem 0 2rem 0;">
-              <div class="info-data">
-                <!-- TODO: change this later for now this checks just reviewed -->
-                <!-- this would nominations minus status of reviewed, matched, selected, or rejected -->
-                <Row><h4>Needs Review</h4></Row>
-                <Row><h5>{totalLefttoReview}</h5></Row>
-              </div>
-            </Content>
-          </Tile>
-        </div>
-      </Row>
-    </Column>
-  </Row>
+  <div class="chart">
+    <Row>
+      <Column>
+        <Tile>
+          <BarChartSimple {data} {options} />
+        </Tile>
+      </Column>
+    </Row>
+  </div>
+  <div class="info info-top">
+    <div class="info-data">
+      <!-- this would nominations with a status of "Reviewed" -->
+      <h4>Total Reviewed</h4>
+      <h5>{reviewCount}</h5>
+    </div>
+  </div>
+  <div class="info info-btm">
+    <div class="info-data">
+      <!-- TODO: change this later for now this checks just reviewed -->
+      <!-- this would nominations minus status of reviewed, matched, selected, or rejected -->
+      <h4>Needs Review</h4>
+      <h5>{totalLefttoReview}</h5>
+    </div>
+  </div>
 </main>
 
 <style>
   .content--overview {
     display: grid;
-    justify-content: center;
+    grid-template-columns: 20% 60% 30% 10%;
+    grid-template-rows: 50% 50%;
+    padding: 0;
+    row-gap: 0.5em;
+    column-gap: 0;
   }
 
-  .info {
-    padding: 1rem 0 1rem 0;
-    width: 100%;
-    height: 20%;
+  .chart {
+    grid-row: span 2;
+    grid-column: 2;
+    height: 100%;
+  }
+
+  .info-top {
     display: grid;
+    grid-row: 1;
+    grid-column: 3;
+    margin: 1.5em;
+    background-color: white;
+  }
+
+  .info-btm {
+    display: grid;
+    grid-row: 2;
+    grid-column: 3;
+    margin: 1.5em;
+    background-color: white;
   }
 
   .info-data {
