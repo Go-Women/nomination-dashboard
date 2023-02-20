@@ -35,7 +35,7 @@ exports.getCategories = (res, cat, subCat) => {
     }
 
     // TODO: fix this once judge subcategory is supported on the frontend
-    if (subCat != null || subCat !== undefined) {
+    if (subCat != null && subCat !== undefined) {
       if (code[0] === subCat && subCat.length == 4) {
             res.subcategory = code[1];
       } else if (subCat.length > 4){
