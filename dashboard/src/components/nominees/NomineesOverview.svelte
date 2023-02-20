@@ -25,7 +25,7 @@
     { key: "id", empty: true },
     { key: "name", value: "Name" },
     { key: "category", value: "Category" },
-    { key: "subcategory", value: "Subcategory" },
+    { key: "nomineesSub", value: "Subcategory"}
   ];
   let categories = [
     { id: 0, text: "Art" },

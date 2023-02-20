@@ -44,7 +44,7 @@
         key: 'fullName',
         threshold: -Infinity
     });
-    console.log(sorted);
+    // console.log(sorted);
     return sorted.map(a => a.obj);
   } 
 
