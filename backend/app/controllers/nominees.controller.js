@@ -20,6 +20,7 @@ exports.create = (req, res) => {
       yob: req.body.yob,
       category: req.body.category,
       subcategory: req.body.subcategory,
+      subcategoryOther: req.body.subcategoryOther,
       nominations: req.body.nominations
     });
   

@@ -1,44 +1,51 @@
 const Nomination = require("../models/nominations.model.js");
 
+// TODO: error handling figure out how to handle errors messages and set success status
+
 // Create and Save a new Nomination
 exports.create = (req, res) => {
-    // Validate request
-    if (!req.body) {
-      res.status(400).send({
-        message: "Content can not be empty!"
-      });
-    }
+  // // Validate request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
 
-    // Create a Nomination
-    // we should format the data here
-    const nomination = new Nomination({
-      date: req.body.date || new Date(),
-      authorFirst: req.body.authorFirst,
-      authorLast: req.body.authorLast,
-      authorEmail: req.body.authorEmail,
-      nomFirst: req.body.nomFirst,
-      nomLast: req.body.nomLast,
-      nomYOB: req.body.nomYOB,
-      cohort: req.body.cohort || 1,
-      category: req.body.category,
-      subcategory: req.body.subcategory,
-      nomQ1Description: req.body.nomQ1Description,
-      nomQ2Description: req.body.nomQ2Description,
-      nomQ3Description: req.body.nomQ3Description,
-      nomDeceased: req.body.nomDeceased,
-      nomAchieved: req.body.nomAchieved,
-      nomAdditionalInfo: req.body.nomAdditionalInfo
-    });
+  // Create a Nomination
+  // we should format the data here
+  const nomination = new Nomination({
+    date: req.body.date || new Date(),
+    authorFirst: req.body.authorFirst,
+    authorLast: req.body.authorLast,
+    authorEmail: req.body.authorEmail,
+    nomFirst: req.body.nomFirst,
+    nomLast: req.body.nomLast,
+    nomYOB: req.body.nomYOB,
+    cohort: req.body.cohort || 4,
+    category: req.body.category,
+    subcategory: req.body.subcategory || null,
+    subcategoryOther: req.body.subcategoryOther || null,
+    nomQ1: req.body.nomQ1,
+    nomQ2: req.body.nomQ2,
+    nomQ3: req.body.nomQ3,
+    subcategoryOther: req.body.subcategoryOther,
+    nomQ1Description: req.body.nomQ1Description,
+    nomQ2Description: req.body.nomQ2Description,
+    nomQ3Description: req.body.nomQ3Description,
+    nomDeceased: req.body.nomDeceased,
+    nomAchieved: req.body.nomAchieved,
+    nomAdditionalInfo: req.body.nomAdditionalInfo
+  });
   
-    // Save Nomination in the database
-    Nomination.create(nomination, (err, data) => {
-      if (err)
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while creating the Nomination."
-        });
-      else res.send(data);
-    });
+  // Save Nomination in the database
+  Nomination.create(nomination, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the Nomination."
+      });
+    else res.send(data);
+  });
 };
 
 // Retrieve all Nominations from the database
