@@ -6,11 +6,9 @@ exports.formatDate = (res) => {
   let date = new Date(res.date);
 
   let day = date.getDate();
-  // TODO: fix bug in days that start with 1
   day = day >= 10 ? day : '0' + day;
 
-  let month = date.getMonth();
-  // TODO: fix bug in days that start with 1
+  var month = date.getUTCMonth() + 1;
   month = month >= 10 ? month : '0' + month;
 
   let year = date.getFullYear();

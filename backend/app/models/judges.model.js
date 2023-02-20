@@ -54,7 +54,7 @@ Judge.getAll = result => {
       result(null, err);
       return;
     }
-    console.log(res);
+    
     utils.formatAllData(res, 'judge');
     console.log("GET /judges");
     result(null, res);
