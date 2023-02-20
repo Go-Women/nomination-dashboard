@@ -21,6 +21,7 @@ exports.formatDate = (res) => {
 
 exports.getCategories = (res, cat, subCat) => {
   let resultCat = [];
+  let resultsubCat = [];
   Object.entries(codes).forEach((code, value) => {
     if (code[0] === cat && cat.length == 4) {
       res.category = code[1];
@@ -35,12 +36,18 @@ exports.getCategories = (res, cat, subCat) => {
     }
 
     // TODO: fix this once judge subcategory is supported on the frontend
-    if (subCat != null && subCat !== undefined) {
+    if (subCat != null || subCat !== undefined) {
       if (code[0] === subCat && subCat.length == 4) {
             res.subcategory = code[1];
       } else if (subCat.length > 4){
-
-      }
+        let cats = subCat.split(',');
+        for (const i in cats) {
+          if (code[0] === cats[i]) {
+            resultsubCat.push(code[1]);
+          }
+        }
+        res.subcategory = resultsubCat.join(",");
+        }
     }
   });
 
@@ -79,7 +86,6 @@ exports.formatSingleData = (res, type) => {
     res = this.setJSON(res, 'info');
     cat = res.info.category;
     subCat = res.info.subcategory;
-    console.log(subCat);
     res.info = this.getCategories(res.info, cat, subCat);
 
   } else if (type === 'nominee') {

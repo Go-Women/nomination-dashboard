@@ -45,8 +45,6 @@ exports.findAll = (req, res) => {
 
 // Find a single Judge with a id
 exports.findOne = (req, res) => {
-  // console.log(res);
-  // console.log(req);
   Judge.findById(req.params.id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
