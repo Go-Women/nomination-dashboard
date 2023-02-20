@@ -2,9 +2,9 @@
   import { Column, Row, Tile, Content } from "carbon-components-svelte";
 
   export let activeCount;
-  export let matchedCount = 20;
-  export let inProgressCount = 10;
-  export let completedCount = 6;
+  export let matchedCount = 0;
+  export let inProgressCount = 0;
+  export let completedCount = 0;
 </script>
 
 <main class="bx--content--overview">
