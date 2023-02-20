@@ -165,7 +165,7 @@
           </FormGroup>
           <FormGroup>
             <br /><strong>Categories</strong>
-            <Grid>
+            <Grid style="padding-top: 1rem">
               <MultiSelect
                 name="category"
                 options={categories}
