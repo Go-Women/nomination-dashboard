@@ -1,4 +1,4 @@
-const codes = require("./codes.ts");
+const codes = require("./codes.js");
 // File used to clean and validate the data
 
 exports.formatDate = (res) => {
@@ -72,7 +72,7 @@ exports.formatSingleData = (res, type) => {
 
   } else if (type === 'nominee') {
     // Handle Code Formats
-    res = this.setJSON(res, 'nominations');
+    // res = this.setJSON(res, 'nominations');
 
     cat = res.category;
     subCat = res.subcategory;

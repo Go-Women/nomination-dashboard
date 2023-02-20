@@ -29,7 +29,7 @@ Nominee.create = (newNominee, result) => {
 };
 
 Nominee.findById = (id, result) => {
-  sql.query(`SELECT * FROM Nominees WHERE id = ${id}`, (err, res) => {
+  sql.query(`SELECT * FROM Nominees WHERE id = ?`, id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -37,7 +37,6 @@ Nominee.findById = (id, result) => {
     }
 
     if (res.length) {
-      
       utils.formatSingleData(res[0], 'nominee');
       console.log(`GET /nominees/${id}`);
       result(null, res[0]);
