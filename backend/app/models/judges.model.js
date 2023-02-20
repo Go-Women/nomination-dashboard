@@ -32,7 +32,7 @@ Judge.findById = (id, result) => {
       result(err, null);
       return;
     }
-    console.log(res);
+    // console.log(res);
     if (res.length) {
       
       utils.formatSingleData(res[0], 'judge');
@@ -62,7 +62,7 @@ Judge.getAll = result => {
 
 Judge.updateById = (id, judge, result) => {
   utils.formatJudgeInput(judge);
-  console.log(judge);
+  // console.log(judge);
   sql.query(
     "UPDATE Users SET info = ?, active = ?, email = ? WHERE id = ? AND type ='judge'",
     [judge.info, judge.active, judge.email, id],
