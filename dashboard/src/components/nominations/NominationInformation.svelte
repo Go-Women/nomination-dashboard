@@ -11,7 +11,7 @@
   } from "carbon-components-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
   export let rows: any;
-  export let selectedRowIds: Array<string|number> = [];
+  export let selectedRowIds: string[] = [];
 
   let pageSize = 25;
   let page = 1;
@@ -35,8 +35,8 @@
       { key: "nominee", value: "Nominee" },
       { key: "category", value: "Category" },
       { key: "nominator", value: "Nominated By" },
-      { key: "date", value: "Date", display: (date) => new Date(date).toLocaleString(),
-      sort: (a, b) => new Date(a) - new Date(b),},
+      { key: "date", value: "Date", display: (date) => new Date(date).toLocaleString()},
+      //sort: (a, b) => new Date(a) - new Date(b),},
     ]}
     rows={rows}
     {sortKey} {sortDirection} {pageSize} {page} sortable

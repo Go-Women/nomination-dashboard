@@ -14,6 +14,7 @@ exports.create = (req, res) => {
       id: req.body.ID,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
+      fullName: req.body.fullName,
       cohort: req.body.cohort,
       status: req.body.data,
       yob: req.body.yob,

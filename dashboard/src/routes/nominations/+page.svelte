@@ -15,8 +15,11 @@
   import NominationInformation from "../../components/nominations/NominationInformation.svelte";
   import AcceptReject from "../../components/nominations/AcceptReject.svelte";
 
+  import fuzzysort from "fuzzysort";
+  import PleaseSelect from "../../components/nominations/PleaseSelect.svelte";
+
   export let data;
-  export let { nominations } = data.props;
+  export let { nominations, nominees } = data.props;
   export let reviewCount: number = 0;
   export let artCount: number = 0;
   export let athleticsCount: number = 0;
@@ -27,20 +30,35 @@
   export let stemCount: number = 0;
   export let otherCount: number = 0;
 
-  let selectedRowIds: number[] = [1];
+  let selectedRowIds: string[] = [];
 
-  var populateRows = (nominations: any) => {
-    let rows: any[] = [];
+  $: mergeCandidates = generateMergeCandidates(selectedRowIds);
+
+  const generateMergeCandidates = (selectedIds: string[]) => {
+    if (selectedIds.length === 0) return [];
+    const selectedNomination = nominations.find(n => n.ID == selectedRowIds[0].substring(2))
+    if (!selectedNomination) return [];
+    let fullName: string = `${selectedNomination.nomFirst} ${selectedNomination.nomLast}`;
+    const sorted = fuzzysort.go(fullName, nominees, {
+        all: false,
+        key: 'fullName',
+        threshold: -Infinity
+    });
+    console.log(sorted);
+    return sorted.map(a => a.obj);
+  } 
+
+  const populateRows = (nominations: any[]) => {
+    let rows: any[] = nominations.map(n => ({
+      id: `a-${n.ID}`,
+      nominee: `${n.nomFirst} ${n.nomLast}`,
+      category: n.category,
+      nominator: `${n.authorFirst} ${n.authorLast}`,
+      date: n.date
+    }));
+
     Object.entries(nominations).forEach(([key, nomination], index) => {
-      let data = {
-        id: nomination.ID,
-        nominee: nomination.nomFirst + " " + nomination.nomLast,
-        category: nomination.category,
-        nominator: nomination.authorFirst + " " + nomination.authorLast,
-        date: nomination.date,
-      };
       if (nominations.status == "Reviewed") reviewCount++;
-
       switch (nomination.category) {
         case "Art":
           artCount++;
@@ -69,8 +87,6 @@
         default:
           break;
       }
-
-      rows.push(data);
     });
     return rows;
   };
@@ -114,7 +130,16 @@
     </div>
     <div id="half-right">
       <h3>Review Nomination</h3>
-      <AcceptReject bind:incomingRowIds={selectedRowIds} bind:nominations />
+      {#if selectedRowIds.length !== 0}
+      <AcceptReject 
+        bind:incomingRowIds={selectedRowIds}
+        bind:nominations
+        mergeCandidates={mergeCandidates}
+      />
+      {:else}
+      <PleaseSelect />
+      {/if}
+      
     </div>
   </div>
 </main>
