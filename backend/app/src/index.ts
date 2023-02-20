@@ -52,6 +52,10 @@ app.get('/nominees/:id', (req: Request, res: Response) => {
   res.json((nominees as any)[id]);
 });
 
+app.get('/matching', (req: Request, res: Response) => {
+  res.json();
+});
+
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });

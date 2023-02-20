@@ -26,5 +26,6 @@
     <SideNavLink icon={Home} text="Dashboard" href="/home" isSelected />
     <SideNavLink icon={Result} text="Nominations" href="/nominations" />
     <SideNavLink icon={UserMultiple} text="Judges" href="/judges" />
+    <SideNavLink icon={UserMultiple} text="Matching" href="/matching" />
   </SideNavItems>
 </SideNav>

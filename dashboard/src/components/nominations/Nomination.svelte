@@ -10,7 +10,7 @@
   let date = nom.date;
   let category = nom.category;
   let subcategory = nom.subcategory;
-  let matched = false;  // TODO: replace with backend value
+  let status = nom.status;  // TODO: replace with backend value
 </script>
 
 <div class="bx--content--overview">
@@ -41,12 +41,8 @@
               <StructuredListCell>{subcategory}</StructuredListCell>
             </StructuredListRow>
             <StructuredListRow>
-              <StructuredListCell>
-                <Toggle bind:toggled={matched}>
-                  <span slot="labelA" style="color: red">Not Matched</span>
-                  <span slot="labelB" style="color: green">Matched</span>
-                </Toggle>
-              </StructuredListCell>
+                <StructuredListCell noWrap><strong>Status</strong></StructuredListCell>
+                <StructuredListCell>{status}</StructuredListCell>
             </StructuredListRow>
           </StructuredListBody>
         </StructuredList>
