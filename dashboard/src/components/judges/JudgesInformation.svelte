@@ -26,6 +26,7 @@
     { key: "id", empty: true },
     { key: "name", value: "Name" },
     { key: "category", value: "Category" },
+    { key: "capacity", value: "Capacity" },
     { key: "active", value: "Active" },
   ];
   let categories = [
