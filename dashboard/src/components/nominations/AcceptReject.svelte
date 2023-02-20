@@ -1,30 +1,24 @@
 <script lang="ts">
   import { Button, Column, DataTable, Form, Grid, RadioButton, RadioButtonGroup, Row, TextArea } from "carbon-components-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
+  import Merge from "./Merge.svelte";
 
-  export let incomingRowIds: number[];
-  export let nominations: any;
+  export let incomingRowIds: string[];
+  export let nominations: any[];
+  export let mergeCandidates: any[];
 
-  let rows = [
-    {
-      data: { id: 0 }, id: 0,
-      nominee: 'No, this is a unique nomination.',
-      category: '', yob: ''
-    },
-    {
-      data: { id: 1 }, id: 1,
-      nominee: 'Grace Langsley',
-      category: 'c503', yob: '1973'
-    },
-    {
-      data: { id: 2 }, id: 2,
-      nominee: 'Samantha Puckett',
-      category: 'c201', yob: '1877'
-    }
-  ]
+  const norow = { data: { id: 'b-0' }, id: 'b-0', nominee: 'No, this is a unique nomination.', category: '', yob: '' };
 
-  let selectedRowIds: number[] = [0];
-  $: nom = nominations[incomingRowIds[0] - 1] || {};
+  $: rows = [norow, ...mergeCandidates.map((c, idx) => ({
+    data: { id: `b-${c.ID}` },
+    id: `b-${c.ID}`,
+    nominee: `${c.firstName} ${c.lastName}`,
+    category: c.category,
+    yob: c.yob
+  }))];
+  let selectedRowIds: string[] = ['b-0'];
+
+  $: nom = nominations.find(n => n.ID == incomingRowIds[0].substring(2)) || {};
 </script>
 
 <main>
@@ -74,40 +68,12 @@
   <h4 class="break">Are any of these the same person?</h4>
   <div class="action-zone">
     <div class="suggestion-area">
-      <div class="suggestion-box">
-        <DataTable
-          radio
-          bind:selectedRowIds
-          size="compact"
-          headers={[
-            { key: "data.id", empty: true },
-            { key: "nominee", value: "Nominee" },
-            { key: "category", value: "Category" },
-            { key: "yob", value: "Birth Year" }
-          ]}
-          rows={rows}
-          >
-          <svelte:fragment slot="cell" let:cell>
-            {#if cell.key === "data.id"}
-              {#if cell.value !== 0}
-              <Button
-                size="small"
-                iconDescription="View"
-                icon={View}
-                href={"nominees/" + cell.value}
-              />
-              {/if}            
-            {:else}
-            {cell.value}
-            {/if}
-          </svelte:fragment>
-        </DataTable>
-      </div>
+      <Merge bind:selectedRowIds bind:rows={rows} />
     </div>
     <div class="button-area">
       <Button kind="tertiary">Confirm Nomination</Button>
       <Button kind="danger-tertiary">Reject Nomination</Button>
-      {#if selectedRowIds[0] === 0}
+      {#if selectedRowIds[0] === 'b-0'}
       <div class="info">A new nominee will be created for this nomination.</div>
       {:else}
       <div class="info">This nomination will be merged into the selected nominee.</div>
@@ -140,13 +106,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.5em;
-  }
-
-  .suggestion-box {
-    width: 100%;
-    border: 0.25em solid lightgray;
-    border-radius: 0.5em;
-    margin-bottom: 1em;
   }
 
   .nom-responses {

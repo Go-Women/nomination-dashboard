@@ -23,6 +23,7 @@ app.get('/keys', (req, res) => {
 });
 
 require("./app/routes/nominations.routes.js")(app);
+require("./app/routes/nominees.routes.js")(app);
 require("./app/routes/judges.routes.js")(app);
 require("./app/routes/nominees.routes.js")(app);
 

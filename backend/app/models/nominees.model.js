@@ -6,6 +6,7 @@ const Nominee = function(nominee) {
   this.id = nominee.ID;
   this.firstName = nominee.firstName;
   this.lastName = nominee.lastName;
+  this.fullName = `${nominee.firstName} ${nominee.lastName}`;
   this.cohort = nominee.cohort;
   this.status = nominee.data;
   this.yob = nominee.yob;
@@ -29,7 +30,7 @@ Nominee.create = (newNominee, result) => {
 };
 
 Nominee.findById = (id, result) => {
-  sql.query(`SELECT * FROM Nominees WHERE id = ?`, id, (err, res) => {
+  sql.query(`SELECT *, concat(firstName,' ',lastName) as fullName FROM Nominees WHERE id = ?`, id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -49,7 +50,7 @@ Nominee.findById = (id, result) => {
 };
 
 Nominee.getAll = result => {
-  sql.query("SELECT * FROM Nominees", (err, res) => {
+  sql.query("SELECT *, concat(firstName,' ',lastName) as fullName FROM Nominees", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
