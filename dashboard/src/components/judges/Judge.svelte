@@ -13,58 +13,87 @@
     Form,
     FormGroup,
     NumberInput,
-    Toggle,
     Grid,
+    Checkbox,
   } from "carbon-components-svelte";
+  import MultiSelect from "svelte-multiselect";
   import Edit from "carbon-icons-svelte/lib/Edit.svelte";
   import Save from "carbon-icons-svelte/lib/Save.svelte";
   import Cancel from "carbon-icons-svelte/lib/Close.svelte";
   export let judge;
 
-  let categories = [
-    "Art",
-    "Athletics",
-    "Business",
-    "Education",
-    "Humanities",
-    "Public Service/Government",
-    "STEM",
-    "Other",
+  const categories = [
+    { value: "c100", label: "Art" },
+    { value: "c200", label: "Athletics" },
+    { value: "c300", label: "Business" },
+    { value: "c400", label: "Education" },
+    { value: "c500", label: "Humanities" },
+    { value: "c600", label: "Public Service/Government" },
+    { value: "c700", label: "STEM" },
+    { value: "c800", label: "Other" },
   ];
+  const selectedCategories: {
+    value: string;
+    label: string;
+  }[] = [];
+  setCategory();
 
+  function setCategory() {
+    let cat = judge.info.category;
+    if (cat.length > 4) {
+        Object.entries(categories).forEach((data, value) => {
+          let items = data[1];
+          let split = cat.split(',');
+          for (const i in split) {
+              if (items.label == split[i]) {
+                let item = { value: items.value, label: items.label };
+                selectedCategories.push(item);
+              }    
+          }
+          return selectedCategories;   
+        });
+    } else {
+        Object.entries(categories).forEach((data, value) => {
+          if (data[1].label == judge.info.category) {
+            let item = { value: data[1].value, label: data[1].label };
+            selectedCategories.push(item);
+          }
+        });
+    }
+    return selectedCategories;
+  };
+
+  // Form sections
   let firstName = judge.firstName;
   let lastName = judge.lastName;
   let name = firstName + " " + lastName;
+  let bio = judge.info.bio || "";
+  let conflicts = judge.info.conflicts || "";
+  let phoneNumber = judge.info.phoneNumber;
   let pronoun = judge.info.pronouns;
   let email = judge.email;
-  let skill = judge.info.category;
+  // let subcategory = judge.info.subcategory;
   let capacity = judge.info.capacity;
   let previousCheck = judge.info.previousJudge;
-  let active = judge.info.interested;
+  let interested = judge.info.interested;
+  let active = judge.active;
+  let linkedin = judge.linkedin || "";
+  let addInfo = judge.info.additionalInfo || "";
 
   let pronouns = ["she/her", "he/him", "they/them"];
 
-  // TODO: can be replaced later on with backend api call
-  // TODO: create this for subcategory
-  function setCategory(id:string) {
-    skill = categories[parseInt(id)];
-  };
-
-  const categoryID = function (): string {
-    let category = "0";
+  const categoryValues = function (categories: string[]): string {
+    let vals = "";
     categories.forEach((cat, index) => {
-      if (cat.toString().includes(skill)) {
-        category = index.toString();
-      }
+      vals.concat(cat.toString());
     });
-    return category;
+    return vals;
   };
 
-  function setPronoun(id:string) {
+  function setPronoun(id: string) {
     pronoun = pronouns[parseInt(id)];
-  };
+  }
 
-  // TODO: can be replaced later on with backend api call
   const pronounID = function (): string {
     let pn = "other";
     pronouns.forEach((noun, index) => {
@@ -79,23 +108,44 @@
   function handleEdit() {
     judgeEdit = !judgeEdit;
   }
-
-  // TODO: create handle save action
 </script>
 
 <div class="bx--content--overview">
   <Row><h2>{name}</h2></Row>
   <div class="bx--content--info">
-  <Row><h3>Information</h3></Row>
-  <Tile>
-    {#if judgeEdit === true}
-      <StructuredList flush>
-        <Form on:submit>
+    <Row><h3>Information</h3></Row>
+    <Tile>
+      {#if judgeEdit === true}
+        <Form method="POST">
+          <FormGroup>
+            <Grid>
+              <Row>
+                <Checkbox
+                  name="previousJudge"
+                  bind:checked={previousCheck}
+                  value={previousCheck}
+                  labelText="Previous Judge"
+                />
+                <Checkbox
+                  name="interested"
+                  bind:checked={interested}
+                  value={interested}
+                  labelText="Interested"
+                />
+                <Checkbox
+                  name="active"
+                  bind:checked={active}
+                  value={active}
+                  labelText="Active"
+                />
+              </Row>
+            </Grid>
+          </FormGroup>
           <FormGroup>
             <br /><strong>Pronouns</strong>
             <Select
-              id="select-pronouns"
-              value="pronouns"
+              name="pronouns"
+              bind:value={pronouns[pronoun]}
               selected={pronounID()}
               on:change={(e) => setPronoun(e.target.value)}
             >
@@ -103,97 +153,160 @@
                 <SelectItem value={index.toString()} text={noun} />
               {/each}
             </Select>
+
+            <br /><strong>Bio</strong>
+            <TextInput type="text" name="bio" bind:value={bio} />
+
+            <br /><strong>Phone Number</strong>
+            <TextInput type="tel" name="phoneNumber" bind:value={phoneNumber} />
+
             <br /><strong>Email</strong>
-            
-            <TextInput type="email" bind:value={email} />
-            
-            <br /><strong>Category</strong>
-            <Select
-              id="select-judge-category"
-              value="categories"
-              selected={categoryID()}
-              on:change={(e) => setCategory(e.target.value)}
-            >
-              {#each categories as category, index}
-                <SelectItem value={index.toString()} text={category} />
-              {/each}
-            </Select>
-           
+            <TextInput type="email" name="email" bind:value={email} />
+          </FormGroup>
+          <FormGroup>
+            <br /><strong>Categories</strong>
+            <Grid>
+              <MultiSelect
+                name="category"
+                options={categories}
+                selected={selectedCategories}
+                label="label"
+                value="value"
+              />
+            </Grid>
+          </FormGroup>
+          <FormGroup>
             <br /><strong>Capacity</strong>
             <NumberInput
               min={4}
+              name="capacity"
               bind:value={capacity}
               invalidText="Number must be greater than 4."
               label="minimum of 4"
             />
-            <Grid>
-              <Row>
-                <Toggle
-                  toggled={previousCheck}
-                  on:toggle={(e) => (previousCheck = e.detail.toggled)}
-                >
-                  <span slot="labelA" style="color: red">Not a Previous Judge</span>
-                  <span slot="labelB" style="color: green">Previous Judge</span>
-                </Toggle>
-                <Toggle
-                  toggled={active}
-                  on:toggle={(e) => (active = e.detail.toggled)}
-                >
-                  <span slot="labelA" style="color: red">Not Active</span>
-                  <span slot="labelB" style="color: green">Active</span>
-                </Toggle>
-              </Row>
-            </Grid>
+            <br /><strong>Conflicts</strong>
+            <TextInput type="text" name="conflicts" bind:value={conflicts} />
+
+            <br /><strong>LinkedIn</strong>
+            <TextInput type="test" name="linkedin" bind:value={linkedin} />
+
+            <br /><strong>Additional Information</strong>
+            <TextInput type="text" name="additionalInfo" bind:value={addInfo} />
           </FormGroup>
           <Button
             kind="danger"
             iconDescription="Cancel"
             icon={Cancel}
-            on:click|once={handleEdit}>Cancel</Button>
-          <Button
-            iconDescription="Save"
-            type="submit"
-            icon={Save}
-            on:click|once={handleEdit}>Save</Button>
+            on:click|once={handleEdit}>Cancel</Button
+          >
+          <!-- <Button type="submit">Save</Button> -->
+          <Button iconDescription="Save" type="submit" icon={Save}>Save</Button>
         </Form>
-      </StructuredList>
-    {:else}
-      <StructuredList flush>
-        <StructuredListBody>
-          <StructuredListRow>
-            <StructuredListCell noWrap><strong>Pronouns</strong></StructuredListCell>
-            <StructuredListCell>{pronoun}</StructuredListCell>
-          </StructuredListRow>
-          <StructuredListRow>
-            <StructuredListCell noWrap><strong>Email</strong></StructuredListCell>
-            <StructuredListCell>{email}</StructuredListCell>
-          </StructuredListRow>
-          <StructuredListRow>
-            <StructuredListCell noWrap><strong>Category</strong></StructuredListCell>
-            <StructuredListCell>{skill}</StructuredListCell>
-          </StructuredListRow>
-          <StructuredListRow>
-            <StructuredListCell noWrap><strong>Capacity</strong></StructuredListCell>
-            <StructuredListCell>{capacity}</StructuredListCell>
-          </StructuredListRow>
-          <StructuredListRow>
-            <StructuredListCell>
-              <Toggle bind:toggled={previousCheck} disabled>
-                <span slot="labelA" style="color: red">Not a Previous Judge</span>
-                <span slot="labelB" style="color: green">Previous Judge</span>
-              </Toggle>
-            </StructuredListCell>
-            <StructuredListCell>
-              <Toggle bind:toggled={active} disabled>
-                <span slot="labelA" style="color: red">Not Active</span>
-                <span slot="labelB" style="color: green">Active</span>
-              </Toggle>
-            </StructuredListCell>
-          </StructuredListRow>
-        </StructuredListBody>
-      </StructuredList>
-      <Button iconDescription="Edit" icon={Edit} on:click|once={handleEdit}>Edit</Button>
-    {/if}
-  </Tile>
+      {:else}
+        <StructuredList flush>
+          <StructuredListBody>
+            <StructuredListRow>
+              <Grid>
+                <Row>
+                  <Checkbox
+                    name="previousJudge"
+                    bind:checked={previousCheck}
+                    value={previousCheck}
+                    labelText="Previous Judge"
+                    disabled
+                  />
+                  <Checkbox
+                    name="interested"
+                    bind:checked={interested}
+                    value={interested}
+                    labelText="Interested"
+                    disabled
+                  />
+                  <Checkbox
+                    name="active"
+                    bind:checked={active}
+                    value={active}
+                    labelText="Active"
+                    disabled
+                  />
+                </Row>
+              </Grid>
+            </StructuredListRow>
+            <StructuredListRow>
+              <StructuredListCell noWrap
+                ><strong>Pronouns</strong></StructuredListCell
+              >
+              <StructuredListCell>{pronoun}</StructuredListCell>
+            </StructuredListRow>
+            <StructuredListRow>
+              <StructuredListCell noWrap
+                ><strong>Phone Number</strong></StructuredListCell
+              >
+              <StructuredListCell>{phoneNumber}</StructuredListCell>
+            </StructuredListRow>
+            <StructuredListRow>
+              <StructuredListCell noWrap
+                ><strong>Bio</strong></StructuredListCell
+              >
+              <StructuredListCell>{bio}</StructuredListCell>
+            </StructuredListRow>
+            <StructuredListRow>
+              <StructuredListCell noWrap
+                ><strong>Email</strong></StructuredListCell
+              >
+              <StructuredListCell>{email}</StructuredListCell>
+            </StructuredListRow>
+            <StructuredListRow>
+              <StructuredListCell noWrap
+                ><strong>Category</strong></StructuredListCell
+              >
+              <MultiSelect
+                name="category"
+                options={categories}
+                selected={selectedCategories}
+                label="label"
+                value="value"
+                disabled
+              />
+            </StructuredListRow>
+            <StructuredListRow>
+              <StructuredListCell noWrap
+                ><strong>Capacity</strong></StructuredListCell
+              >
+              <StructuredListCell>{capacity}</StructuredListCell>
+            </StructuredListRow>
+            <StructuredListRow>
+              <StructuredListCell noWrap
+                ><strong>Conflicts</strong></StructuredListCell
+              >
+              <StructuredListCell>{conflicts}</StructuredListCell>
+            </StructuredListRow>
+            <StructuredListRow>
+              <StructuredListCell noWrap
+                ><strong>LinkedIn</strong></StructuredListCell
+              >
+              <StructuredListCell>{linkedin}</StructuredListCell>
+            </StructuredListRow>
+            <StructuredListRow>
+              <StructuredListCell noWrap
+                ><strong>Additional Information</strong></StructuredListCell
+              >
+              <StructuredListCell>{addInfo}</StructuredListCell>
+            </StructuredListRow>
+            <div id="edit-button">
+              <Button iconDescription="Edit" icon={Edit} on:click|once={handleEdit}
+              >Edit</Button
+            >
+            </div>
+          </StructuredListBody>
+        </StructuredList>
+      {/if}
+    </Tile>
+  </div>
 </div>
-</div>
+
+<style>
+  #edit-button {
+    padding-top: 1rem;
+  }
+</style>

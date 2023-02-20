@@ -22,24 +22,23 @@
   };
 
   var getInformation = (judges: JSON) => {
+    console.log(judges);
     let rows = new Array();
     let rowID = 1;
     Object.entries(judges).forEach(([key, judge], index) => {
-      // let info = JSON.parse(judge.info)[0];     // TODO: clean this on the backend instead of front end
-
       let data = {
         id: judge.ID,
         name: judge.firstName + " " + judge.lastName,
         pronouns: judge.info.pronouns,
         email: judge.email,
         phoneNumber: judge.info.phoneNumber,
-        active: judge.info.interested,
+        active: judge.active,
         category: judge.info.category,
         subcategory: judge.info.subcategory,
         capacity: judge.info.capacity
       };
 
-      if (judge.info.interested === true) {
+      if (judge.active === 1) {
         incrementActiveCount();
       }
       rows.push(data);
