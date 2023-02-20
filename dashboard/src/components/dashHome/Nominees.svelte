@@ -8,7 +8,7 @@
 </script>
 
 <Content>
-  <ClickableTile href="/nominations">
+  <ClickableTile href="/nominees">
     <h3>Nominees</h3>
     <Column>
       <Row><h4>View More</h4></Row>
