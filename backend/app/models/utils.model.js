@@ -51,6 +51,17 @@ exports.setJSON = (res, name) => {
   return res;
 };
 
+exports.clean = (nomination) => {
+  // TODO: figure out how to handle if BOTH category is chosen without a subcategory and the Other category
+  // sets subcategory default to General is if other is not chosen
+  // this assumes that the other field requires the user to type something in that field
+  if (nomination.subcategory == undefined && nomination.subcategoryOther == undefined) {
+    nomination.subcategory = 's100';
+  }
+
+  return nomination;
+}
+
 exports.formatJudgeInput = (judge) => {
     judge.email = judge.info.email;
     judge.active = judge.info.active;
