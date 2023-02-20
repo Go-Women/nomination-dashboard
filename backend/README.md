@@ -50,15 +50,16 @@
 
    ​	**NOTE:** replace `PLACEHOLDER` with your local db username and password
 
-3. Create a folder call `test` in the backend root directory the following queries into the `backend/app/tests/` folder to create and initialize tables
+3. Create a folder call `tests` in the `backend` root directory the following queries into the `backend/app/tests/` folder to create and initialize tables
     **`createDB.sql`** -- used to create tables
 
-    **`setupDB.sql`** -- to run a query and populate some tables with static information
+    **`initDB.sql`** -- to run a query and populate some tables with static information
 
-    **`Nominations.sql`** -- dummy data
+    **`Nominations.sql`** -- dummy data (right now only unique nominations no duplicates)
 
     **`Judges.sql`** -- dummy data
 
+    **`Nominees.sql`** -- dummy data
 4. Within the **`backend`** directory run the following commands:
 
    ```bash
