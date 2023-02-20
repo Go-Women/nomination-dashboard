@@ -9,7 +9,7 @@ exports.formatDate = (res) => {
   // TODO: fix bug in days that start with 1
   day = day >= 10 ? day : '0' + day;
 
-  let month = date.getMonth();
+  let month = date.getUTCMonth() + 1;
   // TODO: fix bug in days that start with 1
   month = month >= 10 ? month : '0' + month;
 
@@ -58,7 +58,7 @@ exports.formatSingleData = (res, type) => {
     subCat = res.subcategory;
     res = this.getCategories(res, cat, subCat);
   } else {
-    res.date = this.formatDate(res);
+    // res.date = this.formatDate(res);
 
     // Handle Code Formats
     cat = res.category;

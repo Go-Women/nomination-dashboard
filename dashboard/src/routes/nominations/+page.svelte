@@ -54,7 +54,7 @@
       nominee: `${n.nomFirst} ${n.nomLast}`,
       category: n.category,
       nominator: `${n.authorFirst} ${n.authorLast}`,
-      date: n.date
+      date: new Date(n.date).toLocaleDateString('es-pa')
     }));
 
     Object.entries(nominations).forEach(([key, nomination], index) => {

@@ -35,8 +35,14 @@
       { key: "nominee", value: "Nominee" },
       { key: "category", value: "Category" },
       { key: "nominator", value: "Nominated By" },
-      { key: "date", value: "Date", display: (date) => new Date(date).toLocaleString()},
-      //sort: (a, b) => new Date(a) - new Date(b),},
+      { key: "date", value: "Date", display: (date) => Date.parse(date).toLocaleString('es-pa'),
+        sort: (a, b) => {
+          const diff = Date.parse(a) - Date.parse(b);
+          if (diff < 0) return -1;
+          if (diff > 0) return 1;
+          return 0;
+        }
+    }
     ]}
     rows={rows}
     {sortKey} {sortDirection} {pageSize} {page} sortable
