@@ -29,7 +29,7 @@
     <Column>
       <Tile>
         <Content class="bx--content--judge-overview">
-          <Row><h4>Total In Progress</h4></Row>
+          <Row><h4>Total In-Progress</h4></Row>
           <Row><h5>{inProgressCount}</h5></Row>
         </Content>
       </Tile>
