@@ -7,18 +7,17 @@
     Pagination,
     Button,
     Row,
-    Checkbox,
-    MultiSelect,
   } from "carbon-components-svelte";
+  import { LogicalPartition } from "carbon-icons-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
 
   export let rows;
 
-  let pageSize = 15;
+  let pageSize = 25;
   let page = 1;
   var getPageSizes = (totalItems: number) => {
-    let pages = Math.ceil(totalItems / 15);
-    let pageArray = Array.from({ length: pages }).map((_, i) => (i + 1) * 15);
+    let pages = Math.ceil(totalItems / 25);
+    let pageArray = Array.from({ length: pages }).map((_, i) => (i + 1) * 25);
     return pageArray;
   };
 
@@ -26,8 +25,7 @@
     { key: "id", empty: true },
     { key: "name", value: "Name" },
     { key: "category", value: "Category" },
-    { key: "capacity", value: "Capacity" },
-    { key: "active", value: "Active" },
+    { key: "nomineesSub", value: "Subcategory"}
   ];
   let categories = [
     { id: 0, text: "Art" },
@@ -65,10 +63,8 @@
         <Button
           iconDescription="View"
           icon={View}
-          href={"judges/" + cell.value}
+          href={"nominees/" + cell.value}
         />
-      {:else if cell.key === "active"}
-        <Checkbox checked={cell.value} disabled/>
       {:else if cell.key === "category"}
         {formatCategories(cell.value)}
       {:else}
