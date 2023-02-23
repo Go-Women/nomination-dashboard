@@ -1,11 +1,12 @@
 const sql = require("../../config/db.js");
-const util = require("./utils.model.js");
+const utils = require("./utils.model.js");
 
 // constructor
 const Nominee = function(nominee) {
   this.id = nominee.ID;
   this.firstName = nominee.firstName;
   this.lastName = nominee.lastName;
+  this.fullName = `${nominee.firstName} ${nominee.lastName}`;
   this.cohort = nominee.cohort;
   this.status = nominee.data;
   this.yob = nominee.yob;
@@ -29,7 +30,7 @@ Nominee.create = (newNominee, result) => {
 };
 
 Nominee.findById = (id, result) => {
-  sql.query(`SELECT * FROM Nominees WHERE id = ${id}`, (err, res) => {
+  sql.query(`SELECT *, concat(firstName,' ',lastName) as fullName FROM Nominees WHERE id = ?`, id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -37,8 +38,7 @@ Nominee.findById = (id, result) => {
     }
 
     if (res.length) {
-      
-      util.formatSingleData(res[0], 'nominee');
+      utils.formatSingleData(res[0], 'nominee');
       console.log(`GET /nominees/${id}`);
       result(null, res[0]);
       return;
@@ -50,14 +50,14 @@ Nominee.findById = (id, result) => {
 };
 
 Nominee.getAll = result => {
-  sql.query("SELECT * FROM Nominees", (err, res) => {
+  sql.query("SELECT *, concat(firstName,' ',lastName) as fullName FROM Nominees", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
       return;
     }
 
-    util.formatAllData(res, 'nominee');
+    utils.formatAllData(res, 'nominee');
     console.log("GET /nominees");
     result(null, res);
   });

@@ -1,4 +1,4 @@
-const codes = require("./codes.ts");
+const codes = require("./codes.js");
 // File used to clean and validate the data
 
 exports.formatDate = (res) => {
@@ -6,10 +6,9 @@ exports.formatDate = (res) => {
   let date = new Date(res.date);
 
   let day = date.getDate();
-  // TODO: fix bug in days that start with 1
   day = day >= 10 ? day : '0' + day;
 
-  let month = date.getMonth();
+  let month = date.getUTCMonth() + 1;
   // TODO: fix bug in days that start with 1
   month = month >= 10 ? month : '0' + month;
 
@@ -21,14 +20,34 @@ exports.formatDate = (res) => {
 };
 
 exports.getCategories = (res, cat, subCat) => {
+  let resultCat = [];
+  let resultsubCat = [];
   Object.entries(codes).forEach((code, value) => {
-      
-    if (code[0] === cat) {
+    if (code[0] === cat && cat.length == 4) {
       res.category = code[1];
+    } else if (cat.length > 4){
+      let cats = cat.split(',');
+      for (const i in cats) {
+        if (code[0] === cats[i]) {
+          resultCat.push(code[1]);
+        }
+      }
+      res.category = resultCat.join(",");
     }
 
-    if (code[0] === subCat) {
-      res.subcategory = code[1];
+    // TODO: fix this once judge subcategory is supported on the frontend
+    if (subCat != null || subCat !== undefined) {
+      if (code[0] === subCat && subCat.length == 4) {
+            res.subcategory = code[1];
+      } else if (subCat.length > 4){
+        let cats = subCat.split(',');
+        for (const i in cats) {
+          if (code[0] === cats[i]) {
+            resultsubCat.push(code[1]);
+          }
+        }
+        res.subcategory = resultsubCat.join(",");
+        }
     }
   });
 
@@ -40,6 +59,24 @@ exports.setJSON = (res, name) => {
   return res;
 };
 
+exports.clean = (nomination) => {
+  // TODO: figure out how to handle if BOTH category is chosen without a subcategory and the Other category
+  // sets subcategory default to General is if other is not chosen
+  // this assumes that the other field requires the user to type something in that field
+  if (nomination.subcategory == undefined && nomination.subcategoryOther == undefined) {
+    nomination.subcategory = 's100';
+  }
+
+  return nomination;
+}
+
+exports.formatJudgeInput = (judge) => {
+    judge.email = judge.info.email;
+    judge.active = judge.info.active;
+    judge.info = JSON.stringify([judge.info]);
+    return judge;
+}
+
 // format data when individually being accessed
 exports.formatSingleData = (res, type) => {
   let cat;
@@ -50,9 +87,10 @@ exports.formatSingleData = (res, type) => {
     cat = res.info.category;
     subCat = res.info.subcategory;
     res.info = this.getCategories(res.info, cat, subCat);
+
   } else if (type === 'nominee') {
     // Handle Code Formats
-    res = this.setJSON(res, 'nominations');
+    // res = this.setJSON(res, 'nominations');
 
     cat = res.category;
     subCat = res.subcategory;
@@ -61,7 +99,7 @@ exports.formatSingleData = (res, type) => {
     }
     res = this.getCategories(res, cat, subCat);
   } else {
-    res.date = this.formatDate(res);
+    // res.date = this.formatDate(res);
 
     // Handle Code Formats
     cat = res.category;

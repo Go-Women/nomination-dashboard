@@ -1,11 +1,17 @@
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({fetch}) => {
-  const res = await fetch('http://localhost:8000/nominations');
-  if (res.ok) {
-    const nominations = await res.json();
+  const res1 = await fetch('http://localhost:8000/nominations');
+  const res2 = await fetch('http://localhost:8000/nominees')
+
+  if (res1.ok && res2.ok) {
+    const nominations = await res1.json();
+    const nominees = await res2.json();
     return {
-      props: {nominations: nominations}
+      props: {
+        nominations: nominations,
+        nominees: nominees
+      }
     };
   }
 }

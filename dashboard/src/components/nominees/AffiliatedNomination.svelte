@@ -18,7 +18,7 @@
     let result = "";
     let splits = input.split(",");
     for (let split of splits) {
-      result += `${keys[split]}, `;
+      result += keys[split] + ", ";
     }
     return result.substring(0, result.length - 2);
   }
@@ -30,41 +30,43 @@
     <Grid>
       <Row>
         <Column>Nominator</Column>
-        <Column>{`${nomination['author-first']} ${nomination['author-last']}`}</Column>
+        <Column>{`${nomination.authorFirst} ${nomination.authorLast}`}</Column>
       </Row>
       <Row>
         <Column>Nominator Email</Column>
-        <Column>{nomination['author-email']}</Column>
+        <Column>{nomination.authorEmail}</Column>
       </Row>
       <Row>
         <Column>Nomination Date</Column>
-        <Column>{nomination['date']}</Column>
+        <Column>{nomination.date}</Column>
       </Row>
       <Row style="margin-top: 1em;">
         <Column style="font-weight: bold;">Responses</Column>
       </Row>
       <Row>
         <Column>Contribution Areas</Column>
-        <Column>{kg(nomination['nom-contrib-area'])}</Column>
+        <Column>{nomination.category}</Column>
       </Row>
-      {#if nomination['nom-contrib-area-sub-description']}
+      {#if nomination.subcategoryOther}
       <Row>
         <Column>User-Submitted Area</Column>
-        <Column>{kg(nomination['nom-contrib-area-sub-description'])}</Column>
+        <Column>{nomination.subcategoryOther}</Column>
       </Row>
       {/if}
+      {#if nomination.subcategory}
       <Row>
         <Column>Contribution Subcategories</Column>
-        <Column>{kg(nomination['nom-contrib-area-sub'])}</Column>
+        <Column>{nomination.subcategory}</Column>
       </Row>
-      {#if nomination['nom-deceased'] == 'no'}
+      {/if}
+      {#if nomination.nomDeceased == 1}
         <Row>
           <Column>Nominee is alive?</Column>
           <Column>Yes, nominee is alive.</Column>
         </Row>
         <Row>
           <Column>Nominee will be influential?</Column>
-          <Column>{nomination['nom-alive-achieve']}</Column>
+          <Column>{nomination.nomAchieved == 0 ? "Yes" : "No"}</Column>
         </Row>
       {:else}
         <Row>
@@ -73,54 +75,54 @@
         </Row>
         <Row>
           <Column>Nominee has been / is influential?</Column>
-          <Column>{nomination['nom-deceased-achieve']}</Column>
+          <Column>{nomination.nomAchieved == 0 ? "Yes" : "No"}</Column>
         </Row>
       {/if}
       <Row style="margin-top: 1em;"><Column style="font-weight: bold;">Question 1</Column></Row>
       <Row>
         <Column>
           <Form>
-            <Checkbox checked={ckboxCkr('nom-q1', 'q101')} labelText={keys['q101']} />
-            <Checkbox checked={ckboxCkr('nom-q1', 'q102')} labelText={keys['q102']} />
-            <Checkbox checked={ckboxCkr('nom-q1', 'q103')} labelText={keys['q103']} />
-            <Checkbox checked={ckboxCkr('nom-q1', 'q104')} labelText={keys['q104']} />
-            <Checkbox checked={ckboxCkr('nom-q1', 'q105')} labelText={keys['q105']} />
+            <Checkbox checked={ckboxCkr('nomQ1', 'q101')} labelText={keys['q101']} />
+            <Checkbox checked={ckboxCkr('nomQ1', 'q102')} labelText={keys['q102']} />
+            <Checkbox checked={ckboxCkr('nomQ1', 'q103')} labelText={keys['q103']} />
+            <Checkbox checked={ckboxCkr('nomQ1', 'q104')} labelText={keys['q104']} />
+            <Checkbox checked={ckboxCkr('nomQ1', 'q105')} labelText={keys['q105']} />
           </Form>
         </Column>
         <Column>
-          <TextArea style="color: black" rows={3} value={nomination['nom-q1-description']} disabled />
+          <TextArea style="color: black" rows={3} value={nomination. nomQ2Description} disabled />
         </Column>
       </Row>
       <Row style="margin-top: 1em;"><Column style="font-weight: bold;">Question 2</Column></Row>
       <Row>
         <Column>
           <Form>
-            <Checkbox checked={ckboxCkr('nom-q2', 'q201')} labelText={keys['q201']} />
-            <Checkbox checked={ckboxCkr('nom-q2', 'q202')} labelText={keys['q202']} />
-            <Checkbox checked={ckboxCkr('nom-q2', 'q203')} labelText={keys['q203']} />
+            <Checkbox checked={ckboxCkr('nomQ2', 'q201')} labelText={keys['q201']} />
+            <Checkbox checked={ckboxCkr('nomQ2', 'q202')} labelText={keys['q202']} />
+            <Checkbox checked={ckboxCkr('nomQ2', 'q203')} labelText={keys['q203']} />
           </Form>
         </Column>
         <Column>
-          <TextArea style="color: black" rows={3} value={nomination['nom-q2-description']} disabled />
+          <TextArea style="color: black" rows={3} value={nomination. nomQ2Description} disabled />
         </Column>
       </Row>
       <Row style="margin-top: 1em;"><Column style="font-weight: bold;">Question 3</Column></Row>
       <Row>
         <Column>
           <Form>
-            <Checkbox checked={ckboxCkr('nom-q3', 'q301')} labelText={keys['q301']} />
-            <Checkbox checked={ckboxCkr('nom-q3', 'q302')} labelText={keys['q302']} />
+            <Checkbox checked={ckboxCkr('nomQ3', 'q301')} labelText={keys['q301']} />
+            <Checkbox checked={ckboxCkr('nomQ3', 'q302')} labelText={keys['q302']} />
           </Form>
         </Column>
         <Column>
-          <TextArea style="color: black" rows={3} value={nomination['nom-q3-description']} disabled />
+          <TextArea style="color: black" rows={3} value={nomination. nomQ3Description} disabled />
         </Column>
       </Row>
-      {#if nomination['nom-additional-info-description'].length > 0}
+      {#if nomination.nomAdditionalInfo && nomination.nomAdditionalInfo.length > 0}
         <Row style="margin-top: 1em;">
           <Column>Additional Information</Column>
           <Column>
-            <TextArea style="color: black" rows={3} value={nomination['nom-additional-info-description']} disabled />
+            <TextArea style="color: black" rows={3} value={nomination.nomAdditionalInfo} disabled />
           </Column>
         </Row>
       {/if}
