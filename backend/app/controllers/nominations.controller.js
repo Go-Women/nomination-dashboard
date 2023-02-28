@@ -1,4 +1,5 @@
 const Nomination = require("../models/nominations.model.js");
+const Nominee = require("../models/nominees.model.js");
 
 // TODO: error handling figure out how to handle errors messages and set success status
 
@@ -75,6 +76,33 @@ exports.findOne = (req, res) => {
       }
     } else res.send(data);
   });
+};
+
+exports.review = (req, res) => {
+  console.log("REVIEWING!", req.body.action);
+
+  switch (req.body.action) {
+    case 'CREATE':
+      console.log(`Creating nominee for nomination ${req.body.nominationId}.`);
+      // TODO
+      res.status(200).send("OK");
+      break;
+    case 'MERGE':
+      console.log(`Merging nomination ${req.body.nominationId} into nominee ${req.body.nomineeId}.`);
+      // TODO
+      res.status(200).send("OK");
+      break;
+    case 'REJECT':
+      console.log(`Rejecting nomination ${req.body.nominationId}.`);
+      // TODO
+      res.status(200).send("OK");
+      break;
+    default:
+      req.status(400).send("Invalid action provided.")
+      break;
+  }
+
+
 };
 
 // Update a Nomination identified by the id in the request

@@ -1,19 +1,16 @@
 <script lang="ts">
+  import {
+      Accordion,
+      AccordionItem, Breadcrumb,
+      BreadcrumbItem, Column
+  } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
   import "../../css/index.css";
-  import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Grid,
-    Column,
-    Accordion,
-    AccordionItem
-  } from "carbon-components-svelte";
 
   import Navigation from "../../components/Navigation.svelte";
-  import NominationOverview from "../../components/nominations/NominationOverview.svelte";
-  import NominationInformation from "../../components/nominations/NominationInformation.svelte";
   import AcceptReject from "../../components/nominations/AcceptReject.svelte";
+  import NominationInformation from "../../components/nominations/NominationInformation.svelte";
+  import NominationOverview from "../../components/nominations/NominationOverview.svelte";
 
   import fuzzysort from "fuzzysort";
   import PleaseSelect from "../../components/nominations/PleaseSelect.svelte";
@@ -91,7 +88,7 @@
     return rows;
   };
 
-  export const rows = populateRows(nominations);
+  $: rows = populateRows(nominations);
 </script>
 
 <main>
@@ -131,7 +128,7 @@
     <div id="half-right">
       <h3>Review Nomination</h3>
       {#if selectedRowIds.length !== 0}
-      <AcceptReject 
+      <AcceptReject
         bind:incomingRowIds={selectedRowIds}
         bind:nominations
         mergeCandidates={mergeCandidates}

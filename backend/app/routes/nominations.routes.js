@@ -15,5 +15,8 @@ module.exports = app => {
   // Update a Nomination with id
   router.put("/:id", nominations.update);
 
+  // Review a Nomination (Accept/Reject/Merge)
+  router.post("/review", nominations.review);
+
   app.use('/nominations', router);
 };

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { enhance } from "$app/forms";
   import { Button, Column, DataTable, Form, Grid, RadioButton, RadioButtonGroup, Row, TextArea } from "carbon-components-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
   import Merge from "./Merge.svelte";
@@ -17,8 +18,11 @@
     yob: c.yob
   }))];
   let selectedRowIds: string[] = ['b-0'];
+  $: selectedNominee = selectedRowIds[0].substring(2);
 
   $: nom = nominations.find(n => n.ID == incomingRowIds[0].substring(2)) || {};
+
+  let validated: string[] = [];
 </script>
 
 <main>
@@ -71,8 +75,28 @@
       <Merge bind:selectedRowIds bind:rows={rows} />
     </div>
     <div class="button-area">
-      <Button kind="tertiary">Confirm Nomination</Button>
-      <Button kind="danger-tertiary">Reject Nomination</Button>
+      <form method="POST" action="?/accept" use:enhance={() => {
+        // nominations = nominations.filter(n => n.ID != nom.ID);
+        incomingRowIds = [];
+        console.log("heyo");
+        return async ({update}) => {
+          await update();
+        }
+      }}>
+        <input name="nominationId" type="hidden" value={nom.ID} />
+        <input name="nomineeId" type="hidden" value={selectedNominee} />
+        <Button type="submit" kind="tertiary">Confirm Nomination</Button>
+      </form>
+      <form method="POST" action="?/reject" use:enhance={() => {
+        // nominations = nominations.filter(n => n.ID != nom.ID);
+        console.log("heyo");
+        return async ({update}) => {
+          await update();
+        }
+      }}>
+        <input name="nominationId" type="hidden" value={nom.ID} />
+        <Button type="submit" kind="danger-tertiary">Reject Nomination</Button>
+      </form>
       {#if selectedRowIds[0] === 'b-0'}
       <div class="info">A new nominee will be created for this nomination.</div>
       {:else}
