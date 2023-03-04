@@ -21,16 +21,32 @@ exports.create = (req, res) => {
       subcategoryOther: req.body.data.subcategoryOther || null,
       nominations: req.body.data.nominations
     });
-  
-    // Save Nominee in the database
-    Nominee.create(nominee, (err, data) => {
-      if (err)
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while creating the Nominee."
+
+    Nominee.updateStatus(req.body.data.nomID, nominee.nomStatus, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Nomination not found with id ${req.body.nomID}.`
+          });
+        } else {
+          res.status(500).send({
+            message: `Error updating Nomination with id ${req.body.nomID}`
+          });
+        }
+      } else {
+        res.send(data);
+        // Save Nominee in the database
+        Nominee.create(nominee, (nomErr, nomData) => {
+          if (nomErr)
+            res.status(500).send({
+              message:
+                err.message || "Some error occurred while creating the Nominee."
+            });
+          else res.send(nomData);
         });
-      else res.send(data);
+      }
     });
+
 };
 
 // Retrieve all Nominees from the database

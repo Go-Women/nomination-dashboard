@@ -46,16 +46,32 @@
   } 
 
   const populateRows = (nominations: any[]) => {
-    let rows: any[] = nominations.map(n => ({
-      id: `a-${n.ID}`,
-      nominee: `${n.nomFirst} ${n.nomLast}`,
-      category: n.category,
-      nominator: `${n.authorFirst} ${n.authorLast}`,
-      date: new Date(n.date).toLocaleDateString('es-pa')
-    }));
-
+    let rowsReviewed: any[] = [];
+    let rowsCreated: any[] = [];
     Object.entries(nominations).forEach(([key, nomination], index) => {
-      if (nominations.status == "Reviewed") reviewCount++;
+      
+
+      if (nomination.nomStatus == "Reviewed"){ 
+        reviewCount++;
+        rowsReviewed.push(
+          {
+            id: `a-${nomination.ID}`,
+            nominee: `${nomination.nomFirst} ${nomination.nomLast}`,
+            category: nomination.category,
+            nominator: `${nomination.authorFirst} ${nomination.authorLast}`,
+            date: new Date(nomination.date).toLocaleDateString('es-pa')
+          });
+        
+      } else if (nomination.nomStatus == "Created") {
+          rowsCreated.push({
+            id: `a-${nomination.ID}`,
+            nominee: `${nomination.nomFirst} ${nomination.nomLast}`,
+            category: nomination.category,
+            nominator: `${nomination.authorFirst} ${nomination.authorLast}`,
+            date: new Date(nomination.date).toLocaleDateString('es-pa')
+          });
+      }
+
       switch (nomination.category) {
         case "Art":
           artCount++;
@@ -85,10 +101,13 @@
           break;
       }
     });
+    var rows = [rowsCreated, rowsReviewed]
     return rows;
   };
 
   $: rows = populateRows(nominations);
+  $: rowsReviewed = rows[1];
+  $: rowsCreated = rows[0];
 </script>
 
 <main>
@@ -109,7 +128,7 @@
           </svelte:fragment>
           <Column>
             <NominationOverview
-              totalNominations={rows.length}
+              totalNominations={rowsCreated.length + rowsReviewed.length}
               {reviewCount}
               {artCount}
               {athleticsCount}
@@ -123,7 +142,19 @@
           </Column>
         </AccordionItem>
       </Accordion>
-      <NominationInformation {rows} bind:selectedRowIds />
+
+      <NominationInformation reviewed={false} rows={rowsCreated} bind:selectedRowIds />
+
+      <Accordion size="sm">
+        <AccordionItem>
+          <svelte:fragment slot="title">
+          <h4>Reviewed Nominations</h4>
+          </svelte:fragment>
+          <Column>
+            <NominationInformation reviewed={true} rows={rowsReviewed} bind:selectedRowIds/>
+          </Column>
+        </AccordionItem>
+      </Accordion>
     </div>
     <div id="half-right">
       <h3>Review Nomination</h3>

@@ -45,8 +45,11 @@ export const actions: Actions = {
 
       // when a nomination is unique --> create nominee
       if (toCreate) {
-        if (key == 'ID')
+        if (key == 'ID') {
           data['nominations'] = JSON.stringify([{"ID": value}]);
+          data['nomID'] = value;
+        }
+        
         if (key == 'firstName')
           data[key] = value;
         if (key == 'lastName')

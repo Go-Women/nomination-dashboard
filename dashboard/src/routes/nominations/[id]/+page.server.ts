@@ -10,24 +10,24 @@ export const load: PageServerLoad = async ({fetch, params}) => {
   }
 };
 
-export const actions: Actions = {
-  createNomination: async ({request}) => {
-    const data = await request.formData();
-    const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
-      method: 'POST',
-      body: JSON.stringify({
-        title: data.get('title'),
-        body: data.get('body'),
-        userId: data.get('userId')
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      }
-    });
-    if (res.ok) {
-      // console.log(res);
-    } else {
-      // console.log('Failed! :(');
-    }
-  }
-};
+// export const actions: Actions = {
+//   createNomination: async ({request}) => {
+//     const data = await request.formData();
+//     const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
+//       method: 'POST',
+//       body: JSON.stringify({
+//         title: data.get('title'),
+//         body: data.get('body'),
+//         userId: data.get('userId')
+//       }),
+//       headers: {
+//         'Content-type': 'application/json; charset=UTF-8',
+//       }
+//     });
+//     if (res.ok) {
+//       // console.log(res);
+//     } else {
+//       // console.log('Failed! :(');
+//     }
+//   }
+// };

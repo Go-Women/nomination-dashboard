@@ -7,10 +7,10 @@
   let lastName = nom['nomLast'];
   let name = firstName + ' ' + lastName;
   let nomBy = nom['authorFirst'] + ' ' + nom['authorLast'];
-  let date = nom.date;
+  let date = new Date(nom.date).toLocaleDateString('es-pa');
   let category = nom.category;
   let subcategory = nom.subcategory;
-  let status = nom.status;  // TODO: replace with backend value
+  let status = nom.nomStatus;
 </script>
 
 <div class="bx--content--overview">
