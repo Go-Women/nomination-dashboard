@@ -59,6 +59,53 @@ exports.setJSON = (res, name) => {
   return res;
 };
 
+exports.getCodes = (res) => {
+  // TODO: this will turn a category or subcategory when submitted into a their corresponding code
+  let resultCat = [];
+  let resultsubCat = [];
+  console.log(res);
+  Object.entries(codes).forEach((code, value) => {
+    // check if the category is other
+    if (res.category.includes('Other')) {
+        //  TODO: handle this case
+    } else {
+      if (res.category == code[1])
+        res.category = code[0];
+
+      if (res.subcategory == code[1])
+        res.subcategory = code[0];
+    }
+    // if (code[0] === cat && cat.length == 4) {
+    //   res.category = code[1];
+    // } else if (cat.length > 4){
+    //   let cats = cat.split(',');
+    //   for (const i in cats) {
+    //     if (code[0] === cats[i]) {
+    //       resultCat.push(code[1]);
+    //     }
+    //   }
+    //   res.category = resultCat.join(",");
+    // }
+
+    // // TODO: fix this once judge subcategory is supported on the frontend
+    // if (subCat != null || subCat !== undefined) {
+    //   if (code[0] === subCat && subCat.length == 4) {
+    //         res.subcategory = code[1];
+    //   } else if (subCat.length > 4){
+    //     let cats = subCat.split(',');
+    //     for (const i in cats) {
+    //       if (code[0] === cats[i]) {
+    //         resultsubCat.push(code[1]);
+    //       }
+    //     }
+    //     res.subcategory = resultsubCat.join(",");
+    //     }
+    // }
+  });
+
+  return res;
+};
+
 exports.clean = (nomination) => {
   // TODO: figure out how to handle if BOTH category is chosen without a subcategory and the Other category
   // sets subcategory default to General is if other is not chosen

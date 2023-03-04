@@ -19,6 +19,7 @@
   var getInformation = (nominees: JSON) => {
     let rows = new Array();
     Object.entries(nominees).forEach(([key, nominee], index) => {
+      console.log(nominee);
       let subCat = nominee.subcategory;
       if (subCat == "") {
         subCat = nominee.subcategoryOther;

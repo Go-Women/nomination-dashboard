@@ -11,21 +11,19 @@ exports.create = (req, res) => {
   
     // Create a Nominee
     const nominee = new Nominee({
-      id: req.body.ID,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      fullName: req.body.fullName,
-      cohort: req.body.cohort,
-      status: req.body.data,
-      yob: req.body.yob,
-      category: req.body.category,
-      subcategory: req.body.subcategory,
-      subcategoryOther: req.body.subcategoryOther,
-      nominations: req.body.nominations
+      firstName: req.body.data.firstName,
+      lastName: req.body.data.lastName,
+      cohort: req.body.data.cohort || 4, // TODO: change this when cohort is implemented
+      nomStatus: "Reviewed",
+      yob: req.body.data.yob,
+      category: req.body.data.category,
+      subcategory: req.body.data.subcategory || null,
+      subcategoryOther: req.body.data.subcategoryOther || null,
+      nominations: req.body.data.nominations
     });
   
     // Save Nominee in the database
-    Nominee.create(nomination, (err, data) => {
+    Nominee.create(nominee, (err, data) => {
       if (err)
         res.status(500).send({
           message:

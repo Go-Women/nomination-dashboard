@@ -14,7 +14,7 @@ module.exports = app => {
   router.get("/:id", nominees.findOne);
 
   // Update a Nominee with id
-  router.put("/:id", nominees.update);
+  router.patch("/:id", nominees.update);
 
   // this based on user authentication eventually
   app.use('/nominees', router);

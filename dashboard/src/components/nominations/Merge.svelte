@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button, DataTable } from "carbon-components-svelte";
+  import { Button, DataTable, TextArea } from "carbon-components-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
 
   export let selectedRowIds: string[] = ["b-0"];
@@ -33,6 +33,7 @@
               icon={View}
               href={`nominees/${cell.value.substring(2)}`}
             />
+            <TextArea hidden name={cell.value} value={cell.value.substring(2)}></TextArea>
           {/if}
         {:else}
           {cell.value}

@@ -3,12 +3,10 @@ const utils = require("./utils.model.js");
 
 // constructor
 const Nominee = function(nominee) {
-  this.id = nominee.ID;
   this.firstName = nominee.firstName;
   this.lastName = nominee.lastName;
-  this.fullName = `${nominee.firstName} ${nominee.lastName}`;
   this.cohort = nominee.cohort;
-  this.status = nominee.data;
+  this.nomStatus = nominee.nomStatus;
   this.yob = nominee.yob;
   this.category = nominee.category;
   this.subcategory = nominee.subcategory;
@@ -17,6 +15,8 @@ const Nominee = function(nominee) {
 };
 
 Nominee.create = (newNominee, result) => {
+  utils.getCodes(newNominee);
+  utils.clean(newNominee);
   sql.query("INSERT INTO Nominees SET ?", newNominee, (err, res) => {
     if (err) {
       console.log("error: ", err);

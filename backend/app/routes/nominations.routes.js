@@ -1,10 +1,14 @@
 module.exports = app => {
   const nominations = require("../controllers/nominations.controller.js");
+  const nominees = require("../controllers/nominees.controller.js");
 
   var router = require("express").Router();
 
   // Create a new Nomination
   router.post("/", nominations.create);
+
+  // Create a new Nomination
+  router.post("/review", nominees.create);
 
   // Retrieve all Nominations
   router.get("/", nominations.findAll);
