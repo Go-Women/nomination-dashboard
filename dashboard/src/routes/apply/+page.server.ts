@@ -9,7 +9,8 @@ export const actions: Actions = {
       const [key, value] = field;
       data[key] = value;
     }
-    const res = await fetch('http://localhost:8000/nominations', {
+    console.log(data);
+    const res = await fetch('http://localhost:8000/judges', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -17,6 +18,6 @@ export const actions: Actions = {
       }
     })
     .then(res => res.json())
-    .then(res => console.log(res))
+    .then(res => console.log(res));
   } 
 };

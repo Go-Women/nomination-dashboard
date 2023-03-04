@@ -187,7 +187,7 @@
       <input type="hidden" name="subcategory" bind:value={contribsSub}>
       <hr />
       <h4>All prospective judges are asked to please provide one or both of the following:</h4>
-      <TextInput name="linkedIn" labelText="Link to your LinkedIn profile, or another online resource that provides information about your background" placeholder="https://linkedin.com/in/example" />
+      <TextInput name="linkedin" labelText="Link to your LinkedIn profile, or another online resource that provides information about your background" placeholder="https://linkedin.com/in/example" />
       <TextArea name="biography" labelText="Your bio or a short description of your areas of expertise" placeholder="Type here..." />
       <hr />
       <h4>Additional Information</h4>
