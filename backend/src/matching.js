@@ -1,8 +1,6 @@
-const judges = [];
-const nominees = [];
+const judges = {};
+const nominees = {};
 const matches = {};
-//Change to dictionary
-//Add population functions for dic
 
 // Dataset:
 // {
@@ -17,57 +15,123 @@ const matches = {};
 //   'judgeCapacity': 'int'
 // }
 
-
-function getJudgeSubCat(judge){
-  //check for empty or other
-  //will be multipe
-    var Subcat = "Math";
-    return Subcat;
+function populateJudges(){
+  return 0;
 }
 
-function getNomineeSubCat(nominee){
-  //check for empty or other
-  //will be multipe
-    var Subcat = "Math";
-    return Subcat;
+function populateNominees(){
+  return 0;
 }
 
-function getJudgeCat(judge){
-  //check for empty or other
-  //will be multipe
-    var Cat = "Math";
-    return Cat;
-}
 
-function getNomineeCat(nominee){
-  //check for empty or other
-  //will be multipe
-    var Cat = true;
-    return Cat;
+// function getJudgeSubCat(judge){
+//   //check for empty or other
+//   //will be multipe
+//     var Subcat = "Math";
+//     return Subcat;
+// }
+
+// function getNomineeSubCat(nominee){
+//   //check for empty or other
+//   //will be multipe
+//     var Subcat = "Math";
+//     return Subcat;
+// }
+
+// function getJudgeCat(judge){
+//   //check for empty or other
+//   //will be multipe
+//     var Cat = "Math";
+//     return Cat;
+// }
+
+// function getNomineeCat(nominee){
+//   //check for empty or other
+//   //will be multipe
+//     var Cat = true;
+//     return Cat;
+// }
+
+function isJudgeAtCapacity(judge){
+    //returns true if judge is at capacity
+    var count = 0;
+    for (let value in matches){
+      if (value == judge) {
+        count = count + 1;
+      }
+    }
+    if (count == getJudgeCapacity(judge)) {
+      return true;
+    }
+    return false;
 }
 
 function getJudgeCapacity(judge){
-  var cap = 3;
-  return cap;
+  //return juge capacity number
+  return 3;
+}
+
+function isNomineeAtCapacity(nominee){
+  //returns true if nominee is no longer needing judges
+  var count = 0;
+  for (let x in matches){
+    if (x == nominee) {
+      count = count + 1;
+    }
+  }
+  if (count == 3) {
+    return true;
+  }
+  return false;
 }
 
 function matchSubcat(){
   for (let i = 0; i < 3; i++){
-    for (let x = 0; x < nominees.length; x++){
-      for (let y = 0; y < judges.length; y++){
-            if (getJudgeSubCat(y) == getNomineeSubCat(x)){
-              if (getJudgeCapacity(y) == true) {
-                matches[x] = y;
-              }
-            }
-            else {
-                if (getJudgeCat(y) == getNomineeCat(x)) {
-                  if (getJudgeCapacity(y) == true) {
-                    matches[x] = y;
-                  }
+    for (let x in nominees){
+      if (isNomineeAtCapacity[x] == false) {
+        for (let y in judges){
+              if (judges[y] == nominees[x]){
+                if (isJudgeAtCapacity(y) == false) {
+                  matches[x] = y;
                 }
-            }
+              }
+        }
       }
     }
 }
+}
+
+function matchCat(){
+  for (let i = 0; i < 3; i++){
+    for (let x in nominees){
+      if (isNomineeAtCapacity[x] == false) {
+        for (let y in judges){
+              if (judges[y] == nominees[x]){
+                if (isJudgeAtCapacity[y] == false) {
+                  matches[x] = y;
+                }
+              }
+        }
+      }
+    }
+}
+}
+
+function matchCheck(){
+    for (let x in nominees){
+      if (isNomineeAtCapacity[x] == false) {
+        return true;
+    }
+  }
+  return false;
+}
+
+function mainMatching(){
+  populateJudges();
+  populateNominees();
+  matchSubcat();
+  matchCat();
+  if (matchCheck == true) {
+    print("oh no!");
+  }
 }
