@@ -23,7 +23,6 @@ function populateNominees(){
   return 0;
 }
 
-
 // function getJudgeSubCat(judge){
 //   //check for empty or other
 //   //will be multipe
