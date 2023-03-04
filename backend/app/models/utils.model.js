@@ -75,32 +75,7 @@ exports.getCodes = (res) => {
       if (res.subcategory == code[1])
         res.subcategory = code[0];
     }
-    // if (code[0] === cat && cat.length == 4) {
-    //   res.category = code[1];
-    // } else if (cat.length > 4){
-    //   let cats = cat.split(',');
-    //   for (const i in cats) {
-    //     if (code[0] === cats[i]) {
-    //       resultCat.push(code[1]);
-    //     }
-    //   }
-    //   res.category = resultCat.join(",");
-    // }
-
-    // // TODO: fix this once judge subcategory is supported on the frontend
-    // if (subCat != null || subCat !== undefined) {
-    //   if (code[0] === subCat && subCat.length == 4) {
-    //         res.subcategory = code[1];
-    //   } else if (subCat.length > 4){
-    //     let cats = subCat.split(',');
-    //     for (const i in cats) {
-    //       if (code[0] === cats[i]) {
-    //         resultsubCat.push(code[1]);
-    //       }
-    //     }
-    //     res.subcategory = resultsubCat.join(",");
-    //     }
-    // }
+    // TODO: implement this for status codes
   });
 
   return res;
@@ -115,6 +90,19 @@ exports.clean = (nomination) => {
   }
 
   return nomination;
+}
+
+exports.merge = (nominee, nomination) => {
+  // nominations: '[{"ID":"2"}]'
+  // console.log(nominee);
+  var merged = JSON.parse(nominee.nominations);
+  merged.push(JSON.parse(nomination)[0]);
+  // nominee.nominations = JSON.stringify();
+  // console.log(merged);
+  nominee.nominations = JSON.stringify(merged);
+  nominee.nomStatus = 'Reviewed';
+
+  return nominee;
 }
 
 exports.formatJudgeInput = (judge) => {

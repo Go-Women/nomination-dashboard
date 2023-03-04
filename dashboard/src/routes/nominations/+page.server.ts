@@ -40,44 +40,45 @@ export const actions: Actions = {
         } else {
           // add nomination id with existing nominee
           data['action'] = 'MERGE';
+          data['nomineeID'] = value;
           toCreate = false;
         }
       }
 
       // when a nomination is unique --> create nominee
-      if (toCreate) {
-        if (key == 'nominationID') {
-          data['nominations'] = JSON.stringify([{"ID": value}]);
-          data['nominationID'] = value;
-        }
-
-        if (key == 'firstName')
-          data[key] = value;
-        if (key == 'lastName')
-          data[key] = value;
-        if (key == 'yob')
-          data[key] = value
-        if (key == 'category')
-          data[key] = value
-        if (key == 'subcategory')
-          data[key] = value
-        if (key == 'subcategoryOther')
-          data[key] = value
-      } else {
-        console.log(key, value);
-        // TODO: how do we get the nominee id that already exists to merge
-        // when a nomination is selected to be merged
-        // if () {
-        //   // TODO: handle merging with an existing nominee
-        // }
+      if (key == 'nominationID') {
+        data['nominations'] = JSON.stringify([{"ID": value}]);
+        data['nominationID'] = value;
       }
-      
+
+      if (key == 'firstName')
+        data[key] = value;
+      if (key == 'lastName')
+        data[key] = value;
+      if (key == 'yob')
+        data[key] = value
+      if (key == 'category')
+        data[key] = value
+      if (key == 'subcategory')
+        data[key] = value
+      if (key == 'subcategoryOther')
+        data[key] = value
     }
 
     if (toCreate) {
       console.log(data);  
       const res = await fetch(`http://localhost:8000/nominations/review`, {
         method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        }
+      })
+      .then(res => res.json())
+    } else {
+      console.log(data);  
+      const res = await fetch(`http://localhost:8000/nominations/review`, {
+        method: 'PATCH',
         body: JSON.stringify(data),
         headers: {
           'Content-type': 'application/json; charset=UTF-8',

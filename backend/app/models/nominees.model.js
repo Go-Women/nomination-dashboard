@@ -86,6 +86,30 @@ Nominee.updateStatus = (id, status, result) => {
   );
 }
 
+Nominee.merge = (id, nominee, nomination, result) => {
+  utils.merge(nominee, nomination);
+  sql.query(
+    "UPDATE Nominees SET nomStatus = ?, nominations = ? WHERE id = ?",
+    [`${nominee.nomStatus}`, `${nominee.nominations}`, `${BigInt(id)}`],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        // not found Nomination with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      console.log("updated nominee: ", { id: id, nominations: nominee.nominations});
+      result(null, { id: id, ...nominee });
+    }
+  );
+};
+
 Nominee.updateById = (id, nominee, result) => {
   // TODO: Needs to be implemented
   // sql.query(

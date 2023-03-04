@@ -85,7 +85,49 @@ exports.review = (req, res) => {
     case 'MERGE':
       console.log(`Merging nomination ${req.body.nominationID} into nominee ${req.body.nomineeID}.`);
       // TODO
-      res.status(200).send("OK");
+      Nominee.findById(`${req.body.nomineeID}`, (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Not found Nomination with id ${req.body.nomineeID}.`
+            });
+          } else {
+            res.status(500).send({
+              message: `Error updating Nomination with id ${req.body.nomineeID}`
+            });
+          }
+        } else {
+          // TODO: handle merging data
+          Nominee.merge(data.ID, data, `${req.body.nominations}`, (err, data) => {
+            if (err) {
+              if (err.kind === "not_found") {
+                res.status(404).send({
+                  message: `Not found Nomination with id ${req.body.date.nominationId}.`
+                });
+              } else {
+                res.status(500).send({
+                  message: `Error updating Nomination with id ${req.params.id}`
+                });
+              }
+            } else {
+              Nomination.updateStatus(`${req.body.nominationID}`, 'Reviewed', (err, data) => {
+                if (err) {
+                  if (err.kind === "not_found") {
+                    res.status(404).send({
+                      message: `Not found Nomination with id ${req.body.nominationId}.`
+                    });
+                  } else {
+                    res.status(500).send({
+                      message: `Error updating Nomination with id ${req.body.nominationId}`
+                    });
+                  }
+                } else res.send(data);
+              });
+            }
+          });
+        }
+      });
+      // res.status(200).send("OK");
       break;
     case 'REJECT':
       console.log(`Rejecting nomination ${req.body.nominationID}.`);
@@ -93,11 +135,11 @@ exports.review = (req, res) => {
         if (err) {
           if (err.kind === "not_found") {
             res.status(404).send({
-              message: `Not found Nomination with id ${req.body.date.nominationId}.`
+              message: `Not found Nomination with id ${req.body.nominationId}.`
             });
           } else {
             res.status(500).send({
-              message: `Error updating Nomination with id ${req.params.id}`
+              message: `Error updating Nomination with id ${req.body.nominationId}`
             });
           }
         } else res.send(data);
