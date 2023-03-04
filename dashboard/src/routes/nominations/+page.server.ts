@@ -24,32 +24,33 @@ function setSelectedValue(key: string) {
 }
 
 export const actions: Actions = {
-  default: async ({request, params}) => {
+  accept: async ({request, params}) => {
     const formData = await request.formData();
     const data: { [name: string]: any } = {};
 
     var toCreate = false;
     for (let field of formData) {
       const [key, value] = field;
-      // console.log(key, value, field);
-      if (key.startsWith('select-row-b-')) {
-        setSelectedValue(key);
-        if (option == '0') {
+      if (key == 'nomineeID') {
+        // setSelectedValue(key);
+        if (value == '0') {
           // a new nominee needs to be created
           toCreate = true;
+          data['action'] = 'CREATE';
         } else {
           // add nomination id with existing nominee
+          data['action'] = 'MERGE';
           toCreate = false;
         }
       }
 
       // when a nomination is unique --> create nominee
       if (toCreate) {
-        if (key == 'ID') {
+        if (key == 'nominationID') {
           data['nominations'] = JSON.stringify([{"ID": value}]);
-          data['nomID'] = value;
+          data['nominationID'] = value;
         }
-        
+
         if (key == 'firstName')
           data[key] = value;
         if (key == 'lastName')
@@ -63,17 +64,41 @@ export const actions: Actions = {
         if (key == 'subcategoryOther')
           data[key] = value
       } else {
+        console.log(key, value);
+        // TODO: how do we get the nominee id that already exists to merge
         // when a nomination is selected to be merged
-        if (key == 'b-' + option) {
-          // TODO: handle merging with an existing nominee
-        }
+        // if () {
+        //   // TODO: handle merging with an existing nominee
+        // }
       }
       
     }
+
+    if (toCreate) {
+      console.log(data);  
+      const res = await fetch(`http://localhost:8000/nominations/review`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        }
+      })
+      .then(res => res.json())
+    }
+  },
+  reject: async ({request, params}) => {
+    const formData = await request.formData();
+    const data: { [name: string]: any } = {};
+
+    for (let field of formData) {
+      const [key, value] = field;
+      data[key] = value
+    }
+    data['action'] = 'REJECT';
     console.log(data);
     const res = await fetch(`http://localhost:8000/nominations/review`, {
-      method: 'POST',
-      body: JSON.stringify({data}),
+      method: 'PATCH',
+      body: JSON.stringify(data),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       }

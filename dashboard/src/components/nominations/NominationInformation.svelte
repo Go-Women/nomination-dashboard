@@ -43,7 +43,8 @@
             if (diff > 0) return 1;
             return 0;
           }
-      }
+      },
+      {key: "status", value: "Status"}
       ]}
       rows={rows}
       {sortKey} {sortDirection} {pageSize} {page} sortable

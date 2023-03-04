@@ -26,7 +26,7 @@
 </script>
 
 <main>
-  <Form method="POST">
+  <!-- <Form method="POST"> -->
   <div class="nom-information">
     <ul class="no-style">
       <li>Name: {nom['nomFirst']} {nom['nomLast']} &mdash; Born: {nom.nomYOB}</li>
@@ -78,8 +78,35 @@
       <Merge bind:selectedRowIds bind:rows={rows} />
     </div>
     <div class="button-area">
-      <Button kind="tertiary" type=submit>Confirm Nomination</Button>
-      <Button kind="danger-tertiary">Reject Nomination</Button>
+      <form method="POST" action="?/accept" use:enhance={() => {
+        // nominations = nominations.filter(n => n.ID != nom.ID);
+        incomingRowIds = [];
+        return async ({update}) => {
+          await update();
+        }
+      }}>
+        <input name="nomineeID" type="hidden" value={selectedNominee} />
+        <input hidden name="nominationID" value={nom.ID} />
+        <input hidden name="firstName" value={nom.nomFirst} />
+        <input hidden name="lastName" value={nom.nomLast} /> 
+        <input hidden name="yob" value={nom.nomYOB} />   
+        <input hidden name="category" value={nom.category} />
+        {#if nom.subcategoryOther}
+          <TextArea hidden name="subcategoryOther" value={nom.subcategoryOther}></TextArea>
+        {:else}
+          <TextArea hidden name="subcategory" value={nom.subcategory}></TextArea>
+        {/if}
+        <Button type="submit" kind="tertiary">Confirm Nomination</Button>
+      </form>
+      <form method="POST" action="?/reject" use:enhance={() => {
+        // nominations = nominations.filter(n => n.ID != nom.ID);
+        return async ({update}) => {
+          await update();
+        }
+      }}>
+        <input name="nominationID" type="hidden" value={nom.ID} />
+        <Button type="submit" kind="danger-tertiary">Reject Nomination</Button>
+      </form>
       {#if selectedRowIds[0] === 'b-0'}
         <div class="info">A new nominee will be created for this nomination.</div>
       {:else}
@@ -87,18 +114,7 @@
       {/if}
     </div>
   </div>
-  <TextArea hidden name="ID" value={nom.ID}></TextArea>
-  <TextArea hidden name="firstName" value={nom.nomFirst}></TextArea>
-  <TextArea hidden name="lastName" value={nom.nomLast}></TextArea>  
-  <TextArea hidden name="yob" value={nom.nomYOB}></TextArea>   
-  <TextArea hidden name="category" value={nom.category}></TextArea>
-  {#if nom.subcategoryOther}
-    <TextArea hidden name="subcategoryOther" value={nom.subcategoryOther}></TextArea>
-  {:else}
-    <TextArea hidden name="subcategory" value={nom.subcategory}></TextArea>
-  {/if}
-
-</Form>
+<!-- </Form> -->
 </main>
 
 <style>

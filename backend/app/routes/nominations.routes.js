@@ -7,8 +7,11 @@ module.exports = app => {
   // Create a new Nomination
   router.post("/", nominations.create);
 
-  // Create a new Nomination
+  // Create a new Nominee
   router.post("/review", nominees.create);
+
+  // Update a Nomination when it is under review
+  router.patch("/review", nominations.review);
 
   // Retrieve all Nominations
   router.get("/", nominations.findAll);

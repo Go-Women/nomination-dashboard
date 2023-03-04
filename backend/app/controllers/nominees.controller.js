@@ -1,4 +1,5 @@
 const Nominee = require("../models/nominees.model.js");
+const Nomination = require("../models/nominations.model.js");
 
 // Create and Save a new Nominee
 exports.create = (req, res) => {
@@ -11,38 +12,37 @@ exports.create = (req, res) => {
   
     // Create a Nominee
     const nominee = new Nominee({
-      firstName: req.body.data.firstName,
-      lastName: req.body.data.lastName,
-      cohort: req.body.data.cohort || 4, // TODO: change this when cohort is implemented
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      cohort: req.body.cohort || 4, // TODO: change this when cohort is implemented
       nomStatus: "Reviewed",
-      yob: req.body.data.yob,
-      category: req.body.data.category,
-      subcategory: req.body.data.subcategory || null,
-      subcategoryOther: req.body.data.subcategoryOther || null,
-      nominations: req.body.data.nominations
+      yob: req.body.yob,
+      category: req.body.category,
+      subcategory: req.body.subcategory || null,
+      subcategoryOther: req.body.subcategoryOther || null,
+      nominations: req.body.nominations
     });
 
-    Nominee.updateStatus(req.body.data.nomID, nominee.nomStatus, (err, data) => {
+    Nomination.updateStatus(req.body.nominationID, nominee.nomStatus, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
-            message: `Nomination not found with id ${req.body.nomID}.`
+            message: `Nomination not found with id ${req.body.nominationID}.`
           });
         } else {
           res.status(500).send({
-            message: `Error updating Nomination with id ${req.body.nomID}`
+            message: `Error updating Nomination with id ${req.body.nominationID}`
           });
         }
       } else {
-        res.send(data);
         // Save Nominee in the database
-        Nominee.create(nominee, (nomErr, nomData) => {
+        Nominee.create(nominee, (nomErr, data) => {
           if (nomErr)
             res.status(500).send({
               message:
                 err.message || "Some error occurred while creating the Nominee."
             });
-          else res.send(nomData);
+          else res.send(data);
         });
       }
     });

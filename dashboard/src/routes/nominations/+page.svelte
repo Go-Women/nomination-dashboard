@@ -51,7 +51,15 @@
     Object.entries(nominations).forEach(([key, nomination], index) => {
       
 
-      if (nomination.nomStatus == "Reviewed"){ 
+      if (nomination.nomStatus == "Created" ){ 
+        rowsCreated.push({
+            id: `a-${nomination.ID}`,
+            nominee: `${nomination.nomFirst} ${nomination.nomLast}`,
+            category: nomination.category,
+            nominator: `${nomination.authorFirst} ${nomination.authorLast}`,
+            date: new Date(nomination.date).toLocaleDateString('es-pa')
+          });
+      } else if (nomination.nomStatus != "Created") {
         reviewCount++;
         rowsReviewed.push(
           {
@@ -59,16 +67,8 @@
             nominee: `${nomination.nomFirst} ${nomination.nomLast}`,
             category: nomination.category,
             nominator: `${nomination.authorFirst} ${nomination.authorLast}`,
-            date: new Date(nomination.date).toLocaleDateString('es-pa')
-          });
-        
-      } else if (nomination.nomStatus == "Created") {
-          rowsCreated.push({
-            id: `a-${nomination.ID}`,
-            nominee: `${nomination.nomFirst} ${nomination.nomLast}`,
-            category: nomination.category,
-            nominator: `${nomination.authorFirst} ${nomination.authorLast}`,
-            date: new Date(nomination.date).toLocaleDateString('es-pa')
+            date: new Date(nomination.date).toLocaleDateString('es-pa'),
+            status: `${nomination.nomStatus}`
           });
       }
 

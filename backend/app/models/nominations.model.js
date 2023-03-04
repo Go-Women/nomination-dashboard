@@ -75,6 +75,29 @@ Nomination.getAll = result => {
   });
 };
 
+Nomination.updateStatus = (id, status, result) => {
+  sql.query(
+    "UPDATE Nominations SET nomStatus = ? WHERE id = ?",
+    [status, `${BigInt(id)}`],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        // not found Nomination with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      console.log("updated nomination: ", { id: id, status: status});
+      result(null, { id: id, ...status });
+    }
+  );
+}
+
 Nomination.updateById = (id, nomination, result) => {
   // TODO: Needs to be implemented
   // sql.query(
