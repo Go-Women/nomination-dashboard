@@ -30,7 +30,7 @@ export const actions: Actions = {
           break;
       }        
     }
-    // data["info"] = JSON.stringify(data.info);
+    
     console.log(data);
     const res = await fetch('http://localhost:8000/judges', {
       method: 'POST',
@@ -40,6 +40,6 @@ export const actions: Actions = {
       }
     })
     .then(res => res.json())
-    .then(res => console.log(res))
+    .then(res => console.log(res));
   } 
 };
