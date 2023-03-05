@@ -63,11 +63,9 @@ Judge.getAll = result => {
 };
 
 Judge.updateById = (id, judge, result) => {
-  utils.formatJudgeInput(judge);
-  // console.log(judge);
   sql.query(
-    "UPDATE Users SET info = ?, active = ?, email = ? WHERE id = ? AND type ='judge'",
-    [judge.info, judge.active, judge.email, id],
+    "UPDATE Users SET active = ?, email = ?, info = ? WHERE id = ? AND type ='judge'",
+    [(judge.active ? judge.active : '0'), judge.email, judge.info, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);

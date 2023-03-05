@@ -39,6 +39,7 @@ exports.findAll = (req, res) => {
           err.message || "Some error occurred while retrieving Judges."
       });
     else res.send(data);
+    console.log(data);
   });
 };
 
@@ -79,7 +80,7 @@ exports.update = (req, res) => {
           });
         } else {
           res.status(500).send({
-            message: "Error updating Judge with id " + req.params.id
+            message: `Error updating Judge with id ${req.params.id}.`
           });
         }
       } else res.send(data);

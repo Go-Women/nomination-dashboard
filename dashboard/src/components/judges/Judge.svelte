@@ -74,13 +74,13 @@
   let email = judge.email;
   // let subcategory = judge.info.subcategory;
   let capacity = judge.info.capacity;
-  let previousCheck = judge.info.previousJudge;
-  let interested = judge.info.interested;
+  let previousJudge = judge.info.previousJudge;
+  let deadline = judge.info.deadline;
   let active = judge.active;
   let linkedin = judge.info.linkedin || "";
   let addInfo = judge.info.additionalInfo || "";
 
-  let pronouns = ["she/her", "he/him", "they/them"];
+  let pronouns = ["She/Her", "He/Him", "They/Them", "Other"];
 
   const categoryValues = function (categories: string[]): string {
     let vals = "";
@@ -95,7 +95,7 @@
   }
 
   const pronounID = function (): string {
-    let pn = "other";
+    let pn = "Other";
     pronouns.forEach((noun, index) => {
       if (noun.toString().includes(pronoun)) {
         pn = index.toString();
@@ -122,15 +122,15 @@
               <Row>
                 <Checkbox
                   name="previousJudge"
-                  bind:checked={previousCheck}
-                  value={previousCheck}
+                  bind:checked={previousJudge}
+                  value={previousJudge}
                   labelText="Previous Judge"
                 />
                 <Checkbox
-                  name="interested"
-                  bind:checked={interested}
-                  value={interested}
-                  labelText="Interested"
+                  name="deadline"
+                  bind:checked={deadline}
+                  value={deadline}
+                  labelText="Can Meet Deadline?"
                 />
                 <Checkbox
                   name="active"
@@ -210,16 +210,16 @@
                 <Row>
                   <Checkbox
                     name="previousJudge"
-                    bind:checked={previousCheck}
-                    value={previousCheck}
+                    bind:checked={previousJudge}
+                    value={previousJudge}
                     labelText="Previous Judge"
                     disabled
                   />
                   <Checkbox
-                    name="interested"
-                    bind:checked={interested}
-                    value={interested}
-                    labelText="Interested"
+                    name="deadline"
+                    bind:checked={deadline}
+                    value={deadline}
+                    labelText="Can Meet Deadline?"
                     disabled
                   />
                   <Checkbox

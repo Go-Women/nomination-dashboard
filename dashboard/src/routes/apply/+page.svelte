@@ -34,7 +34,7 @@
   }
 
   const pronounID = function (): string {
-    let pn = "other";
+    let pn = "Other";
     pronouns.forEach((noun, index) => {
       if (noun.toString().includes(pronoun)) {
         pn = index.toString();
@@ -96,8 +96,8 @@
       <FormGroup>
         <h4>Have you been a Nomination judge before?</h4>
         <RadioButtonGroup>
-          <RadioButton name="previousCheck" value=1 labelText="Yes" required />
-          <RadioButton name="previousCheck" value=0 labelText="No" />
+          <RadioButton name="previousJudge" value=1 labelText="Yes" required />
+          <RadioButton name="previousJudge" value=0 labelText="No" />
         </RadioButtonGroup>
       </FormGroup>
       <FormGroup>
