@@ -24,12 +24,12 @@
     let rows = new Array();
     Object.entries(matches).forEach(([key, match], index) => {
       let subCat = match.subcategory;
-      if (subCat == "") {
+      if (subCat == "" || subCat == null) {
         subCat = match.subcategoryOther;
       }
 
       let judgeSubCat = match.judgeSubcategory;
-      if (judgeSubCat == "") {
+      if (judgeSubCat == "" || judgeSubCat == null) {
         judgeSubCat = match.judgeSubcategoryOther;
       }
 
