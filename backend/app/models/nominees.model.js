@@ -63,6 +63,8 @@ Nominee.getAll = result => {
   });
 };
 
+
+
 Nominee.updateById = (id, nominee, result) => {
   // TODO: Needs to be implemented
   // sql.query(
