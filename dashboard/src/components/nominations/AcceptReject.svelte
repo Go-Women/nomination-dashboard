@@ -78,13 +78,14 @@
       <Merge bind:selectedRowIds bind:rows={rows} />
     </div>
     <div class="button-area">
-      <form method="POST" action="?/accept" use:enhance={() => {
+      <form method="POST" action="?/accept">
+      <!-- <form method="POST" action="?/accept" use:enhance={() => {
         // nominations = nominations.filter(n => n.ID != nom.ID);
         incomingRowIds = [];
         return async ({update}) => {
           await update();
         }
-      }}>
+      }}> -->
         <input name="nomineeID" type="hidden" value={selectedNominee} />
         <input hidden name="nominationID" value={nom.ID} />
         <input hidden name="firstName" value={nom.nomFirst} />
@@ -98,12 +99,13 @@
         {/if}
         <Button type="submit" kind="tertiary">Confirm Nomination</Button>
       </form>
-      <form method="POST" action="?/reject" use:enhance={() => {
+      <form method="POST" action="?/reject">
+      <!-- <form method="POST" action="?/reject" use:enhance={() => {
         // nominations = nominations.filter(n => n.ID != nom.ID);
         return async ({update}) => {
           await update();
         }
-      }}>
+      }}> -->
         <input name="nominationID" type="hidden" value={nom.ID} />
         <Button type="submit" kind="danger-tertiary">Reject Nomination</Button>
       </form>

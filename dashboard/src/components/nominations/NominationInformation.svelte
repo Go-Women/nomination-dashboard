@@ -12,7 +12,7 @@
   import View from "carbon-icons-svelte/lib/Launch.svelte";
   export let rows: any;
   export let selectedRowIds: string[] = [];
-  export let reviewed: boolean;
+  export let reviewed: any;
 
   var pageSize:number = 25;
   var page:number = 1;
@@ -23,7 +23,7 @@
   };
 
   const sortKey:string = "date";
-  const sortDirection:string = "descending";
+  const sortDirection = "descending";
 </script>
 
 <main class="bx--content-main">
