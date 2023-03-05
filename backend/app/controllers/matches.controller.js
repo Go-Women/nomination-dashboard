@@ -16,7 +16,7 @@ exports.create = (req, res) => {
     });
   
     // Save Match in the database
-    Match.create(nomination, (err, data) => {
+    Match.create(match, (err, data) => {
       if (err)
         res.status(500).send({
           message:
