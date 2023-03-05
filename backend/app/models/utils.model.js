@@ -55,19 +55,21 @@ exports.getCategories = (res, cat, subCat) => {
 };
 
 exports.setJSON = (res, name) => {
-  res[name] = JSON.parse(res[name])[0];
+  res[name] = JSON.parse(res[name]);
   return res;
 };
 
-exports.clean = (nomination) => {
+exports.clean = (jsonData) => {
   // TODO: figure out how to handle if BOTH category is chosen without a subcategory and the Other category
   // sets subcategory default to General is if other is not chosen
   // this assumes that the other field requires the user to type something in that field
-  if (nomination.subcategory == undefined && nomination.subcategoryOther == undefined) {
-    nomination.subcategory = 's100';
+  // TODO: support this for judges
+  console.log(jsonData.category, jsonData.subcategory);
+  if (jsonData.subcategory == undefined && jsonData.subcategoryOther == undefined) {
+    jsonData.subcategory = 's100';
   }
 
-  return nomination;
+  return jsonData;
 }
 
 exports.formatJudgeInput = (judge) => {

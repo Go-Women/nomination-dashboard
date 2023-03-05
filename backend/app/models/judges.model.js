@@ -3,16 +3,18 @@ const utils = require("./utils.model.js");
 
 // constructor
 const Judge = function(judge) {
-  this.id = judge.ID;
   this.type = judge.type;
   this.email = judge.email;
   this.firstName = judge.firstName;
   this.lastName = judge.lastName;
   this.active = judge.active;
-  this.info = judge.data;
+  this.info = judge.info;
 };
 
 Judge.create = (newJudge, result) => {
+  var info = utils.clean(newJudge.info);
+  newJudge.info = JSON.stringify(info);
+
   sql.query("INSERT INTO Users SET ?", newJudge, (err, res) => {
     if (err) {
       console.log("error: ", err);

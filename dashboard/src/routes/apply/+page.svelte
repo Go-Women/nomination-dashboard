@@ -1,7 +1,7 @@
 <script lang="ts">
   import {
       Button, Checkbox, ComboBox, Dropdown, Form,
-      FormGroup, NumberInput, RadioButton, RadioButtonGroup, Slider, TextArea, TextInput
+      FormGroup, NumberInput, RadioButton, RadioButtonGroup, Select, SelectItem, SideNavItems, Slider, TextArea, TextInput
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
   import Login from "carbon-icons-svelte/lib/Login.svelte";
@@ -25,16 +25,28 @@
 
   let contribs: string[] = [];
   let contribsSub: string[] = [];
+  
+  let pronoun = "She/Her";
+  let pronouns = ["She/Her", "He/Him", "They/Them", "Other"];
+ 
+  function setPronoun(id: string) {
+    pronoun = pronouns[parseInt(id)];
+  }
+
+  const pronounID = function (): string {
+    let pn = "other";
+    pronouns.forEach((noun, index) => {
+      if (noun.toString().includes(pronoun)) {
+        pn = index.toString();
+      }
+    });
+    return pn;
+  };
+
+  
 </script>
 
 <main>
-  <!-- <Theme bind:theme persist persistKey="__carbon-theme" />
-
-  <RadioButtonGroup legendText="Color Theme" bind:selected={theme}>
-    <RadioButton labelText="White" value="white" />
-    <RadioButton labelText="Dark" value="g90" />
-  </RadioButtonGroup> -->
-
   <div id="header-box">
     <h1>National Women's Hall of Fame Judge Application</h1>
   </div>
@@ -64,40 +76,42 @@
       </div>
       <h3>About You</h3>
       <FormGroup>
-        <TextInput name="first" labelText="First Name" required />
-        <TextInput name="last" labelText="Last Name" required />
+        <TextInput name="firstName" labelText="First Name" required />
+        <TextInput name="lastName" labelText="Last Name" required />
         <TextInput name="email" type="email" labelText="Your Email" placeholder="example@example.com" required />
-        <TextInput name="phone" labelText="Your Phone Number" placeholder="(555) - 555 - 5555" required />
-        <Dropdown
-          titleText="Pronouns"
-          selectedId="0"
-          items={[
-            { id: "0", text: "She/Her" },
-            { id: "1", text: "He/Him" },
-            { id: "2", text: "They/Them" },
-            { id: "3", text: "Other" },
-          ]}
-        />
+        <TextInput name="phoneNumber" type="tel" labelText="Your Phone Number" placeholder="(555) - 555 - 5555" required />
+        <br />
+        <Select
+          labelText="Pronouns"
+          name="pronouns"
+          bind:value={pronouns[pronoun]}
+          selected={pronounID()}
+          on:change={(e) => setPronoun(e.target.value)}
+        >
+          {#each pronouns as noun, index}
+            <SelectItem value={index.toString()} text={noun} />
+          {/each}
+        </Select>
       </FormGroup>
       <FormGroup>
         <h4>Have you been a Nomination judge before?</h4>
         <RadioButtonGroup>
-          <RadioButton name="previousJudge" value=1 labelText="Yes" required />
-          <RadioButton name="previousJudge" value=0 labelText="No" />
+          <RadioButton name="previousCheck" value=1 labelText="Yes" required />
+          <RadioButton name="previousCheck" value=0 labelText="No" />
         </RadioButtonGroup>
       </FormGroup>
       <FormGroup>
         <h4>The deadline for reviewing nominations will be June 15, {cohort - 1}</h4>
         <RadioButtonGroup>
-          <RadioButton name="deadlineOk" value=1 labelText="I am comfortable with this deadline." required />
-          <RadioButton name="deadlineOk" value=0 labelText="I am not comfortable with this deadline." />
+          <RadioButton name="deadline" value=1 labelText="I am comfortable with this deadline." required />
+          <RadioButton name="deadline" value=0 labelText="I am not comfortable with this deadline." />
         </RadioButtonGroup>
       </FormGroup>
       <FormGroup>
         <h4>How many nominations would you be comfortable reviewing?</h4>
         <p>Previous judges have resported spending 20-60 minutes reviewing each nomination.</p>
         <Slider
-          name="nominationCount"
+          name="capacity"
           min={1}
           max={20}
           value={5}
@@ -185,10 +199,15 @@
         </FormGroup>
       {/if}
       <input type="hidden" name="subcategory" bind:value={contribsSub}>
+      {#if sec_other}
+        <FormGroup legendText="My nominee made contributions within this subcategory: Other">
+          <TextInput name="subcategoryOther" placeholder="Please type another option here" required />
+        </FormGroup>
+      {/if}
       <hr />
       <h4>All prospective judges are asked to please provide one or both of the following:</h4>
-      <TextInput name="linkedIn" labelText="Link to your LinkedIn profile, or another online resource that provides information about your background" placeholder="https://linkedin.com/in/example" />
-      <TextArea name="biography" labelText="Your bio or a short description of your areas of expertise" placeholder="Type here..." />
+      <TextInput name="linkedin" type="url" labelText="Link to your LinkedIn profile, or another online resource that provides information about your background" placeholder="https://linkedin.com/in/example" />
+      <TextArea name="bio" labelText="Your bio or a short description of your areas of expertise" placeholder="Type here..." />
       <hr />
       <h4>Additional Information</h4>
       <p>
@@ -196,7 +215,7 @@
         you may have in judging certain nominees or categories of nominees, please note them here.
       </p>
       <TextArea name="conflicts" labelText="Conflicts (optional)" placeholder="Type here..." />
-      <TextArea name="additionalInfo" labelText="Is there anything else you'd like to share with Hall staff? (optional)" placeholder="Type here..." />
+      <TextArea name="addInfo" labelText="Is there anything else you'd like to share with Hall staff? (optional)" placeholder="Type here..." />
       <div id="submit-button">
         <Button type="submit">Submit</Button>
       </div>

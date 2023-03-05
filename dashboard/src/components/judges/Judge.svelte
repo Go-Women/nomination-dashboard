@@ -77,7 +77,7 @@
   let previousCheck = judge.info.previousJudge;
   let interested = judge.info.interested;
   let active = judge.active;
-  let linkedin = judge.linkedin || "";
+  let linkedin = judge.info.linkedin || "";
   let addInfo = judge.info.additionalInfo || "";
 
   let pronouns = ["she/her", "he/him", "they/them"];

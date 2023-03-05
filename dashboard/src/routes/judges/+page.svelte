@@ -35,7 +35,8 @@
         active: judge.active,
         category: judge.info.category,
         subcategory: judge.info.subcategory,
-        capacity: judge.info.capacity
+        capacity: judge.info.capacity,
+        
       };
 
       if (judge.active === 1) {
