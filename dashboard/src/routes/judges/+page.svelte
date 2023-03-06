@@ -24,9 +24,7 @@
   export let matchedCount:number = 0;
 
   var getInformation = (judges: JSON) => {
-    console.log(judges);
     let rows = new Array();
-    let rowID = 1;
     Object.entries(judges).forEach(([key, judge], index) => {
       let data = {
         id: judge.ID,

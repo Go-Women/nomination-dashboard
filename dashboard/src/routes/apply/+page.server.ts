@@ -30,8 +30,7 @@ export const actions: Actions = {
           break;
       }        
     }
-    
-    console.log(data);
+
     const res = await fetch('http://localhost:8000/judges', {
       method: 'POST',
       body: JSON.stringify(data),
