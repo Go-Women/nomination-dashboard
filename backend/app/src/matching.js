@@ -214,7 +214,7 @@ function matchCat() {
 // }
 
 // TODO: then add any unmatched nominees to a separate manual review list
-}
+//}
 
 function matchCheck(){
     for (let x in nominees){
