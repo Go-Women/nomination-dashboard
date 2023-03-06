@@ -39,6 +39,14 @@ function getNomineeCat(nominee){
   return nominee["nomCategory"];
 }
 
+function checkOther(nominee) {
+  //returns true if other category
+  if (nominee["nomSubcategoryOther"] !== null) {
+    return true;
+  }
+  return false;
+}
+
 function isJudgeAtCapacity(judge){
     //returns true if judge is at capacity
     var count = 0;
@@ -75,25 +83,27 @@ function isNomineeAtCapacity(nominee){
 function matchSubcat(){
   for (let i = 0; i < 3; i++){
     for (let x in nominees){
-      if (isNomineeAtCapacity[x] == false) {
-        for (let y in judges){
-            var judgeSubCatList = getJudgeSubCat(y);
-            var nomSubCatList = getNomineeSubCat(x);
-            if (nomSubCatList !== null) {
-              for (let k = 0; k < nomSubCatList.length; k++){
-                for (let m = 0; m < judgeSubCatList.length; m++){
-                  if (judgeSubCatList[m] == nomSubCatList[k]){
-                    if (isJudgeAtCapacity(y) == false) {
-                      matches[x] = y;
+      if (checkOther(x) == false) {
+        if (isNomineeAtCapacity[x] == false) {
+          for (let y in judges){
+              var judgeSubCatList = getJudgeSubCat(y);
+              var nomSubCatList = getNomineeSubCat(x);
+              if (nomSubCatList !== null) {
+                for (let k = 0; k < nomSubCatList.length; k++){
+                  for (let m = 0; m < judgeSubCatList.length; m++){
+                    if (judgeSubCatList[m] == nomSubCatList[k]){
+                      if (isJudgeAtCapacity(y) == false) {
+                        matches[x] = y;
+                      }
                     }
-                  }
-              }
-              }
+                }
+                }
+          }
+        }
         }
       }
-      }
     }
-}
+    }
 }
 
 function matchCat(){
