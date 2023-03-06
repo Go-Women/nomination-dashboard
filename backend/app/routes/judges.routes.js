@@ -14,7 +14,7 @@ module.exports = app => {
   router.get("/:id", judges.findOne);
 
   // Update a User with id
-  router.put("/:id", judges.update);
+  router.patch("/:id", judges.update);
 
   // for now this is used will update to hide this based on user authentication
   app.use('/judges', router);

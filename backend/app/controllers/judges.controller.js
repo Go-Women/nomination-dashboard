@@ -11,17 +11,16 @@ exports.create = (req, res) => {
   
     // Create a Judge
     const judge = new Judge({
-      id: req.body.ID,
-      type: req.body.type,
+      type: req.body.type || "judge",
       email: req.body.email,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
-      active: req.body.active,
-      info: req.body.data
+      active: req.body.active || false,
+      info: req.body.info
     });
   
     // Save Judge in the database
-    Judge.create(nomination, (err, data) => {
+    Judge.create(judge, (err, data) => {
       if (err)
         res.status(500).send({
           message:
@@ -40,6 +39,7 @@ exports.findAll = (req, res) => {
           err.message || "Some error occurred while retrieving Judges."
       });
     else res.send(data);
+    console.log(data);
   });
 };
 
@@ -80,7 +80,7 @@ exports.update = (req, res) => {
           });
         } else {
           res.status(500).send({
-            message: "Error updating Judge with id " + req.params.id
+            message: `Error updating Judge with id ${req.params.id}.`
           });
         }
       } else res.send(data);
