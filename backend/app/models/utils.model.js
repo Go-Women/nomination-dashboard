@@ -104,7 +104,7 @@ exports.clean = (jsonData) => {
     jsonData.subcategory = 's100';
   }
 
-  return nomination;
+  return jsonData;
 }
 
 exports.merge = (nominee, nomination) => {
