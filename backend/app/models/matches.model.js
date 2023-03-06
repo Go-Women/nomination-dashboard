@@ -81,6 +81,7 @@ Match.getAllMatches = (results) => {
       results(null, err);
       return;
     }
+    utils.getAllNomineeMatchingData(nominees);
     console.log("GET /matches/data");
     // get judges that need to be matched
     sql.query(`SELECT ID AS judgeID, info

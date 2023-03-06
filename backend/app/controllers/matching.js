@@ -1,6 +1,8 @@
-const judges = {};
-const nominees = {};
-const matches = {};
+const Match = require("../models/matches.model");
+var judges = [];
+var nominees = [];
+var matches = [];
+
 
 // Dataset from GET /matches/data:
 // const tobeMatched = [
@@ -9,7 +11,8 @@ const matches = {};
 //       "nomineeID": 1,
 //       "nomCategory": "c400",
 //       "nomSubcategory": "s403",
-//       "nomSubcategoryOther": null
+//       "nomSubcategoryOther": null,
+//       "nomCapacity": 0
 //     },
 //     {
 //       "nomineeID": 2,
@@ -48,12 +51,12 @@ const matches = {};
 //                          tobeMatched[1][0].judgeCategory = "c100";
 
 
-function populateJudges(){
-  return 0;
+function populateJudges(matches){
+  judges = matches;
 }
 
-function populateNominees(){
-  return 0;
+function populateNominees(matches){
+  nominees = matches;
 }
 
 function getJudgeSubCat(judge){
@@ -225,15 +228,15 @@ function matchCheck(){
   return false;
 }
 
-function mainMatching(){
+exports.mainMatching = (matches) => {
   // Call to backend GET /matches/data
   // returns [[{},{}..],[{},{},..]] data
-  populateJudges();
-  populateNominees();
-  var set = true;
-  while(set !== false) {
-    matchSubcat();
-    matchCat();
-    set = matchCheck();
-  }
+  populateJudges(matches[1]);
+  populateNominees(matches[0]);
+  // var set = true;
+  // while(set !== false) {
+  //   matchSubcat();
+  //   matchCat();
+  //   set = matchCheck();
+  // }
 }

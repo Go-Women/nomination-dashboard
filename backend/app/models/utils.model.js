@@ -166,6 +166,18 @@ exports.formatAllData = (res, type) => {
   });
 };
 
+exports.getAllNomineeMatchingData = (res) => {
+  Object.entries(res).forEach((data, value) => {
+    this.getNomineeMatchingData(data[1]);
+  });
+};
+
+exports.getNomineeMatchingData = (res) => {
+  res.nomCapacity = 0;
+  
+  return res;
+}
+
 exports.getAllJudgesMatchingData = (res, type) => {
   Object.entries(res).forEach((data, value) => {
     this.getMatchingData(data[1], type);

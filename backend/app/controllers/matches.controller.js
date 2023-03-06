@@ -1,4 +1,5 @@
 const Match = require("../models/matches.model.js");
+const matches = require("../controllers/matching.js");
 
 // Create and Save a new Match
 exports.create = (req, res) => {
@@ -34,7 +35,7 @@ exports.findAll = (req, res) => {
         message:
           err.message || "Some error occurred while retrieving matches."
       });
-    else 
+    else
         res.send(data);
      // TODO: implement getting match information
   });
@@ -48,7 +49,10 @@ exports.findAllMatches = (req, res) => {
         message:
           err.message || "Some error occurred while retrieving matches."
       });
-    else res.send(data);
+    else {
+      matches.mainMatching(data);
+      res.send(data);
+    }
   });
 };
 
