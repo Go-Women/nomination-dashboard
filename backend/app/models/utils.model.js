@@ -157,7 +157,7 @@ exports.formatSingleData = (res, type) => {
     res.info = JSON.parse(res.info);  
     cat = res.info.category;
     subCat = res.info.subcategory;
-    res.info = this.getCategories(res.info, cat, subCat);
+    res.info = this.setCategories(res.info, cat, subCat);
 
   } else if (type === 'nominee') {
     // Handle Code Formats
@@ -168,7 +168,7 @@ exports.formatSingleData = (res, type) => {
     if (subCat == null) {
       subCat = res.subcategoryOther;
     }
-    res = this.getCategories(res, cat, subCat);
+    res = this.setCategories(res, cat, subCat);
   } else {
     // Handle Code Formats
     nomStatus = res.nomStatus;
@@ -177,7 +177,7 @@ exports.formatSingleData = (res, type) => {
     if (subCat == null) {
       subCat = res.subcategoryOther;
     }
-    res = this.getCategories(res, cat, subCat);
+    res = this.setCategories(res, cat, subCat);
   }
     return res;
 };
