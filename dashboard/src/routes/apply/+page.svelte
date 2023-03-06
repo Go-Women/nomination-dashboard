@@ -129,7 +129,6 @@
         <Checkbox name="category" bind:group={contribs} value="c500" labelText="Humanities" bind:checked={sec_humanities} />
         <Checkbox name="category" bind:group={contribs} value="c600" labelText="Public Service / Government" bind:checked={sec_gov} />
         <Checkbox name="category" bind:group={contribs} value="c700" labelText="STEM" bind:checked={sec_stem} />
-        <Checkbox name="category" bind:group={contribs} value="c800" labelText="Other" bind:checked={sec_other} />
         <input type="hidden" name="category" bind:value={contribs}>
       </FormGroup>
       {#if sec_art}
