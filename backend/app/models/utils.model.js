@@ -82,7 +82,7 @@ exports.setCategories = (res, cat, subCat, nomStatus, type) => {
     // console.log("CATEGORY: ", res.category);
     if (code[0] === cat && cat.length == 4) {
       res.category = code[1];
-    } else if (cat.length > 4 && cat.includes(",") ){
+    } else if (cat.length > 4 && cat.includes(",")){
       let cats = cat.split(',');
       for (const i in cats) {
         if (code[0] === cats[i]) {
@@ -120,6 +120,7 @@ exports.setCategories = (res, cat, subCat, nomStatus, type) => {
         res.nomStatus = code[1];
   });
 
+  // TODO: handle other subcategory
   return res;
 };
 
@@ -156,18 +157,18 @@ exports.formatSingleData = (res, type) => {
     res.info = JSON.parse(res.info);  
     cat = res.info.category;
     subCat = res.info.subcategory;
-    res.info = this.setCategories(res.info, cat, subCat);
-
+    nomStatus = res.info.judgeStatus;
+    res.info = this.setCategories(res.info, cat, subCat, nomStatus, type);
   } else if (type === 'nominee') {
     // Handle Code Formats
-    // res = this.setJSON(res, 'nominations');
-
+    nomStatus = res.nomStatus;
     cat = res.category;
     subCat = res.subcategory;
     if (subCat == null) {
       subCat = res.subcategoryOther;
     }
-    res = this.setCategories(res, cat, subCat);
+
+    res = this.setCategories(res, cat, subCat, nomStatus);
   } else {
     // Handle Code Formats
     nomStatus = res.nomStatus;
@@ -176,7 +177,7 @@ exports.formatSingleData = (res, type) => {
     if (subCat == null) {
       subCat = res.subcategoryOther;
     }
-    res = this.setCategories(res, cat, subCat);
+    res = this.setCategories(res, cat, subCat, nomStatus);
   }
     return res;
 };
