@@ -77,7 +77,6 @@ exports.getCodes = (res) => {
   // TODO: this will turn a category or subcategory when submitted into a their corresponding code
   let resultCat = [];
   let resultsubCat = [];
-  console.log(res);
   Object.entries(codes).forEach((code, value) => {
     // check if the category is other
     if (res.category.includes('Other')) {
