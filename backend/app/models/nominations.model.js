@@ -41,6 +41,27 @@ Nomination.create = (newNomination, result) => {
   });
 };
 
+Nomination.createNominee = (newNominee, id, result) => {
+  `INSERT INTO Nominees (firstName, lastName, yob, category, subcategory, subcategoryOther)
+   SELECT nomFirst, nomLast, nomYOB, category, subcategory, subcategoryOther FROM Nominations WHERE ID = ?`
+  sql.query(`INSERT INTO Nominees (firstName, lastName, yob, category, subcategory, subcategoryOther)
+            SELECT nomFirst, nomLast, nomYOB, category, subcategory, subcategoryOther FROM Nominations WHERE ID = ?`, id, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } else {
+    // not found Nomination with the id
+    console.log("created nomination: ", { ...newNomination });
+    result(null, { ...newNomination });
+    }
+
+  });
+  // sql.query("INSERT INTO Nominees SET ?", newNomination, (err, res) => {
+
+  // });
+};
+
 Nomination.findById = (id, result) => {
   sql.query(`SELECT * FROM Nominations WHERE id = ?`, id, (err, res) => {
     if (err) {
@@ -74,6 +95,29 @@ Nomination.getAll = result => {
     result(null, res);
   });
 };
+
+Nomination.updateStatus = (id, status, result) => {
+  sql.query(
+    "UPDATE Nominations SET nomStatus = ? WHERE id = ?",
+    [status, `${BigInt(id)}`],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        // not found Nomination with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      console.log("updated nomination: ", { id: id, status: status});
+      result(null, { id: id, ...status });
+    }
+  );
+}
 
 Nomination.updateById = (id, nomination, result) => {
   // TODO: Needs to be implemented

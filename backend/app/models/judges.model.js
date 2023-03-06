@@ -8,6 +8,7 @@ const Judge = function(judge) {
   this.firstName = judge.firstName;
   this.lastName = judge.lastName;
   this.active = judge.active;
+  this.judgeStatus = judge.judgeStatus;
   this.info = judge.info;
 };
 
