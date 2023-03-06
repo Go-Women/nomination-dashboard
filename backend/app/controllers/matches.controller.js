@@ -26,7 +26,7 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all matches from the database
+// Retrieve all matches from the database for frontend
 exports.findAll = (req, res) => {
   Match.getAll((err, data) => {
     if (err)
@@ -37,6 +37,18 @@ exports.findAll = (req, res) => {
     else 
         res.send(data);
      // TODO: implement getting match information
+  });
+};
+
+// Retrieve all matches from the database for backend
+exports.findAlMatches = (req, res) => {
+  Match.getAllMatches((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving matches."
+      });
+    else res.send(data);
   });
 };
 

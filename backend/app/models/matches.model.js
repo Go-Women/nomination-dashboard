@@ -1,7 +1,6 @@
 const sql = require("../../config/db.js");
 const utils = require("./utils.model.js");
 
-
 // constructor
 const Match = function(match) {
   this.nomineeID = match.nomineeID;
@@ -16,6 +15,7 @@ Match.create = (newMatch, result) => {
       return;
     }
 
+    // TODO: update nominee and judge statues and capacities
     console.log("created match: ", { ...newMatch });
     result(null, { ...newMatch });
   });
@@ -51,7 +51,6 @@ Match.findById = (id, result) => {
 };
 
 Match.getAll = result => {
-// TODO: need to grab the categories, subcategories, and capacity
   sql.query(`SELECT m.nomineeID, m.judgeID, 
     n.category, n.subcategory, n.subcategoryOther,
     concat(n.firstName,' ',n.lastName) as nomFullName, concat(j.firstName,' ',j.lastName) as judgeFullName,
@@ -70,6 +69,33 @@ Match.getAll = result => {
         utils.getAllJudgesMatchingData(res);
         console.log("GET /matches");
         result(null, res);
+  });
+};
+
+Match.getAllMatches = (results) => {
+  // get nominees that need to be matched
+  sql.query(`SELECT ID AS nomineeID, category AS nomCategory, subcategory AS nomSubcategory, subcategoryOther AS nomSubcategoryOther
+    FROM Nominees WHERE nomStatus = 'n200'`, (err, nominees) => {
+    if (err) {
+      console.log("error: ", err);
+      results(null, err);
+      return;
+    }
+    console.log("GET /matches/data");
+    // get judges that need to be matched
+    sql.query(`SELECT ID AS judgeID, info
+      FROM Users WHERE type = 'judge' AND active = true`, (err, judges) => {
+      if (err) {
+        console.log("error: ", err);
+        results(null, err);
+        return;
+      }
+
+      utils.getAllJudgesMatchingData(judges, "data");
+      const filteredJudges = utils.filterJudgeStatus(judges, 'j300');
+      console.log("GET /matches/data");
+      results(null, [nominees, filteredJudges]);
+    });
   });
 };
 

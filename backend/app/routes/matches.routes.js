@@ -9,6 +9,9 @@ module.exports = app => {
   
     // Retrieve all Matches
     router.get("/", matches.findAll);
+
+    // Retrieve all Matches logic backend
+    router.get("/data", matches.findAlMatches);
   
     // Retrieve a single Match with id
     router.get("/:id", matches.findOne);

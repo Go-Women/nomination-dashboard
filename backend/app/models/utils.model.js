@@ -19,7 +19,7 @@ exports.formatDate = (res) => {
   return res.date;
 };
 
-exports.setCategories = (res, cat, subCat) => {
+exports.setCategories = (res, cat, subCat, nomStatus, type) => {
   let resultCat = [];
   let resultsubCat = [];
   
@@ -55,6 +55,13 @@ exports.setCategories = (res, cat, subCat) => {
         res.subcategory = resultsubCat.join(",");
       }
     }
+
+    if (nomStatus !== undefined && nomStatus !== null)
+    if (code[0] === nomStatus)
+      if (type === 'judge')
+        res.judgeStatus = code[1];
+      else
+        res.nomStatus = code[1];
   });
 
   // TODO: handle other subcategory
@@ -63,6 +70,28 @@ exports.setCategories = (res, cat, subCat) => {
 
 exports.setJSON = (res, name) => {
   res[name] = JSON.parse(res[name]);
+  return res;
+};
+
+exports.getCodes = (res) => {
+  // TODO: this will turn a category or subcategory when submitted into a their corresponding code
+  let resultCat = [];
+  let resultsubCat = [];
+  console.log(res);
+  Object.entries(codes).forEach((code, value) => {
+    // check if the category is other
+    if (res.category.includes('Other')) {
+        //  TODO: handle this case
+    } else {
+      if (res.category == code[1])
+        res.category = code[0];
+
+      if (res.subcategory == code[1])
+        res.subcategory = code[0];
+    }
+    // TODO: implement this for status codes
+  });
+
   return res;
 };
 
@@ -75,36 +104,57 @@ exports.clean = (jsonData) => {
     jsonData.subcategory = 's100';
   }
 
-  return jsonData;
+  return nomination;
+}
+
+exports.merge = (nominee, nomination) => {
+  let merged = JSON.parse(nominee.nominations);
+  merged.push(JSON.parse(nomination)[0]);
+
+  nominee.nominations = JSON.stringify(merged);
+  nominee.nomStatus = 'n200';
+
+  return nominee;
+}
+
+exports.formatJudgeInput = (judge) => {
+    judge.email = judge.info.email;
+    judge.active = judge.info.active;
+    judge.info = JSON.stringify([judge.info]);
+    return judge;
 }
 
 // format data when individually being accessed
 exports.formatSingleData = (res, type) => {
   let cat;
   let subCat;
+  let nomStatus;
   if (type === 'judge') {
     // Handle Code Formats
     res.info = JSON.parse(res.info);  
     cat = res.info.category;
     subCat = res.info.subcategory;
-    res.info = this.setCategories(res.info, cat, subCat);
+    nomStatus = res.info.judgeStatus;
+    res.info = this.setCategories(res.info, cat, subCat, nomStatus, type);
   } else if (type === 'nominee') {
     // Handle Code Formats
+    nomStatus = res.nomStatus;
     cat = res.category;
     subCat = res.subcategory;
     if (subCat == null) {
       subCat = res.subcategoryOther;
     }
 
-    res = this.setCategories(res, cat, subCat);
+    res = this.setCategories(res, cat, subCat, nomStatus);
   } else {
     // Handle Code Formats
+    nomStatus = res.nomStatus;
     cat = res.category;
     subCat = res.subcategory;
     if (subCat == null) {
       subCat = res.subcategoryOther;
     }
-    res = this.setCategories(res, cat, subCat);
+    res = this.setCategories(res, cat, subCat, nomStatus);
   }
     return res;
 };
@@ -116,22 +166,35 @@ exports.formatAllData = (res, type) => {
   });
 };
 
-
-exports.getAllJudgesMatchingData = (res) => {
+exports.getAllJudgesMatchingData = (res, type) => {
   Object.entries(res).forEach((data, value) => {
-    this.getMatchingData(data[1]);
+    this.getMatchingData(data[1], type);
   });
 };
 
-exports.getMatchingData = (res) => {
+exports.getMatchingData = (res, type) => {
+  if (type === "data") {
+    res.info = JSON.parse(res.info);
+  }
+  
   const info = res.info;
+
   res.judgeCategory = info.category;
   res.judgeSubcategory = info.subcategory;
   res.judgeSubcategoryOther = info.subcategoryOther;
   res.judgeCapacity = info.capacity;
+  res.judgeStatus = info.judgeStatus;
 
   if ("info" in res)
     delete res["info"];
 
   return res;
 };
+
+exports.filterJudgeStatus = (res, status) => {
+  const activeJudges = res.filter(function (stat) {
+    return stat.judgeStatus == status;
+  });
+  
+  return activeJudges;
+}
