@@ -3,12 +3,10 @@ const utils = require("./utils.model.js");
 
 // constructor
 const Nominee = function(nominee) {
-  this.id = nominee.ID;
   this.firstName = nominee.firstName;
   this.lastName = nominee.lastName;
-  this.fullName = `${nominee.firstName} ${nominee.lastName}`;
   this.cohort = nominee.cohort;
-  this.status = nominee.data;
+  this.nomStatus = nominee.nomStatus;
   this.yob = nominee.yob;
   this.category = nominee.category;
   this.subcategory = nominee.subcategory;
@@ -17,6 +15,8 @@ const Nominee = function(nominee) {
 };
 
 Nominee.create = (newNominee, result) => {
+  utils.getCodes(newNominee);
+  utils.clean(newNominee);
   sql.query("INSERT INTO Nominees SET ?", newNominee, (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -63,7 +63,52 @@ Nominee.getAll = result => {
   });
 };
 
+Nominee.updateStatus = (id, status, result) => {
+  sql.query(
+    "UPDATE Nominee SET nomStatus = ? WHERE id = ?",
+    [status, `${BigInt(id)}`],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
 
+      if (res.affectedRows == 0) {
+        // not found Nomination with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      console.log("updated nomination: ", { id: id, status: status});
+      result(null, { id: id, ...status });
+    }
+  );
+}
+
+Nominee.merge = (id, nominee, nomination, result) => {
+  utils.merge(nominee, nomination);
+  sql.query(
+    "UPDATE Nominees SET nomStatus = ?, nominations = ? WHERE id = ?",
+    [`${nominee.nomStatus}`, `${nominee.nominations}`, `${BigInt(id)}`],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        // not found Nomination with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      console.log("updated nominee: ", { id: id, nominations: nominee.nominations});
+      result(null, { id: id, ...nominee });
+    }
+  );
+};
 
 Nominee.updateById = (id, nominee, result) => {
   // TODO: Needs to be implemented

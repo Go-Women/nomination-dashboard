@@ -1,4 +1,5 @@
 const Nomination = require("../models/nominations.model.js");
+const Nominee = require("../models/nominees.model.js");
 
 // TODO: error handling figure out how to handle errors messages and set success status
 
@@ -28,7 +29,6 @@ exports.create = (req, res) => {
     nomQ1: req.body.nomQ1,
     nomQ2: req.body.nomQ2,
     nomQ3: req.body.nomQ3,
-    subcategoryOther: req.body.subcategoryOther,
     nomQ1Description: req.body.nomQ1Description,
     nomQ2Description: req.body.nomQ2Description,
     nomQ3Description: req.body.nomQ3Description,
@@ -77,7 +77,84 @@ exports.findOne = (req, res) => {
   });
 };
 
+exports.review = (req, res) => {
+  console.log("REVIEWING!", req.body.action);
+
+  switch (req.body.action) {
+    case 'MERGE':
+      console.log(`Merging nomination ${req.body.nominationID} into nominee ${req.body.nomineeID}.`);
+      // TODO
+      Nominee.findById(`${req.body.nomineeID}`, (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Not found Nomination with id ${req.body.nomineeID}.`
+            });
+          } else {
+            res.status(500).send({
+              message: `Error updating Nomination with id ${req.body.nomineeID}`
+            });
+          }
+        } else {
+          // TODO: handle merging data
+          Nominee.merge(data.ID, data, `${req.body.nominations}`, (err, data) => {
+            if (err) {
+              if (err.kind === "not_found") {
+                res.status(404).send({
+                  message: `Not found Nomination with id ${req.body.date.nominationId}.`
+                });
+              } else {
+                res.status(500).send({
+                  message: `Error updating Nomination with id ${req.params.id}`
+                });
+              }
+            } else {
+              Nomination.updateStatus(`${req.body.nominationID}`, 'n200', (err, data) => {
+                if (err) {
+                  if (err.kind === "not_found") {
+                    res.status(404).send({
+                      message: `Not found Nomination with id ${req.body.nominationId}.`
+                    });
+                  } else {
+                    res.status(500).send({
+                      message: `Error updating Nomination with id ${req.body.nominationId}`
+                    });
+                  }
+                } else res.send(data);
+              });
+            }
+          });
+        }
+      });
+      // res.status(200).send("OK");
+      break;
+    case 'REJECT':
+      console.log(`Rejecting nomination ${req.body.nominationID}.`);
+      Nomination.updateStatus(`${req.body.nominationID}`, `n500`, (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Not found Nomination with id ${req.body.nominationId}.`
+            });
+          } else {
+            res.status(500).send({
+              message: `Error updating Nomination with id ${req.body.nominationId}`
+            });
+          }
+        } else res.send(data);
+      });
+      // res.status(200).send("OK");
+      break;
+    default:
+      req.status(400).send("Invalid action provided.")
+      break;
+  }
+
+
+};
+
 // Update a Nomination identified by the id in the request
 exports.update = (req, res) => {
-  // TODO: Implement
-};
+  // TODO: Implement this
+}
+
