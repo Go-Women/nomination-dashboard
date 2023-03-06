@@ -167,28 +167,51 @@ function matchSubCat() {
   }
 }
 
-function matchCat(){
-  for (let i = 0; i < 3; i++){
-    for (let x in nominees){
-      if (isNomineeAtCapacity[x] == false) {
-        for (let y in judges){
-            var judgeCatList = getJudgeCat(y);
-            var nomCatList = getNomineeCat(x);
-            if (nomCatList !== null) {
-              for (let k = 0; k < nomCatList.length; k++){
-                for (let m = 0; m < judgeCatList.length; m++){
-                  if (judgeCatList[m] == nomCatList[k]){
-                    if (isJudgeAtCapacity(y) == false) {
-                      matches[x] = y;
-                    }
-                  }
-              }
-              }
+function matchCat() {
+  for (let i = 0; i < 3; i++) {
+    for (let x in nominees) {
+      if (isNomineeAtCapacity(x)) continue;
+
+      for (let y in judges) {
+        let judgeCatList = getJudgeCat(y);
+        let nomCatList = getNomineeCat(x);
+        if (nomCatList == null) continue;
+
+        for (let k = 0; k < nomCatList.length; k++) {
+          for (let m = 0; m < judgeCatList.length; m++) {
+            if (judgeCatList[m] == nomCatList[k]) {
+              if (isJudgeAtCapacity(y)) continue;
+              matches[x] = y;
+            }
+          }
         }
       }
-      }
     }
+  }
 }
+
+// function matchCat(){
+//   for (let i = 0; i < 3; i++){
+//     for (let x in nominees){
+//       if (isNomineeAtCapacity[x] == false) {
+//         for (let y in judges){
+//             var judgeCatList = getJudgeCat(y);
+//             var nomCatList = getNomineeCat(x);
+//             if (nomCatList !== null) {
+//               for (let k = 0; k < nomCatList.length; k++){
+//                 for (let m = 0; m < judgeCatList.length; m++){
+//                   if (judgeCatList[m] == nomCatList[k]){
+//                     if (isJudgeAtCapacity(y) == false) {
+//                       matches[x] = y;
+//                     }
+//                   }
+//               }
+//               }
+//         }
+//       }
+//       }
+//     }
+// }
 
 // TODO: then add any unmatched nominees to a separate manual review list
 }
