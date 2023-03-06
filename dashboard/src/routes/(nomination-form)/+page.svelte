@@ -1,6 +1,6 @@
 <script lang="ts">
   import {
-      Button, Checkbox, Form,
+      Button, Checkbox, ComboBox, Form,
       FormGroup, NumberInput, RadioButton, RadioButtonGroup, TextArea, TextInput
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
@@ -29,6 +29,16 @@
   let q1ck: string[] = [];
   let q2ck: string[] = [];
   let q3ck: string[] = [];
+
+  
+  const currentYear = new Date().getFullYear();
+  const yearGenerator = (n: number) => `${n + 1676}`;
+  const yearArray = Array.from(Array(currentYear - 1676 + 1), (_, x) => ({id: yearGenerator(x), text: yearGenerator(x) }));
+  function shouldFilterItem(item: any, value: any) {
+    if (!value) return true;
+    return item.text.toLowerCase().includes(value.toLowerCase());
+  }
+  let selectedYear = `${currentYear}`;
 </script>
 
 <main>
@@ -91,8 +101,9 @@
         <TextInput name="nomFirst" labelText="First Name" required />
         <TextInput name="nomLast" labelText="Last Name" required />
         <div id="yob-container">
-          <NumberInput name="nomYOB" label="Year of Birth" required value={2023} />
+          <ComboBox name="nomYOB" titleText="Year of Birth" required items={yearArray} {shouldFilterItem} bind:selectedId={selectedYear} />
         </div>
+        <input type="hidden" name="nomYOB" bind:value={selectedYear}>
       </FormGroup>
       <!-- TODO: make questions be values from database that way when they update database the form would also update the questions? -->
       <h4>What area did your nominee primarily make contributions in?</h4>

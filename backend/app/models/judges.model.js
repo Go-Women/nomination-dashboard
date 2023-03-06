@@ -3,17 +3,19 @@ const utils = require("./utils.model.js");
 
 // constructor
 const Judge = function(judge) {
-  this.id = judge.ID;
   this.type = judge.type;
   this.email = judge.email;
   this.firstName = judge.firstName;
   this.lastName = judge.lastName;
   this.active = judge.active;
-  this.info = judge.data;
   this.judgeStatus = judge.judgeStatus;
+  this.info = judge.info;
 };
 
 Judge.create = (newJudge, result) => {
+  var info = utils.clean(newJudge.info);
+  newJudge.info = JSON.stringify(info);
+
   sql.query("INSERT INTO Users SET ?", newJudge, (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -61,12 +63,31 @@ Judge.getAll = result => {
   });
 };
 
+Judge.getMatchingDataById = (id, result) => {
+  sql.query(`SELECT info, concat(firstName,' ',lastName) as judgeName FROM Users WHERE id = ? AND type = 'judge'`, id, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      utils.formatSingleData(res[0], 'judge');
+      utils.getJudgeMatchingData(res[0]);
+      // console.log(`GET /judge/${id}`);
+      result(null, res[0]);
+      return;
+    }
+
+    // not found Nominee with the id
+    result({ kind: "not_found" }, null);
+  });
+};
+
 Judge.updateById = (id, judge, result) => {
-  utils.formatJudgeInput(judge);
-  // console.log(judge);
   sql.query(
-    "UPDATE Users SET info = ?, active = ?, email = ? WHERE id = ? AND type ='judge'",
-    [judge.info, judge.active, judge.email, id],
+    "UPDATE Users SET active = ?, email = ?, info = ? WHERE id = ? AND type ='judge'",
+    [(judge.active ? judge.active : '0'), judge.email, judge.info, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
