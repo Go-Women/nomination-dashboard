@@ -131,6 +131,8 @@ function matchCat(){
       }
     }
 }
+
+// TODO: then add any unmatched nominees to a separate manual review list
 }
 
 function matchCheck(){
@@ -143,6 +145,8 @@ function matchCheck(){
 }
 
 function mainMatching(){
+  // Call to backend GET /matches/data
+  // returns [[{},{}..],[{},{},..]] data
   populateJudges();
   populateNominees();
   var set = true;
