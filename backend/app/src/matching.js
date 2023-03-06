@@ -102,6 +102,9 @@ function matchSubcat(){
         }
         }
       }
+      else {
+        matches[x] = "Manual";
+      }
     }
     }
 }
