@@ -32,7 +32,7 @@
         subcategory: nominee.subcategory,
         subcategoryOther: nominee.subcategoryOther,
         nominationIDs: nominee.nominations,
-        nomineesSub: subcategory,
+        nomineesSub: nominee.subcategory,
       };
 
       rows.push(data);
