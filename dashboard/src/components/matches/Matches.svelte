@@ -34,7 +34,7 @@
 </script>
 
 <main class="bx--content-main">
-  <Row><h3>Information</h3></Row>
+  <br/>
   <DataTable
     style="justify-text: center;"
     {headers}
@@ -55,6 +55,11 @@
           icon={View}
           href={"matches/" + cell.value}
         />
+      {:else if cell.key === "action"}
+        <!-- <Row> -->
+          <Button expressive size="small" type="submit" kind="ghost">Accept</Button>
+          <Button expressive size="small" type="submit" kind="danger-ghost">Manual Assignment</Button>
+        <!-- </Row> -->
       {:else}
         {cell.value}
       {/if}

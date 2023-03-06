@@ -13,6 +13,7 @@ exports.create = (req, res) => {
     const match = new Match({
         nomineeID: req.body.nomineeID,
         judgeID: req.body.judgeID,
+        matchStatus: 'm400'
     });
   
     // Save Match in the database
@@ -23,6 +24,30 @@ exports.create = (req, res) => {
             err.message || "Some error occurred while creating the Match."
         });
       else res.send(data);
+    });
+};
+
+exports.generate = (req, res) => {
+    // Validate Request
+    if (!req.body) {
+      res.status(400).send({
+        message: "Content can not be empty!"
+      });
+    }
+    // console.log(req.body.judgeStatus);
+  
+    Match.updateStatus(`${req.body.judgeStatus}`, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Status not found for Matches ${req.body.judgeStatus}`
+          });
+        } else {
+          res.status(500).send({
+            message: `Error updating Matches with status ${req.body.judgeStatus}` 
+          });
+        }
+      } else res.send(data);
     });
 };
 
