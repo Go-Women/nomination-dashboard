@@ -2,18 +2,51 @@ const judges = {};
 const nominees = {};
 const matches = {};
 
-// Dataset:
-// {
-//   'nomineeID':'stringID' ,
-//   'nomCategory': 'string',
-//   'nomSubCategory': 'string',
-//   'nomSubcatgoryOther:' 'string',
-//   'judgeID':'stringID' ,
-//   'judgeCategory': 'string',
-//   'judgeSubcategory': 'string',
-//   'judgeSubcategoryOther:' 'string'
-//   'judgeCapacity': 'int'
-// }
+// Dataset from GET /matches/data:
+// const tobeMatched = [
+//   [
+//     {
+//       "nomineeID": 1,
+//       "nomCategory": "c400",
+//       "nomSubcategory": "s403",
+//       "nomSubcategoryOther": null
+//     },
+//     {
+//       "nomineeID": 2,
+//       "nomCategory": "c700",
+//       "nomSubcategory": "s708",
+//       "nomSubcategoryOther": null
+//     },
+//     ...
+//   ],
+//   [
+//     {
+//       "judgeID": 1,
+//       "judgeCategory": "c100",
+//       "judgeSubcategory": "s108",
+//       "judgeSubcategoryOther": null,
+//       "judgeCapacity": 12,
+//       "judgeStatus": "j300"
+//     },
+//     {
+//       "judgeID": 2,
+//       "judgeCategory": "c300",
+//       "judgeSubcategory": "s303",
+//       "judgeSubcategoryOther": null,
+//       "judgeCapacity": 16,
+//       "judgeStatus": "j300"
+//     },
+//    ...
+//   ]
+// ];
+
+// tobeMatched[0]  --> nominees {..},{..}...
+//                         e.g. nominees[0].nomCategory = "c400";
+//                         tobeMatched[0][0].nomCategory = "c400";
+// tobeMatched[1] --> judges {..},{..},...
+//                          e.g. judges[0].judgeCategory = "c100"
+//                          tobeMatched[1][0].judgeCategory = "c100";
+
 
 function populateJudges(){
   return 0;
