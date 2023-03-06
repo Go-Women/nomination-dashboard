@@ -10,3 +10,4 @@ config/db.config.js
 !.env.example
 .env
 *.sql
+./app/tests
