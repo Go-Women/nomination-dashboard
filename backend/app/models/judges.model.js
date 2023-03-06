@@ -62,6 +62,27 @@ Judge.getAll = result => {
   });
 };
 
+Judge.getMatchingDataById = (id, result) => {
+  sql.query(`SELECT info, concat(firstName,' ',lastName) as judgeName FROM Users WHERE id = ? AND type = 'judge'`, id, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      utils.formatSingleData(res[0], 'judge');
+      utils.getJudgeMatchingData(res[0]);
+      // console.log(`GET /judge/${id}`);
+      result(null, res[0]);
+      return;
+    }
+
+    // not found Nominee with the id
+    result({ kind: "not_found" }, null);
+  });
+};
+
 Judge.updateById = (id, judge, result) => {
   sql.query(
     "UPDATE Users SET active = ?, email = ?, info = ? WHERE id = ? AND type ='judge'",
