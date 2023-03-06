@@ -29,6 +29,8 @@
   export let govCount: number = 0;
   export let stemCount: number = 0;
   export let otherCount: number = 0;
+  export let createdCount: number = 0;
+  export let reviewCount: number = 0;
 
   var populateRows = (nominations: any) => {
     let rows: any[] = [];
@@ -40,6 +42,10 @@
         nominator: nomination.authorFirst + " " + nomination.authorLast,
         date: nomination.date
       }
+      if (nomination.nomStatus === 'Created')
+        createdCount++;
+      else reviewCount++;
+      
       switch(nomination.category) {
         case 'Art':
           artCount++;
@@ -86,7 +92,7 @@
   <Content class="bx--content--main">
     <Grid>
       <Row>
-        <Column><NominationOverview {totalNominations}/></Column>
+        <Column><NominationOverview {totalNominations} {reviewCount} {createdCount}/></Column>
         <Column><JudgeProcess /></Column>
       </Row>
       <Row>

@@ -21,6 +21,8 @@
     return activeCount++;
   };
 
+  export let matchedCount:number = 0;
+
   var getInformation = (judges: JSON) => {
     console.log(judges);
     let rows = new Array();
@@ -35,10 +37,11 @@
         active: judge.active,
         category: judge.info.category,
         subcategory: judge.info.subcategory,
-        capacity: judge.info.capacity,
-        
+        capacity: judge.info.capacity,   
       };
 
+      if (judge.info.judgeStatus == 'Matched')
+        matchedCount++;
       if (judge.active === 1) {
         incrementActiveCount();
       }
@@ -49,6 +52,7 @@
   };
   export const rowsData = getInformation(judges);
   export const active = activeCount;
+  
 </script>
 
 <main>
@@ -62,7 +66,7 @@
 
       <Column>
         <Row><h1>Judges</h1></Row>
-        <JudgeOverview {activeCount} />
+        <JudgeOverview {activeCount} {matchedCount}/>
 
         <JudgesInformation rows={rowsData} />
       </Column>

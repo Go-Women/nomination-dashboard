@@ -2,7 +2,7 @@
   import { Column, Row, Tile, Content } from "carbon-components-svelte";
 
   export let activeCount;
-  export let matchedCount = 0;
+  export let matchedCount;
   export let inProgressCount = 0;
   export let completedCount = 0;
 </script>
