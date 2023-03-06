@@ -54,8 +54,8 @@ function isJudgeAtCapacity(judge){
 }
 
 function getJudgeCapacity(judge){
-  //return juge capacity number
-  return 3;
+  //return judge capacity number
+  return judge["judgeCapacity"];
 }
 
 function isNomineeAtCapacity(nominee){
@@ -79,7 +79,7 @@ function matchSubcat(){
         for (let y in judges){
             var judgeSubCatList = getJudgeSubCat(y);
             var nomSubCatList = getNomineeSubCat(x);
-            if (nomSubCatList =! null) {
+            if (nomSubCatList !== null) {
               for (let k = 0; k < nomSubCatList.length; k++){
                 for (let m = 0; m < judgeSubCatList.length; m++){
                   if (judgeSubCatList[m] == nomSubCatList[k]){
@@ -103,7 +103,7 @@ function matchCat(){
         for (let y in judges){
             var judgeCatList = getJudgeCat(y);
             var nomCatList = getNomineeCat(x);
-            if (nomCatList =! null) {
+            if (nomCatList !== null) {
               for (let k = 0; k < nomCatList.length; k++){
                 for (let m = 0; m < judgeCatList.length; m++){
                   if (judgeCatList[m] == nomCatList[k]){
@@ -132,9 +132,10 @@ function matchCheck(){
 function mainMatching(){
   populateJudges();
   populateNominees();
-  matchSubcat();
-  matchCat();
-  if (matchCheck == true) {
-    print("oh no!");
+  var set = true;
+  while(set !== false) {
+    matchSubcat();
+    matchCat();
+    set = matchCheck();
   }
 }
