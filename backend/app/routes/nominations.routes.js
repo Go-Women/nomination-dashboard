@@ -20,7 +20,13 @@ module.exports = app => {
   router.get("/:id", nominations.findOne);
 
   // Update a Nomination with id
-  router.put("/:id", nominations.update);
+  router.patch("/:id", nominations.update);
+
+  // Review a Nomination (Accept/Reject/Merge)
+  router.post("/review", nominations.review);
+
+  // Review a Nomination (Accept/Reject/Merge)
+  router.patch("/review", nominations.review);
 
   // Review a Nomination (Accept/Reject/Merge)
   router.post("/review", nominations.review);

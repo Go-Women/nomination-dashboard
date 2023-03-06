@@ -10,6 +10,7 @@ const Judge = function(judge) {
   this.lastName = judge.lastName;
   this.active = judge.active;
   this.info = judge.data;
+  this.judgeStatus = judge.judgeStatus;
 };
 
 Judge.create = (newJudge, result) => {

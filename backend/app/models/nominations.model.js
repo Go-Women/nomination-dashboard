@@ -41,6 +41,27 @@ Nomination.create = (newNomination, result) => {
   });
 };
 
+Nomination.createNominee = (newNominee, id, result) => {
+  `INSERT INTO Nominees (firstName, lastName, yob, category, subcategory, subcategoryOther)
+   SELECT nomFirst, nomLast, nomYOB, category, subcategory, subcategoryOther FROM Nominations WHERE ID = ?`
+  sql.query(`INSERT INTO Nominees (firstName, lastName, yob, category, subcategory, subcategoryOther)
+            SELECT nomFirst, nomLast, nomYOB, category, subcategory, subcategoryOther FROM Nominations WHERE ID = ?`, id, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    } else {
+    // not found Nomination with the id
+    console.log("created nomination: ", { ...newNomination });
+    result(null, { ...newNomination });
+    }
+
+  });
+  // sql.query("INSERT INTO Nominees SET ?", newNomination, (err, res) => {
+
+  // });
+};
+
 Nomination.findById = (id, result) => {
   sql.query(`SELECT * FROM Nominations WHERE id = ?`, id, (err, res) => {
     if (err) {

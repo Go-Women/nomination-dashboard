@@ -17,7 +17,8 @@ exports.create = (req, res) => {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       active: req.body.active,
-      info: req.body.data
+      info: req.body.data,
+      judgeStatus: 'j100'
     });
   
     // Save Judge in the database

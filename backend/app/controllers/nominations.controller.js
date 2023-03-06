@@ -29,7 +29,6 @@ exports.create = (req, res) => {
     nomQ1: req.body.nomQ1,
     nomQ2: req.body.nomQ2,
     nomQ3: req.body.nomQ3,
-    subcategoryOther: req.body.subcategoryOther,
     nomQ1Description: req.body.nomQ1Description,
     nomQ2Description: req.body.nomQ2Description,
     nomQ3Description: req.body.nomQ3Description,
@@ -110,7 +109,7 @@ exports.review = (req, res) => {
                 });
               }
             } else {
-              Nomination.updateStatus(`${req.body.nominationID}`, 'Reviewed', (err, data) => {
+              Nomination.updateStatus(`${req.body.nominationID}`, 'n200', (err, data) => {
                 if (err) {
                   if (err.kind === "not_found") {
                     res.status(404).send({
@@ -131,7 +130,7 @@ exports.review = (req, res) => {
       break;
     case 'REJECT':
       console.log(`Rejecting nomination ${req.body.nominationID}.`);
-      Nomination.updateStatus(`${req.body.nominationID}`, `Rejected`, (err, data) => {
+      Nomination.updateStatus(`${req.body.nominationID}`, `n500`, (err, data) => {
         if (err) {
           if (err.kind === "not_found") {
             res.status(404).send({
