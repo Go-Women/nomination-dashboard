@@ -23,33 +23,29 @@ function populateNominees(){
   return 0;
 }
 
-// function getJudgeSubCat(judge){
-//   //check for empty or other
-//   //will be multipe
-//     var Subcat = "Math";
-//     return Subcat;
-// }
+function getJudgeSubCat(judge){
+  return judge["nomSubCategory"];
+}
 
-// function getNomineeSubCat(nominee){
-//   //check for empty or other
-//   //will be multipe
-//     var Subcat = "Math";
-//     return Subcat;
-// }
+function getNomineeSubCat(nominee){
+  return nominee["nomSubCategory"];
+}
 
-// function getJudgeCat(judge){
-//   //check for empty or other
-//   //will be multipe
-//     var Cat = "Math";
-//     return Cat;
-// }
+function getJudgeCat(judge){
+  return judge["nomCategory"];
+}
 
-// function getNomineeCat(nominee){
-//   //check for empty or other
-//   //will be multipe
-//     var Cat = true;
-//     return Cat;
-// }
+function getNomineeCat(nominee){
+  return nominee["nomCategory"];
+}
+
+function checkOther(nominee) {
+  //returns true if other category
+  if (nominee["nomSubcategoryOther"] !== null) {
+    return true;
+  }
+  return false;
+}
 
 function isJudgeAtCapacity(judge){
     //returns true if judge is at capacity
@@ -66,8 +62,8 @@ function isJudgeAtCapacity(judge){
 }
 
 function getJudgeCapacity(judge){
-  //return juge capacity number
-  return 3;
+  //return judge capacity number
+  return judge["judgeCapacity"];
 }
 
 function isNomineeAtCapacity(nominee){
@@ -87,17 +83,27 @@ function isNomineeAtCapacity(nominee){
 function matchSubcat(){
   for (let i = 0; i < 3; i++){
     for (let x in nominees){
-      if (isNomineeAtCapacity[x] == false) {
-        for (let y in judges){
-              if (judges[y] == nominees[x]){
-                if (isJudgeAtCapacity(y) == false) {
-                  matches[x] = y;
+      if (checkOther(x) == false) {
+        if (isNomineeAtCapacity[x] == false) {
+          for (let y in judges){
+              var judgeSubCatList = getJudgeSubCat(y);
+              var nomSubCatList = getNomineeSubCat(x);
+              if (nomSubCatList !== null) {
+                for (let k = 0; k < nomSubCatList.length; k++){
+                  for (let m = 0; m < judgeSubCatList.length; m++){
+                    if (judgeSubCatList[m] == nomSubCatList[k]){
+                      if (isJudgeAtCapacity(y) == false) {
+                        matches[x] = y;
+                      }
+                    }
                 }
-              }
+                }
+          }
+        }
         }
       }
     }
-}
+    }
 }
 
 function matchCat(){
@@ -105,12 +111,20 @@ function matchCat(){
     for (let x in nominees){
       if (isNomineeAtCapacity[x] == false) {
         for (let y in judges){
-              if (judges[y] == nominees[x]){
-                if (isJudgeAtCapacity[y] == false) {
-                  matches[x] = y;
-                }
+            var judgeCatList = getJudgeCat(y);
+            var nomCatList = getNomineeCat(x);
+            if (nomCatList !== null) {
+              for (let k = 0; k < nomCatList.length; k++){
+                for (let m = 0; m < judgeCatList.length; m++){
+                  if (judgeCatList[m] == nomCatList[k]){
+                    if (isJudgeAtCapacity(y) == false) {
+                      matches[x] = y;
+                    }
+                  }
+              }
               }
         }
+      }
       }
     }
 }
@@ -128,9 +142,10 @@ function matchCheck(){
 function mainMatching(){
   populateJudges();
   populateNominees();
-  matchSubcat();
-  matchCat();
-  if (matchCheck == true) {
-    print("oh no!");
+  var set = true;
+  while(set !== false) {
+    matchSubcat();
+    matchCat();
+    set = matchCheck();
   }
 }
