@@ -41,7 +41,7 @@ exports.findAll = (req, res) => {
 };
 
 // Retrieve all matches from the database for backend
-exports.findAlMatches = (req, res) => {
+exports.findAllMatches = (req, res) => {
   Match.getAllMatches((err, data) => {
     if (err)
       res.status(500).send({
