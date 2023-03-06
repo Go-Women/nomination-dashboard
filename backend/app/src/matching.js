@@ -113,33 +113,58 @@ function isNomineeAtCapacity(nominee){
   return false;
 }
 
-function matchSubcat(){
-  for (let i = 0; i < 3; i++){
-    for (let x in nominees){
-      if (checkOther(x) == false) {
-        if (isNomineeAtCapacity[x] == false) {
-          for (let y in judges){
-              var judgeSubCatList = getJudgeSubCat(y);
-              var nomSubCatList = getNomineeSubCat(x);
-              if (nomSubCatList !== null) {
-                for (let k = 0; k < nomSubCatList.length; k++){
-                  for (let m = 0; m < judgeSubCatList.length; m++){
-                    if (judgeSubCatList[m] == nomSubCatList[k]){
-                      if (isJudgeAtCapacity(y) == false) {
-                        matches[x] = y;
-                      }
-                    }
-                }
-                }
+// function matchSubcat(){
+//   for (let i = 0; i < 3; i++){
+//     for (let x in nominees){
+//       if (checkOther(x) == false) {
+//         if (isNomineeAtCapacity[x] == false) {
+//           for (let y in judges){
+//               var judgeSubCatList = getJudgeSubCat(y);
+//               var nomSubCatList = getNomineeSubCat(x);
+//               if (nomSubCatList !== null) {
+//                 for (let k = 0; k < nomSubCatList.length; k++){
+//                   for (let m = 0; m < judgeSubCatList.length; m++){
+//                     if (judgeSubCatList[m] == nomSubCatList[k]){
+//                       if (isJudgeAtCapacity(y) == false) {
+//                         matches[x] = y;
+//                       }
+//                     }
+//                 }
+//                 }
+//           }
+//         }
+//         }
+//       }
+//       else {
+//         matches[x] = "Manual";
+//       }
+//     }
+//     }
+// }
+
+function matchSubCat() {
+  for (let i = 0; i < 3; i++) {
+    for (let x in nominees) {
+      if (!checkOther(x)) {
+        matches[x] = "Manual";
+        continue;
+      }
+      if (isNomineeAtCapacity[x]) continue;
+
+      for (let y in judges) {
+        let judgeSubCatList = getJudgeSubCat(y);
+        let nomSubCatList = getNomineeSubCat(x);
+        if (nomSubCatList == null) continue;
+
+        for (let k = 0; k < nomSubCatList.length; k++) {
+          for (let m = 0; m < judgeSubCatList.length; m++) {
+            if (isJudgeAtCapacity(y)) continue;
+            matches[x] = y;
           }
         }
-        }
-      }
-      else {
-        matches[x] = "Manual";
       }
     }
-    }
+  }
 }
 
 function matchCat(){
