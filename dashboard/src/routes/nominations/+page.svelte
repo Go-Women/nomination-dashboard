@@ -145,16 +145,6 @@
 
       <NominationInformation reviewed={false} rows={rowsCreated} bind:selectedRowIds />
 
-      <Accordion size="sm">
-        <AccordionItem>
-          <svelte:fragment slot="title">
-          <h4>Reviewed Nominations</h4>
-          </svelte:fragment>
-          <Column>
-            <NominationInformation reviewed={true} rows={rowsReviewed} bind:selectedRowIds/>
-          </Column>
-        </AccordionItem>
-      </Accordion>
     </div>
     <div id="half-right">
       <h3>Review Nomination</h3>
@@ -169,6 +159,16 @@
       {/if}
       
     </div>
+  </div>
+  <div id="container">
+    <Accordion size="sm">
+      <AccordionItem>
+        <svelte:fragment slot="title">
+        <h4>Reviewed Nominations</h4>
+        </svelte:fragment>
+        <NominationInformation reviewed={true} rows={rowsReviewed} bind:selectedRowIds/>
+      </AccordionItem>
+    </Accordion>
   </div>
 </main>
 
@@ -190,6 +190,7 @@
     padding-left: 4rem;
     padding-right: 2rem;
   }
+
   #half-left {
     width: 100%;
     grid-column: 2;
