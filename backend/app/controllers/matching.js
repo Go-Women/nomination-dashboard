@@ -233,6 +233,7 @@ exports.mainMatching = (matches) => {
   // returns [[{},{}..],[{},{},..]] data
   populateJudges(matches[1]);
   populateNominees(matches[0]);
+  console.log(judges[0].judgeCategory);
   // var set = true;
   // while(set !== false) {
   //   matchSubcat();
