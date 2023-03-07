@@ -80,7 +80,7 @@
       size="medium"
       style="justify-text: center;"
       headers={[
-        { key: "nominee", value: "Nominee" },
+        { key: "nomination", value: "Nomination" },
         { key: "category", value: "Category" },
         { key: "subcategory", value: "Subcategory" },
         { key: "nominator", value: "Nominated By" },

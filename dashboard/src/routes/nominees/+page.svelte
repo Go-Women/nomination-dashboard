@@ -21,7 +21,7 @@
     Object.entries(nominees).forEach(([key, nominee], index) => {
 
       let subcategory = nominee.subcategory;
-      if (subcategory == "") {
+      if (subcategory === null) {
         subcategory = nominee.subcategoryOther;
       }
       let data = {
