@@ -93,7 +93,7 @@ exports.review = (req, res) => {
     case 'ACCEPT':
       console.log(`Accepting judge ${req.body.judgeID}`);
       info.judgeStatus = 'j300';
-      Judge.updateInfo(`${req.body.judgeID}`, info, (err, data) => {
+      Judge.updateInfo(true, `${req.body.judgeID}`, info, (err, data) => {
         if (err) {
           if (err.kind === "not_found") {
             res.status(404).send({ message: `Not found Judge with id ${req.body.judgeID}.` });
@@ -106,7 +106,7 @@ exports.review = (req, res) => {
     case 'REJECT':
       console.log(`Rejecting judge ${req.body.judgeID}`);
       info['judgeStatus'] = 'j400';
-      Judge.updateInfo(req.body.judgeID, info, (err, data) => {
+      Judge.updateInfo(false, `${req.body.judgeID}`, info, (err, data) => {
         if (err) {
           if (err.kind === "not_found") {
             res.status(404).send({ message: `Not found Judge with id ${req.body.judgeID}.` });

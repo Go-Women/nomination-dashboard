@@ -85,11 +85,11 @@ Judge.updateById = (id, judge, result) => {
   );
 };
 
-Judge.updateInfo = (id, info, result) => {
+Judge.updateInfo = (active, id, info, result) => {
   utils.getCodes(info, 'judge');
   sql.query(
-    "UPDATE Users SET info = ? WHERE id = ?",
-    [JSON.stringify(info), id],
+    "UPDATE Users SET active = ?, info = ?  WHERE id = ?",
+    [active, JSON.stringify(info), id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -100,7 +100,7 @@ Judge.updateInfo = (id, info, result) => {
         result({ kind: "not_found" }, null);
         return;
       }
-      console.log(`updated judge ${id}'s info: ${info.judgeStatus}`);
+      console.log(`updated judge ${id}'s info: ${info.judgeStatus} and active: ${active}`);
       result(null, { id: id, info: info });
     }
   );
