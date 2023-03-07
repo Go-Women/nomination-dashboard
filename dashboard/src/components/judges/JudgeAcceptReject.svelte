@@ -62,8 +62,16 @@
       {/if}
       <div class="action-zone">
         <div class="button-area">
-          <Button kind="tertiary">Accept Judge</Button>
-          <Button kind="danger-tertiary">Deny Judge</Button>
+          <form method="POST" action="?/accept">
+            <input type="hidden" name="info" value={JSON.stringify(judge.info)}>
+            <input type="hidden" name="judgeID" value={judge.ID}>
+            <Button type="submit" kind="tertiary">Accept Judge</Button>
+          </form>
+          <form method="POST" action="?/reject">
+            <input type="hidden" name="info" value={JSON.stringify(judge.info)}>
+            <input type="hidden" name="judgeID" value={judge.ID}>
+            <Button type="submit" kind="danger-tertiary">Deny Judge</Button>
+          </form>
         </div>
       </div>
     </div>

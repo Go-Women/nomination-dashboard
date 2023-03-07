@@ -85,4 +85,24 @@ Judge.updateById = (id, judge, result) => {
   );
 };
 
+Judge.updateInfo = (id, info, result) => {
+  sql.query(
+    "UPDATE Users SET info = ? WHERE id = ?",
+    [info, id],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+      if (res.affectedRows === 0) {
+        result({ kind: "not_found" }, null);
+        return;
+      }
+      console.log(`updated judge ${id}'s info`);
+      result(null, { id: id, info: info });
+    }
+  );
+};
+
 module.exports = Judge;

@@ -28,7 +28,6 @@
   };
 
   var getInformation = (judges: JSON) => {
-    console.log(judges);
     let rows = new Array();
     Object.entries(judges).forEach(([key, judge], index) => {
       let data = {

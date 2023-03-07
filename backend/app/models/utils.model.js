@@ -44,7 +44,7 @@ exports.setCategories = (res, cat, subCat) => {
 
       if (code[0] === subCat && subCat.length == 4) {
         res.subcategory = code[1];
-        console.log("SUBCATEGORY: ", res.subcategory);
+        // console.log("SUBCATEGORY: ", res.subcategory);
       } else if (subCat.length > 4 && subCat.includes(",")){
         let subCats = subCat.split(',');
         for (const i in subCats) {
