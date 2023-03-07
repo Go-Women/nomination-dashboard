@@ -5,6 +5,7 @@ const utils = require("./utils.model.js");
 const Match = function(match) {
   this.nomineeID = match.nomineeID;
   this.nomineeID = match.nomineeID;
+  this.matchStatus = match.matchStatus;
 };
 
 Match.create = (newMatch, result) => {
@@ -22,7 +23,7 @@ Match.create = (newMatch, result) => {
 };
 
 Match.findById = (id, result) => {
-  sql.query(`SELECT m.nomineeID, m.judgeID, 
+  sql.query(`SELECT m.matchStatus, m.nomineeID, m.judgeID, 
   n.category, n.subcategory, n.subcategoryOther,
   concat(n.firstName,' ',n.lastName) as nomFullName, concat(j.firstName,' ',j.lastName) as judgeFullName,
   j.info
@@ -51,7 +52,7 @@ Match.findById = (id, result) => {
 };
 
 Match.getAll = result => {
-  sql.query(`SELECT m.nomineeID, m.judgeID, 
+  sql.query(`SELECT m.matchStatus, m.nomineeID, m.judgeID, 
     n.category, n.subcategory, n.subcategoryOther,
     concat(n.firstName,' ',n.lastName) as nomFullName, concat(j.firstName,' ',j.lastName) as judgeFullName,
     j.info
@@ -64,9 +65,11 @@ Match.getAll = result => {
         result(null, err);
         return;
         }
+        
         utils.formatAllData(res, 'nominee');
         utils.formatAllData(res, 'judge');
         utils.getAllJudgesMatchingData(res);
+        utils.setMatchingStatus(res);
         console.log("GET /matches");
         result(null, res);
   });
@@ -98,6 +101,28 @@ Match.getAllMatches = (results) => {
       results(null, [nominees, filteredJudges]);
     });
   });
+};
+
+Match.updateStatus = (status, result) => {
+  sql.query(
+    `UPDATE Matches SET matchStatus = ?`, status,
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        // not found Judge with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      console.log("updated matches: ", { matchStatus: status });
+      result(null, { matchStatus: status});
+    }
+  );
 };
 
 Match.updateById = (id, nominee, result) => {

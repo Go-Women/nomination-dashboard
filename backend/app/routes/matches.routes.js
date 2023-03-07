@@ -13,11 +13,14 @@ module.exports = app => {
     // Retrieve all Matches logic backend
     router.get("/data", matches.findAllMatches);
   
+    // Update a Match with id
+    router.patch("/", matches.generate);
+
     // Retrieve a single Match with id
     router.get("/:id", matches.findOne);
-  
+
     // Update a Match with id
-    router.put("/:id", matches.update);
+    router.patch("/:id", matches.update);
   
     // this based on user authentication eventually
     app.use('/matches', router);

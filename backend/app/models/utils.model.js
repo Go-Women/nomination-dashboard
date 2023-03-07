@@ -19,6 +19,62 @@ exports.formatDate = (res) => {
   return res.date;
 };
 
+exports.setJSON = (res, name) => {
+  res[name] = JSON.parse(res[name]);
+  return res;
+};
+
+// exports.getCodes = (res) => {
+//   // TODO: this will turn a category or subcategory when submitted into a their corresponding code
+//   let resultCat = [];
+//   let resultsubCat = [];
+  
+//   Object.entries(codes).forEach((code, value) => {
+//     // check if the category is other
+//     if (res.category.includes('Other')) {
+//         //  TODO: handle this case
+//     } else {
+//       if (res.category == code[1])
+//         res.category = code[0];
+
+//       if (res.subcategory == code[1])
+//         res.subcategory = code[0];
+//     }
+//     // TODO: implement this for status codes
+//   });
+
+//   return res;
+// };
+
+exports.clean = (jsonData) => {
+  // TODO: figure out how to handle if BOTH category is chosen without a subcategory and the Other category
+  // sets subcategory default to General is if other is not chosen
+  // this assumes that the other field requires the user to type something in that field
+  // TODO: support this for judges
+  if (jsonData.subcategory == undefined && jsonData.subcategoryOther == undefined) {
+    jsonData.subcategory = 's100';
+  }
+
+  return nomination;
+}
+
+exports.merge = (nominee, nomination) => {
+  let merged = JSON.parse(nominee.nominations);
+  merged.push(JSON.parse(nomination)[0]);
+
+  nominee.nominations = JSON.stringify(merged);
+  nominee.nomStatus = 'n200';
+
+  return nominee;
+}
+
+exports.formatJudgeInput = (judge) => {
+    judge.email = judge.info.email;
+    judge.active = judge.info.active;
+    judge.info = JSON.stringify([judge.info]);
+    return judge;
+}
+
 exports.setCategories = (res, cat, subCat, nomStatus, type) => {
   let resultCat = [];
   let resultsubCat = [];
@@ -46,6 +102,7 @@ exports.setCategories = (res, cat, subCat, nomStatus, type) => {
     } else {
       if (code[0] === subCat && subCat.length == 4) {
         res.subcategory = code[1];
+        // console.log("SUBCATEGORY: ", res.subcategory);
       } else if (subCat.length > 4 && subCat.includes(",")){
         let subCats = subCat.split(',');
         for (const i in subCats) {
@@ -73,22 +130,32 @@ exports.setJSON = (res, name) => {
   return res;
 };
 
-exports.getCodes = (res) => {
+exports.getCodes = (res, type) => {
+  // TODO: support multiple categories and subcategories
   // TODO: this will turn a category or subcategory when submitted into a their corresponding code
   let resultCat = [];
   let resultsubCat = [];
-  console.log(res);
   Object.entries(codes).forEach((code, value) => {
+    if (type === 'judge')
+      if (res.judgeStatus == code[1])
+          res.judgeStatus = code[0];
+    else
+      if (res.nomStatus == code[1])
+        res.nomStatus = code[0];
+    // TODO add support for match status
+
     // check if the category is other
-    if (res.category.includes('Other')) {
-        //  TODO: handle this case
-    } else {
+    if (res.category.includes('Other'))
+      if (res.category == code[1])
+        res.category = code[0];
+    else {
       if (res.category == code[1])
         res.category = code[0];
 
       if (res.subcategory == code[1])
         res.subcategory = code[0];
     }
+    
     // TODO: implement this for status codes
   });
 
@@ -104,7 +171,7 @@ exports.clean = (jsonData) => {
     jsonData.subcategory = 's100';
   }
 
-  return nomination;
+  return jsonData;
 }
 
 exports.merge = (nominee, nomination) => {
@@ -190,7 +257,7 @@ exports.getMatchingData = (res, type) => {
   }
   
   const info = res.info;
-
+  
   res.judgeCategory = info.category;
   res.judgeSubcategory = info.subcategory;
   res.judgeSubcategoryOther = info.subcategoryOther;
@@ -199,6 +266,18 @@ exports.getMatchingData = (res, type) => {
 
   if ("info" in res)
     delete res["info"];
+
+  return res;
+};
+
+exports.setMatchingStatus = (res) => {  
+  const matchStatus = res.matchStatus;
+  Object.entries(res).forEach((data, value) => {
+    Object.entries(codes).forEach((code, value) => {
+      if (code[0] === data[1].matchStatus)
+        data[1].matchStatus = code[1];
+    });
+  });
 
   return res;
 };

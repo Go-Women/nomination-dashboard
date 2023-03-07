@@ -15,11 +15,6 @@
   export let data;
   export let { matches } = data.props;
 
-  let buttonClicked = false;
-  function showMatches() {
-    buttonClicked = !buttonClicked;
-  }
-
   var getInformation = (matches: JSON) => {
     let rows = new Array();
     Object.entries(matches).forEach(([key, match], index) => {
@@ -35,6 +30,7 @@
 
       let data = {
         id: index + 1,
+        matchStatus: match.matchStatus,
         nomineeID: match.nomineeID,
         judgeID: match.judgeID,
         nomineeName: match.nomFullName,
@@ -60,6 +56,8 @@
     let pageArray = Array.from({ length: pages }).map((_, i) => (i + 1) * 25);
     return pageArray;
   };
+
+  const status = matches[0].matchStatus;  // TODO: fix this
 </script>
 
 <main>
@@ -71,21 +69,20 @@
         <BreadcrumbItem>Matching</BreadcrumbItem>
       </Breadcrumb>
 
-      <h1>Matching</h1>
-      {#if buttonClicked === false}
+      <h1>Matches</h1>
+      {#if status === 'Review'}
+        <Matches {rows} />
+      {:else}
         <InlineNotification
           lowContrast
           kind="error"
           subtitle="There aren't any potential matches yet. Click below to generate new matches."
         />
       {/if}
-      <Button iconDescription="View" on:click|once={showMatches}
-        >Generate New Matches</Button
-      >
-
-      {#if buttonClicked === true}
-        <Matches {rows} />
-      {/if}
+      <form method="POST">
+        <input name="judgeStatus" type="hidden" value='m100' />
+        <Button iconDescription="View" type="submit">Generate New Matches</Button>
+      </form>
     </Grid>
   </Content>
 </main>

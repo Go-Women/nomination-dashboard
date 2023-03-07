@@ -20,7 +20,7 @@
     let rows = new Array();
     Object.entries(nominees).forEach(([key, nominee], index) => {
       let subCat = nominee.subcategory;
-      if (subCat == "") {
+      if (subCat == null) {
         subCat = nominee.subcategoryOther;
       }
       let data = {
@@ -29,10 +29,8 @@
         status: nominee.status,
         yob: nominee.yob,
         category: nominee.category,
-        subcategory: nominee.subcategory,
-        subcategoryOther: nominee.subcategoryOther,
-        nominationIDs: nominee.nominations,
-        nomineesSub: subCat,
+        subcategory: subCat,
+        nominationIDs: nominee.nominations
       };
 
       rows.push(data);

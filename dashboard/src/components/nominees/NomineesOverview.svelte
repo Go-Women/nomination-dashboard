@@ -11,7 +11,7 @@
   import { LogicalPartition } from "carbon-icons-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
 
-  export let rows;
+  export let rows: any;
 
   let pageSize = 25;
   let page = 1;
@@ -25,7 +25,7 @@
     { key: "id", empty: true },
     { key: "name", value: "Name" },
     { key: "category", value: "Category" },
-    { key: "nomineesSub", value: "Subcategory"}
+    { key: "subcategory", value: "Subcategory"}
   ];
   let categories = [
     { id: 0, text: "Art" },

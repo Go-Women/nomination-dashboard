@@ -21,7 +21,7 @@ const codes = [
   {value: "c800", label: "Other"}
 ];
 
-let pronouns = ["she/her", "he/him", "they/them"];
+let pronouns = ["She/Her", "He/Him", "They/Them", "Other"];
 
 function getCategoryValues(categories: {value: string, label: string}[]) {
   let cleaned = [];
@@ -46,32 +46,51 @@ export const actions: Actions = {
   default: async ({request, params}) => {
     const formData = await request.formData();
     const data: { [name: string]: any } = {};
+    const info: { [name: string]: any } = {};
+
     // data['id'] = params.id;
     for (let field of formData) {
       const [key, value] = field;
-      if (key == 'pronouns') {
-        data[key] = pronouns[value];
-      } else if (key == 'category') {
-        data[key] = getCategoryValues(JSON.parse(value));
-      } else if (key == 'previousJudge' || key == 'interested' || key == 'active') {
-        if (value) {
-          data[key] = '1';
-        } else {
-          data[key] = '0';
-        } 
-      } else {
-        data[key] = value;
-      };
+      switch (key) {
+        case "pronouns":
+          info[key] = pronouns[value];
+          data["info"] = info;
+          break;
+        case "category":
+          info[key] = getCategoryValues(JSON.parse(value));
+          data["info"] = info;
+          break;
+        case "email":
+          data[key] = value;
+          break;
+        case "previousJudge":
+          info[key] = getTrueFalseValues(value);
+          data["info"] = info;
+          break;
+        case "interested":
+          info[key] = getTrueFalseValues(value);
+          data["info"] = info;
+          break;
+        case "active":
+          const val = getTrueFalseValues(value);
+          data[key] = val;
+          break;
+        default:
+          info[key] = value;
+          data["info"] = info;
+          break;
+      }        
     }
 
-    console.log(data);
+    data["info"] = JSON.stringify(info);
     const res = await fetch(`http://localhost:8000/judges/${params.id}`, {
-      method: 'PUT',
-      body: JSON.stringify({data}),
+      method: 'PATCH',
+      body: JSON.stringify(data),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       }
     })
     .then(res => res.json())
+    .then(res => console.log(`JUDGE ${params.id} UPDATED`))
   }
 };

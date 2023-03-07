@@ -1,19 +1,16 @@
 <script lang="ts">
+  import {
+      Accordion,
+      AccordionItem, Breadcrumb,
+      BreadcrumbItem, Column
+  } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
   import "../../css/index.css";
-  import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Grid,
-    Column,
-    Accordion,
-    AccordionItem
-  } from "carbon-components-svelte";
 
   import Navigation from "../../components/Navigation.svelte";
-  import NominationOverview from "../../components/nominations/NominationOverview.svelte";
-  import NominationInformation from "../../components/nominations/NominationInformation.svelte";
   import AcceptReject from "../../components/nominations/AcceptReject.svelte";
+  import NominationInformation from "../../components/nominations/NominationInformation.svelte";
+  import NominationOverview from "../../components/nominations/NominationOverview.svelte";
 
   import fuzzysort from "fuzzysort";
   import PleaseSelect from "../../components/nominations/PleaseSelect.svelte";
@@ -44,21 +41,42 @@
         key: 'fullName',
         threshold: -Infinity
     });
-    // console.log(sorted);
+    
     return sorted.map(a => a.obj);
   } 
 
   const populateRows = (nominations: any[]) => {
-    let rows: any[] = nominations.map(n => ({
-      id: `a-${n.ID}`,
-      nominee: `${n.nomFirst} ${n.nomLast}`,
-      category: n.category,
-      nominator: `${n.authorFirst} ${n.authorLast}`,
-      date: new Date(n.date).toLocaleDateString('es-pa')
-    }));
-
+    let rowsReviewed: any[] = [];
+    let rowsCreated: any[] = [];
     Object.entries(nominations).forEach(([key, nomination], index) => {
-      if (nominations.status == "Reviewed") reviewCount++;
+      let subCat = nomination.subcategory;
+      if (subCat === null)
+        subCat = `${nomination.subcategoryOther}`;
+        
+      if (nomination.nomStatus == "Created" ){ 
+        rowsCreated.push({
+            id: `a-${nomination.ID}`,
+            nominee: `${nomination.nomFirst} ${nomination.nomLast}`,
+            category: `${nomination.category}`,
+            subcategory: subCat,
+            nominator: `${nomination.authorFirst} ${nomination.authorLast}`,
+            date: new Date(nomination.date).toLocaleDateString('es-pa')
+          });
+      } else if (nomination.nomStatus != "Created") {
+        reviewCount++;
+        rowsReviewed.push(
+          {
+            id: reviewCount,
+            nomID: `a-${nomination.ID}`,
+            nominee: `${nomination.nomFirst} ${nomination.nomLast}`,
+            category: `${nomination.category}`,
+            subcategory: subCat,
+            nominator: `${nomination.authorFirst} ${nomination.authorLast}`,
+            date: new Date(nomination.date).toLocaleDateString('es-pa'),
+            status: `${nomination.nomStatus}`
+          });
+      }
+
       switch (nomination.category) {
         case "Art":
           artCount++;
@@ -88,10 +106,13 @@
           break;
       }
     });
+    var rows = [rowsCreated, rowsReviewed]
     return rows;
   };
 
-  export const rows = populateRows(nominations);
+  $: rows = populateRows(nominations);
+  $: rowsReviewed = rows[1];
+  $: rowsCreated = rows[0];
 </script>
 
 <main>
@@ -112,7 +133,7 @@
           </svelte:fragment>
           <Column>
             <NominationOverview
-              totalNominations={rows.length}
+              totalNominations={rowsCreated.length + rowsReviewed.length}
               {reviewCount}
               {artCount}
               {athleticsCount}
@@ -126,12 +147,14 @@
           </Column>
         </AccordionItem>
       </Accordion>
-      <NominationInformation {rows} bind:selectedRowIds />
+
+      <NominationInformation reviewed={false} rows={rowsCreated} bind:selectedRowIds />
+
     </div>
     <div id="half-right">
       <h3>Review Nomination</h3>
       {#if selectedRowIds.length !== 0}
-      <AcceptReject 
+      <AcceptReject
         bind:incomingRowIds={selectedRowIds}
         bind:nominations
         mergeCandidates={mergeCandidates}
@@ -141,6 +164,16 @@
       {/if}
       
     </div>
+  </div>
+  <div id="container">
+    <Accordion size="sm">
+      <AccordionItem>
+        <svelte:fragment slot="title">
+        <h4>Reviewed Nominations</h4>
+        </svelte:fragment>
+        <NominationInformation reviewed={true} rows={rowsReviewed} bind:selectedRowIds/>
+      </AccordionItem>
+    </Accordion>
   </div>
 </main>
 
@@ -162,6 +195,7 @@
     padding-left: 4rem;
     padding-right: 2rem;
   }
+
   #half-left {
     width: 100%;
     grid-column: 2;
