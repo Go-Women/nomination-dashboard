@@ -24,6 +24,7 @@
   export let reviewCount = 0;
   export let rejectedCount = 0;
 
+
   let appliedJudges = new Array();
   let activeJudges = new Array();
   let rejectedJudges = new Array();
@@ -40,8 +41,7 @@
         active: judge.active,
         category: judge.info.category,
         subcategory: judge.info.subcategory,
-        capacity: judge.info.capacity,
-        
+        capacity: judge.info.capacity,   
       };
     switch (judge.info.judgeStatus) {
       case 'Active':
@@ -59,7 +59,7 @@
       default:
         break;
     }
-
+    
     });
     rows.push(activeJudges, appliedJudges, rejectedJudges);
     return rows;

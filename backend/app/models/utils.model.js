@@ -157,7 +157,6 @@ exports.getCodes = (res, type) => {
       if (res.subcategory == code[1])
         res.subcategory = code[0];
     }
-  
     // TODO: implement this for status codes
   });
 

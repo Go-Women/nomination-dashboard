@@ -18,7 +18,7 @@ export const actions: Actions = {
       const [key, value] = field;
       data[key] = value;
     }
-    console.log(data);
+
     const res = await fetch(`http://localhost:8000/matches`, {
       method: 'PATCH',
       body: JSON.stringify(data),

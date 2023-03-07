@@ -39,6 +39,7 @@ exports.findAll = (req, res) => {
           err.message || "Some error occurred while retrieving Judges."
       });
     else res.send(data);
+    console.log(data);
   });
 };
 

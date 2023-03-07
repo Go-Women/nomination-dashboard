@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { enhance } from "$app/forms";
   import { Button, Column, DataTable, Form, Grid, RadioButton, RadioButtonGroup, Row, TextArea } from "carbon-components-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
   import Merge from "./Merge.svelte";
@@ -17,19 +18,25 @@
     yob: c.yob
   }))];
   let selectedRowIds: string[] = ['b-0'];
+  $: selectedNominee = selectedRowIds[0].substring(2);
 
   $: nom = nominations.find(n => n.ID == incomingRowIds[0].substring(2)) || {};
+
+  let validated: string[] = [];
 </script>
 
 <main>
+  <!-- <Form method="POST"> -->
   <div class="nom-information">
     <ul class="no-style">
-      <li>Name: {nom['nomFirst']} {nom['nomLast']} &mdash; Born: {nom['nomYOB']}</li>
+      <li>Name: {nom['nomFirst']} {nom['nomLast']} &mdash; Born: {nom.nomYOB}</li>
+      
       <li class="break">Contribution Areas: {nom.category}</li>
-      <!-- {#if nom['nom-contrib-area-sub-description']}
-      <li>User-Submitted Area: {nom['nom-contrib-area-sub-description']}</li>
-      <!-- {/if} -->  <!-- TODO -->
-      <li>Contribution Subcategories: {nom.subcategory}</li>
+      {#if nom.subcategoryOther}
+        <li>User-Submitted Area: {nom.subcategoryOther}</li>
+      {:else}
+        <li>Contribution Subcategories: {nom.subcategory}</li>
+      {/if}
     </ul>
   </div>
 
@@ -71,15 +78,45 @@
       <Merge bind:selectedRowIds bind:rows={rows} />
     </div>
     <div class="button-area">
-      <Button kind="tertiary">Confirm Nomination</Button>
-      <Button kind="danger-tertiary">Reject Nomination</Button>
+      <form method="POST" action="?/accept">
+      <!-- <form method="POST" action="?/accept" use:enhance={() => {
+        // nominations = nominations.filter(n => n.ID != nom.ID);
+        incomingRowIds = [];
+        return async ({update}) => {
+          await update();
+        }
+      }}> -->
+        <input name="nomineeID" type="hidden" value={selectedNominee} />
+        <input hidden name="nominationID" value={nom.ID} />
+        <input hidden name="firstName" value={nom.nomFirst} />
+        <input hidden name="lastName" value={nom.nomLast} /> 
+        <input hidden name="yob" value={nom.nomYOB} />   
+        <input hidden name="category" value={nom.category} />
+        {#if nom.subcategoryOther}
+          <TextArea hidden name="subcategoryOther" value={nom.subcategoryOther}></TextArea>
+        {:else}
+          <TextArea hidden name="subcategory" value={nom.subcategory}></TextArea>
+        {/if}
+        <Button type="submit" kind="tertiary">Confirm Nomination</Button>
+      </form>
+      <form method="POST" action="?/reject">
+      <!-- <form method="POST" action="?/reject" use:enhance={() => {
+        // nominations = nominations.filter(n => n.ID != nom.ID);
+        return async ({update}) => {
+          await update();
+        }
+      }}> -->
+        <input name="nominationID" type="hidden" value={nom.ID} />
+        <Button type="submit" kind="danger-tertiary">Reject Nomination</Button>
+      </form>
       {#if selectedRowIds[0] === 'b-0'}
-      <div class="info">A new nominee will be created for this nomination.</div>
+        <div class="info">A new nominee will be created for this nomination.</div>
       {:else}
-      <div class="info">This nomination will be merged into the selected nominee.</div>
+        <div class="info">This nomination will be merged into the selected nominee.</div>
       {/if}
     </div>
   </div>
+<!-- </Form> -->
 </main>
 
 <style>

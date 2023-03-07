@@ -11,7 +11,7 @@ module.exports = app => {
     router.get("/", matches.findAll);
 
     // Retrieve all Matches logic backend
-    router.get("/data", matches.findAlMatches);
+    router.get("/data", matches.findAllMatches);
   
     // Update a Match with id
     router.patch("/", matches.generate);

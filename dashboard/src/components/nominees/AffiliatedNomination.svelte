@@ -38,7 +38,7 @@
       </Row>
       <Row>
         <Column>Nomination Date</Column>
-        <Column>{nomination.date}</Column>
+        <Column>{new Date(nomination.date).toLocaleDateString('es-pa')}</Column>
       </Row>
       <Row style="margin-top: 1em;">
         <Column style="font-weight: bold;">Responses</Column>
