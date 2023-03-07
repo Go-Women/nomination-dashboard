@@ -233,7 +233,7 @@
 <style>
   main {
     display: grid;
-    grid-template-columns: 1fr 45% 1fr;
+    grid-template-columns: 1fr 50% 1fr;
     grid-template-rows: 1 1fr;
     justify-items: center;
     margin-top: 1em;

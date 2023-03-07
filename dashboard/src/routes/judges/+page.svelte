@@ -108,7 +108,7 @@
     <Accordion size="sm">
       <AccordionItem>
         <svelte:fragment slot="title">
-        <h4>Reviewed Judged</h4>
+        <h4>Reviewed Judges</h4>
         </svelte:fragment>
         <JudgesInformation rows={rowsData[0]} bind:selectedRowIds/>
       </AccordionItem>
@@ -118,7 +118,7 @@
     <Accordion size="sm">
       <AccordionItem>
         <svelte:fragment slot="title">
-        <h4>Rejected Judged</h4>
+        <h4>Rejected Judges</h4>
         </svelte:fragment>
         <JudgesInformation rows={rowsData[2]} bind:selectedRowIds/>
       </AccordionItem>
