@@ -1,8 +1,8 @@
 <script lang="ts">
   import { DonutChart } from "@carbon/charts-svelte";
-
-  import "@carbon/styles/css/styles.css";
   import "@carbon/charts/styles.css";
+  import "@carbon/styles/css/styles.css";
+ 
 
   import { Content, Tile, DataTable, Row, Column } from "carbon-components-svelte";
 

@@ -35,6 +35,7 @@
         { key: "nomID", empty: true},
         { key: "nominee", value: "Nomination" },
         { key: "category", value: "Category" },
+        { key: "subcategory", value: "Subcategory" },
         { key: "nominator", value: "Nominated By" },
         { key: "date", value: "Date", display: (date) => Date.parse(date).toLocaleString('es-pa'),
           sort: (a, b) => {
@@ -81,6 +82,7 @@
       headers={[
         { key: "nominee", value: "Nominee" },
         { key: "category", value: "Category" },
+        { key: "subcategory", value: "Subcategory" },
         { key: "nominator", value: "Nominated By" },
         { key: "date", value: "Date", display: (date) => Date.parse(date).toLocaleString('es-pa'),
           sort: (a, b) => {

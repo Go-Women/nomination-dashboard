@@ -49,13 +49,16 @@
     let rowsReviewed: any[] = [];
     let rowsCreated: any[] = [];
     Object.entries(nominations).forEach(([key, nomination], index) => {
-      
-
+      let subCat = nomination.subcategory;
+      if (subCat === null)
+        subCat = `${nomination.subcategoryOther}`;
+        
       if (nomination.nomStatus == "Created" ){ 
         rowsCreated.push({
             id: `a-${nomination.ID}`,
             nominee: `${nomination.nomFirst} ${nomination.nomLast}`,
-            category: nomination.category,
+            category: `${nomination.category}`,
+            subcategory: subCat,
             nominator: `${nomination.authorFirst} ${nomination.authorLast}`,
             date: new Date(nomination.date).toLocaleDateString('es-pa')
           });
@@ -66,7 +69,8 @@
             id: reviewCount,
             nomID: `a-${nomination.ID}`,
             nominee: `${nomination.nomFirst} ${nomination.nomLast}`,
-            category: nomination.category,
+            category: `${nomination.category}`,
+            subcategory: subCat,
             nominator: `${nomination.authorFirst} ${nomination.authorLast}`,
             date: new Date(nomination.date).toLocaleDateString('es-pa'),
             status: `${nomination.nomStatus}`
