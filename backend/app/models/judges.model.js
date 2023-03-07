@@ -8,7 +8,6 @@ const Judge = function(judge) {
   this.firstName = judge.firstName;
   this.lastName = judge.lastName;
   this.active = judge.active;
-  this.judgeStatus = judge.judgeStatus;
   this.info = judge.info;
 };
 
@@ -63,27 +62,6 @@ Judge.getAll = result => {
   });
 };
 
-Judge.getMatchingDataById = (id, result) => {
-  sql.query(`SELECT info, concat(firstName,' ',lastName) as judgeName FROM Users WHERE id = ? AND type = 'judge'`, id, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-      return;
-    }
-
-    if (res.length) {
-      utils.formatSingleData(res[0], 'judge');
-      utils.getJudgeMatchingData(res[0]);
-      // console.log(`GET /judge/${id}`);
-      result(null, res[0]);
-      return;
-    }
-
-    // not found Nominee with the id
-    result({ kind: "not_found" }, null);
-  });
-};
-
 Judge.updateById = (id, judge, result) => {
   sql.query(
     "UPDATE Users SET active = ?, email = ?, info = ? WHERE id = ? AND type ='judge'",
@@ -103,6 +81,27 @@ Judge.updateById = (id, judge, result) => {
 
       console.log("updated judge: ", { id: id, ...judge });
       result(null, { id: id, ...judge });
+    }
+  );
+};
+
+Judge.updateInfo = (id, info, result) => {
+  utils.getCodes(info, 'judge');
+  sql.query(
+    "UPDATE Users SET info = ? WHERE id = ?",
+    [JSON.stringify(info), id],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+      if (res.affectedRows === 0) {
+        result({ kind: "not_found" }, null);
+        return;
+      }
+      console.log(`updated judge ${id}'s info: ${info.judgeStatus}`);
+      result(null, { id: id, info: info });
     }
   );
 };

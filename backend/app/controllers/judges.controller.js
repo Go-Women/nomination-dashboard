@@ -39,7 +39,6 @@ exports.findAll = (req, res) => {
           err.message || "Some error occurred while retrieving Judges."
       });
     else res.send(data);
-    console.log(data);
   });
 };
 
@@ -85,5 +84,37 @@ exports.update = (req, res) => {
         }
       } else res.send(data);
     }
-  );
+  )
 };
+
+exports.review = (req, res) => {
+  let info = JSON.parse(`${req.body.info}`);
+  switch (req.body.action) {
+    case 'ACCEPT':
+      console.log(`Accepting judge ${req.body.judgeID}`);
+      info.judgeStatus = 'j300';
+      Judge.updateInfo(`${req.body.judgeID}`, info, (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({ message: `Not found Judge with id ${req.body.judgeID}.` });
+          } else {
+            res.status(500).send({ message: `Error updating Judge with id ${req.body.judgeID}` });
+          }
+        } else { res.send(data) };
+      });
+      break;
+    case 'REJECT':
+      console.log(`Rejecting judge ${req.body.judgeID}`);
+      info['judgeStatus'] = 'j400';
+      Judge.updateInfo(req.body.judgeID, info, (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({ message: `Not found Judge with id ${req.body.judgeID}.` });
+          } else {
+            res.status(500).send({ message: `Error updating Judge with id ${req.body.judgeID}` });
+          }
+        } else { res.send(data) };
+      });
+      break;
+  }
+}

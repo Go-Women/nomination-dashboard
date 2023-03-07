@@ -1,5 +1,5 @@
 const express = require("express");
-const codes = require("./app/models/codes.ts");
+const codes = require("./app/models/codes.js");
 const bodyParser = require('body-parser');
 
 const app = express();
