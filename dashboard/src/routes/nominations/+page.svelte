@@ -63,7 +63,8 @@
         reviewCount++;
         rowsReviewed.push(
           {
-            id: `a-${nomination.ID}`,
+            id: reviewCount,
+            nomID: `a-${nomination.ID}`,
             nominee: `${nomination.nomFirst} ${nomination.nomLast}`,
             category: nomination.category,
             nominator: `${nomination.authorFirst} ${nomination.authorLast}`,

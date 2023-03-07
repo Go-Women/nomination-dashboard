@@ -32,7 +32,7 @@
       size="medium"
       style="justify-text: center;"
       headers={[
-        { key: "id", empty: true},
+        { key: "nomID", empty: true},
         { key: "nominee", value: "Nomination" },
         { key: "category", value: "Category" },
         { key: "nominator", value: "Nominated By" },
@@ -54,8 +54,8 @@
         <ToolbarSearch persistent shouldFilterRows/>
       </ToolbarContent>
     </Toolbar>
-    <svelte:fragment slot="cell" let:cell>
-      {#if cell.key === "id"}
+    <svelte:fragment slot="cell" let:row let:cell>
+      {#if cell.key === "nomID"}
         <Button
           iconDescription="View"
           icon={View}
