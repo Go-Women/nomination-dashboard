@@ -3,10 +3,7 @@
   import "../../css/index.css";
   import Navigation from "../../components/Navigation.svelte";
   import {
-    Content,
-    Grid,
     Column,
-    Row,
     Breadcrumb,
     BreadcrumbItem,
     Accordion,
@@ -16,17 +13,21 @@
   import JudgeOverview from "../../components/judges/JudgeOverview.svelte";
   import JudgeAcceptReject from "../../components/judges/JudgeAcceptReject.svelte";
     import PleaseSelect from "../../components/nominations/PleaseSelect.svelte";
+  import { Swim } from "carbon-icons-svelte";
 
   export let data;
   export let { judges } = data.props;
 
   let selectedRowIds: string[] = [];
   
-  let activeCount = 0;
-  var incrementActiveCount = () => {
-    return activeCount++;
-  };
+  export let activeCount = 0;
+  export let reviewCount = 0;
+  export let rejectedCount = 0;
 
+  let appliedJudges = new Array();
+  let activeJudges = new Array();
+  let rejectedJudges = new Array();
+  
   var getInformation = (judges: JSON) => {
     let rows = new Array();
     Object.entries(judges).forEach(([key, judge], index) => {
@@ -42,17 +43,29 @@
         capacity: judge.info.capacity,
         
       };
+    switch (judge.info.judgeStatus) {
+      case 'Active':
+        activeCount++;
+        activeJudges.push(data);
+        break;
+      case 'Applied':
+        reviewCount++;
+        appliedJudges.push(data);
+        break
+      case 'Rejected':
+        rejectedCount++;
+        rejectedJudges.push(data);
+        break;
+      default:
+        break;
+    }
 
-      if (judge.active === 1) {
-        incrementActiveCount();
-      }
-      rows.push(data);
     });
-
+    rows.push(activeJudges, appliedJudges, rejectedJudges);
     return rows;
   };
+
   export const rowsData = getInformation(judges);
-  export const active = activeCount;
 </script>
 
 <main>
@@ -73,11 +86,11 @@
             <h4>Overview</h4>
           </svelte:fragment>
           <Column>
-            <JudgeOverview {activeCount} />
+            <JudgeOverview {activeCount} {reviewCount} {rejectedCount}/>
           </Column>
         </AccordionItem>
       </Accordion>
-      <JudgesInformation rows={rowsData} bind:selectedRowIds />
+      <JudgesInformation rows={rowsData[1]} bind:selectedRowIds />
     </div>
     <div id="half-right">
       {#if selectedRowIds.length !== 0}
@@ -90,6 +103,26 @@
       <PleaseSelect type={"judge"} />
       {/if}
     </div>
+  </div>
+  <div id="container">
+    <Accordion size="sm">
+      <AccordionItem>
+        <svelte:fragment slot="title">
+        <h4>Reviewed Judged</h4>
+        </svelte:fragment>
+        <JudgesInformation rows={rowsData[0]} bind:selectedRowIds/>
+      </AccordionItem>
+    </Accordion>
+  </div>
+  <div id="container">
+    <Accordion size="sm">
+      <AccordionItem>
+        <svelte:fragment slot="title">
+        <h4>Rejected Judged</h4>
+        </svelte:fragment>
+        <JudgesInformation rows={rowsData[2]} bind:selectedRowIds/>
+      </AccordionItem>
+    </Accordion>
   </div>
 </main>
 

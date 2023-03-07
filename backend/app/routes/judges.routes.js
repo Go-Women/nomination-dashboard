@@ -4,6 +4,9 @@ module.exports = app => {
 
   var router = require("express").Router();
 
+  // Review a Judge (Accept/Reject)
+  router.patch("/review", judges.review);
+
   // Create a new User
   router.post("/", judges.create);
 
@@ -15,9 +18,6 @@ module.exports = app => {
 
   // Update a User with id
   router.patch("/:id", judges.update);
-
-  // Review a Judge (Accept/Reject)
-  router.patch("/review", judges.review);
 
   // for now this is used will update to hide this based on user authentication
   app.use('/judges', router);

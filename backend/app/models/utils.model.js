@@ -24,27 +24,27 @@ exports.setJSON = (res, name) => {
   return res;
 };
 
-exports.getCodes = (res) => {
-  // TODO: this will turn a category or subcategory when submitted into a their corresponding code
-  let resultCat = [];
-  let resultsubCat = [];
-  console.log(res);
-  Object.entries(codes).forEach((code, value) => {
-    // check if the category is other
-    if (res.category.includes('Other')) {
-        //  TODO: handle this case
-    } else {
-      if (res.category == code[1])
-        res.category = code[0];
+// exports.getCodes = (res) => {
+//   // TODO: this will turn a category or subcategory when submitted into a their corresponding code
+//   let resultCat = [];
+//   let resultsubCat = [];
+  
+//   Object.entries(codes).forEach((code, value) => {
+//     // check if the category is other
+//     if (res.category.includes('Other')) {
+//         //  TODO: handle this case
+//     } else {
+//       if (res.category == code[1])
+//         res.category = code[0];
 
-      if (res.subcategory == code[1])
-        res.subcategory = code[0];
-    }
-    // TODO: implement this for status codes
-  });
+//       if (res.subcategory == code[1])
+//         res.subcategory = code[0];
+//     }
+//     // TODO: implement this for status codes
+//   });
 
-  return res;
-};
+//   return res;
+// };
 
 exports.clean = (jsonData) => {
   // TODO: figure out how to handle if BOTH category is chosen without a subcategory and the Other category
@@ -83,7 +83,7 @@ exports.setCategories = (res, cat, subCat, nomStatus, type) => {
     // console.log("CATEGORY: ", res.category);
     if (code[0] === cat && cat.length == 4) {
       res.category = code[1];
-    } else if (cat.length > 4 && cat.includes(",") ){
+    } else if (cat.length > 4 && cat.includes(",")){
       let cats = cat.split(',');
       for (const i in cats) {
         if (code[0] === cats[i]) {
@@ -121,23 +121,69 @@ exports.setCategories = (res, cat, subCat, nomStatus, type) => {
         res.nomStatus = code[1];
   });
 
+  // TODO: handle other subcategory
   return res;
 };
 
 exports.setJSON = (res, name) => {
-  res[name] = JSON.parse(res[name])[0];
+  res[name] = JSON.parse(res[name]);
   return res;
 };
 
-exports.clean = (nomination) => {
+exports.getCodes = (res, type) => {
+  // TODO: support multiple categories and subcategories
+  // TODO: this will turn a category or subcategory when submitted into a their corresponding code
+  let resultCat = [];
+  let resultsubCat = [];
+  Object.entries(codes).forEach((code, value) => {
+    // console.log(res.category, res.subcategory);
+    if (type === 'judge') {
+      if (res.judgeStatus == code[1])
+          res.judgeStatus = code[0];
+    } else {
+        if (res.nomStatus == code[1])
+          res.nomStatus = code[0];
+      // TODO add support for match status
+    }
+    // check if the category is other
+    if (res.category.includes('Other')) {
+      if (res.category === code[1])
+        res.category = code[0];
+
+    } else {
+      if (res.category == code[1])
+        res.category = code[0];
+
+      if (res.subcategory == code[1])
+        res.subcategory = code[0];
+    }
+  
+    // TODO: implement this for status codes
+  });
+
+  return res;
+};
+
+exports.clean = (jsonData) => {
   // TODO: figure out how to handle if BOTH category is chosen without a subcategory and the Other category
   // sets subcategory default to General is if other is not chosen
   // this assumes that the other field requires the user to type something in that field
-  if (nomination.subcategory == undefined && nomination.subcategoryOther == undefined) {
-    nomination.subcategory = 's100';
+  // TODO: support this for judges
+  if (jsonData.subcategory == undefined && jsonData.subcategoryOther == undefined) {
+    jsonData.subcategory = 's100';
   }
 
-  return nomination;
+  return jsonData;
+}
+
+exports.merge = (nominee, nomination) => {
+  let merged = JSON.parse(nominee.nominations);
+  merged.push(JSON.parse(nomination)[0]);
+
+  nominee.nominations = JSON.stringify(merged);
+  nominee.nomStatus = 'n200';
+
+  return nominee;
 }
 
 exports.formatJudgeInput = (judge) => {
@@ -157,18 +203,18 @@ exports.formatSingleData = (res, type) => {
     res.info = JSON.parse(res.info);  
     cat = res.info.category;
     subCat = res.info.subcategory;
-    res.info = this.setCategories(res.info, cat, subCat);
-
+    nomStatus = res.info.judgeStatus;
+    res.info = this.setCategories(res.info, cat, subCat, nomStatus, type);
   } else if (type === 'nominee') {
     // Handle Code Formats
-    // res = this.setJSON(res, 'nominations');
-
+    nomStatus = res.nomStatus;
     cat = res.category;
     subCat = res.subcategory;
     if (subCat == null) {
       subCat = res.subcategoryOther;
     }
-    res = this.setCategories(res, cat, subCat);
+
+    res = this.setCategories(res, cat, subCat, nomStatus);
   } else {
     // Handle Code Formats
     nomStatus = res.nomStatus;
@@ -177,7 +223,7 @@ exports.formatSingleData = (res, type) => {
     if (subCat == null) {
       subCat = res.subcategoryOther;
     }
-    res = this.setCategories(res, cat, subCat);
+    res = this.setCategories(res, cat, subCat, nomStatus);
   }
     return res;
 };
@@ -201,7 +247,7 @@ exports.getMatchingData = (res, type) => {
   }
   
   const info = res.info;
-
+  
   res.judgeCategory = info.category;
   res.judgeSubcategory = info.subcategory;
   res.judgeSubcategoryOther = info.subcategoryOther;
