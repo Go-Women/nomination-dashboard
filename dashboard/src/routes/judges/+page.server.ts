@@ -21,7 +21,7 @@ export const actions: Actions = {
       data[key] = value;
     }
     data['action'] = 'ACCEPT';
-    console.log(JSON.stringify(data));
+    // console.log(JSON.stringify(data));
     const res = await fetch(`http://localhost:8000/judges/review`, {
       method: 'PATCH',
       body: JSON.stringify(data),
@@ -40,7 +40,7 @@ export const actions: Actions = {
       data[key] = value;
     }
     data['action'] = 'REJECT';
-    console.log(JSON.stringify(data));
+    // console.log(JSON.stringify(data));
     const res = await fetch(`http://localhost:8000/judges/review`, {
       method: 'PATCH',
       body: JSON.stringify(data),

@@ -89,7 +89,6 @@ exports.update = (req, res) => {
 
 exports.review = (req, res) => {
   let info = JSON.parse(`${req.body.info}`);
-  console.log("Passed in: ", info);
   switch (req.body.action) {
     case 'ACCEPT':
       console.log(`Accepting judge ${req.body.judgeID}`);
