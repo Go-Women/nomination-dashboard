@@ -30,6 +30,8 @@ export const actions: Actions = {
           break;
       }        
     }
+    info["judgeStatus"] = "j100";
+    data["info"] = info;
     const res = await fetch('http://localhost:8000/judges', {
       method: 'POST',
       body: JSON.stringify(data),
