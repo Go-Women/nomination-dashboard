@@ -1,7 +1,8 @@
 <script lang="ts">
   import {
       Button, Checkbox, ComboBox, Form,
-      FormGroup, NumberInput, RadioButton, RadioButtonGroup, TextArea, TextInput
+      FormGroup, NumberInput, RadioButton, RadioButtonGroup, TextArea, TextInput,
+      InlineNotification
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
   import Login from "carbon-icons-svelte/lib/Login.svelte";
@@ -39,6 +40,8 @@
     return item.text.toLowerCase().includes(value.toLowerCase());
   }
   let selectedYear = `${currentYear}`;
+
+  let submitted = false;
 </script>
 
 <main>
@@ -64,6 +67,14 @@
       about nominations, please email us at <a href="mailto:admin@womenofthehall.org">admin@womenofthehall.org</a>.
     </p>
     <p><em>All submitted materials become property of the National Women's Hall of Fame.</em></p>
+
+    {#if submitted}
+      <InlineNotification
+        lowContrast
+        kind="success"
+        subtitle="Submission success"
+      />
+    {/if}
   </div>
 
   <div id="form-container">
@@ -240,7 +251,7 @@
       {/if}
       <TextArea name="nomAdditionalInfo" labelText="Please use this space to communicate any additional information about this nomination. (Optional)" placeholder="Type here..." />
       <div id="submit-button">
-        <Button type="submit">Submit</Button>
+        <Button type="submit" on:click={() => (submitted = !submitted)}>Submit</Button>
       </div>
     </Form>
   </div>
