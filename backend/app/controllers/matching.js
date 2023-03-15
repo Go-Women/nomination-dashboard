@@ -2,7 +2,11 @@ const Match = require("../models/matches.model");
 var judges = [];
 var nominees = [];
 var matches = [];
+var manualReveiw = [];
 
+//judges[y].judgecapacity //returns judge capacity
+//judges[y].judgecapacity = 0 // judge capacity to 0
+//judges[y].judgeCapacity = judges[y].judgeCapacity--; //minius 1 from judge capacity
 
 // Dataset from GET /matches/data:
 // const tobeMatched = [
@@ -50,7 +54,6 @@ var matches = [];
 //                          e.g. judges[0].judgeCategory = "c100"
 //                          tobeMatched[1][0].judgeCategory = "c100";
 
-
 function populateJudges(matches){
   judges = matches;
 }
@@ -59,97 +62,64 @@ function populateNominees(matches){
   nominees = matches;
 }
 
-function getJudgeSubCat(judge){
-  return judge["nomSubCategory"];
+function getJudgeSubCat(i){
+  let judgeSubcats = judges[i].judgeSubcategory;
+  let newList = judgeSubcats.split(',');
+  return newList;
 }
 
-function getNomineeSubCat(nominee){
-  return nominee["nomSubCategory"];
+function getNomineeSubCat(i){
+  let nomineeSubcats = nominees[i].nomineeSubcategory;
+  let newList = nomineeSubcats.split(',');
+  return newList;
 }
 
-function getJudgeCat(judge){
-  return judge["nomCategory"];
+function getJudgeCat(i){
+  let judgeCats = judges[i].judgeCategory;
+  let newList = judgeCats.split(',');
+  return newList;
 }
 
-function getNomineeCat(nominee){
-  return nominee["nomCategory"];
+function getNomineeCat(i){
+  let nomineeCats = nominees[i].nomineeCategory;
+  let newList = nomineeCats.split(',');
+  return newList;
 }
 
-function checkOther(nominee) {
+function checkOther(y) {
   //returns true if other category
-  if (nominee["nomSubcategoryOther"] !== null) {
+  if (nominees[y].nomSubcategoryOther !== null) {
     return true;
   }
   return false;
 }
 
-function isJudgeAtCapacity(judge){
+function isJudgeAtCapacity(y){
     //returns true if judge is at capacity
-    var count = 0;
-    for (let value in matches){
-      if (value == judge) {
-        count = count + 1;
-      }
-    }
-    if (count == getJudgeCapacity(judge)) {
-      return true;
-    }
-    return false;
+  if (judges[y].judgecapacity <= 0) {
+    return true;
+  }
+  return false;
 }
 
-function getJudgeCapacity(judge){
+function getJudgeCapacity(y){
   //return judge capacity number
-  return judge["judgeCapacity"];
+  return judges[y].judgecapacity;
 }
 
 function isNomineeAtCapacity(nominee){
   //returns true if nominee is no longer needing judges
-  var count = 0;
-  for (let x in matches){
-    if (x == nominee) {
-      count = count + 1;
-    }
-  }
-  if (count == 3) {
+  if (nominees[nominee].nomineecapacity <= 0) {
     return true;
   }
   return false;
 }
-
-// function matchSubcat(){
-//   for (let i = 0; i < 3; i++){
-//     for (let x in nominees){
-//       if (checkOther(x) == false) {
-//         if (isNomineeAtCapacity[x] == false) {
-//           for (let y in judges){
-//               var judgeSubCatList = getJudgeSubCat(y);
-//               var nomSubCatList = getNomineeSubCat(x);
-//               if (nomSubCatList !== null) {
-//                 for (let k = 0; k < nomSubCatList.length; k++){
-//                   for (let m = 0; m < judgeSubCatList.length; m++){
-//                     if (judgeSubCatList[m] == nomSubCatList[k]){
-//                       if (isJudgeAtCapacity(y) == false) {
-//                         matches[x] = y;
-//                       }
-//                     }
-//                 }
-//                 }
-//           }
-//         }
-//         }
-//       }
-//       else {
-//         matches[x] = "Manual";
-//       }
-//     }
-//     }
-// }
 
 function matchSubCat() {
   for (let i = 0; i < 3; i++) {
     for (let x in nominees) {
       if (!checkOther(x)) {
-        matches[x] = "Manual";
+        manualReveiw.push(x);
         continue;
       }
       if (isNomineeAtCapacity[x]) continue;
@@ -163,6 +133,8 @@ function matchSubCat() {
           for (let m = 0; m < judgeSubCatList.length; m++) {
             if (isJudgeAtCapacity(y)) continue;
             matches[x] = y;
+            judges[y].judgeCapacity = judges[y].judgeCapacity--;
+            nominees[x].nomineeCapacity = nominees[x].nomineeCapacity--;
           }
         }
       }
@@ -185,6 +157,8 @@ function matchCat() {
             if (judgeCatList[m] == nomCatList[k]) {
               if (isJudgeAtCapacity(y)) continue;
               matches[x] = y;
+              judges[y].judgeCapacity = judges[y].judgeCapacity--;
+              nominees[x].nomineeCapacity = nominees[x].nomineeCapacity--;
             }
           }
         }
@@ -193,51 +167,16 @@ function matchCat() {
   }
 }
 
-// function matchCat(){
-//   for (let i = 0; i < 3; i++){
-//     for (let x in nominees){
-//       if (isNomineeAtCapacity[x] == false) {
-//         for (let y in judges){
-//             var judgeCatList = getJudgeCat(y);
-//             var nomCatList = getNomineeCat(x);
-//             if (nomCatList !== null) {
-//               for (let k = 0; k < nomCatList.length; k++){
-//                 for (let m = 0; m < judgeCatList.length; m++){
-//                   if (judgeCatList[m] == nomCatList[k]){
-//                     if (isJudgeAtCapacity(y) == false) {
-//                       matches[x] = y;
-//                     }
-//                   }
-//               }
-//               }
-//         }
-//       }
-//       }
-//     }
-// }
-
-// TODO: then add any unmatched nominees to a separate manual review list
-//}
-
-function matchCheck(){
-    for (let x in nominees){
-      if (isNomineeAtCapacity[x] == false) {
-        return true;
-    }
-  }
-  return false;
-}
+//             judges[y].judgecapacity //returns judge capacity
+//             judges[y].judgecapacity = 0 //returns judge capacity to 0
+//             judges[y].judgeCapacity = judges[y].judgeCapacity--; 
 
 exports.mainMatching = (matches) => {
   // Call to backend GET /matches/data
   // returns [[{},{}..],[{},{},..]] data
   populateJudges(matches[1]);
+  //judges[1].judgeCapacity; //returns capacity
   populateNominees(matches[0]);
-  console.log(judges[0].judgeCategory);
-  // var set = true;
-  // while(set !== false) {
   //   matchSubcat();
   //   matchCat();
-  //   set = matchCheck();
-  // }
 }
