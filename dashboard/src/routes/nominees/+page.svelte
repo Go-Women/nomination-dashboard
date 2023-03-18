@@ -19,9 +19,10 @@
   var getInformation = (nominees: JSON) => {
     let rows = new Array();
     Object.entries(nominees).forEach(([key, nominee], index) => {
-      let subCat = nominee.subcategory;
-      if (subCat == null) {
-        subCat = nominee.subcategoryOther;
+
+      let subcategory = nominee.subcategory;
+      if (subcategory === null) {
+        subcategory = nominee.subcategoryOther;
       }
       let data = {
         id: nominee.ID,
@@ -29,8 +30,10 @@
         status: nominee.status,
         yob: nominee.yob,
         category: nominee.category,
-        subcategory: subCat,
-        nominationIDs: nominee.nominations
+        subcategory: nominee.subcategory,
+        subcategoryOther: nominee.subcategoryOther,
+        nominationIDs: nominee.nominations,
+        nomineesSub: subcategory,
       };
 
       rows.push(data);

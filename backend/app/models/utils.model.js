@@ -136,26 +136,27 @@ exports.getCodes = (res, type) => {
   let resultCat = [];
   let resultsubCat = [];
   Object.entries(codes).forEach((code, value) => {
-    if (type === 'judge')
+    // console.log(res.category, res.subcategory);
+    if (type === 'judge') {
       if (res.judgeStatus == code[1])
           res.judgeStatus = code[0];
-    else
-      if (res.nomStatus == code[1])
-        res.nomStatus = code[0];
-    // TODO add support for match status
-
+    } else {
+        if (res.nomStatus == code[1])
+          res.nomStatus = code[0];
+      // TODO add support for match status
+    }
     // check if the category is other
-    if (res.category.includes('Other'))
-      if (res.category == code[1])
+    if (res.category.includes('Other')) {
+      if (res.category === code[1])
         res.category = code[0];
-    else {
+
+    } else {
       if (res.category == code[1])
         res.category = code[0];
 
       if (res.subcategory == code[1])
         res.subcategory = code[0];
     }
-    
     // TODO: implement this for status codes
   });
 

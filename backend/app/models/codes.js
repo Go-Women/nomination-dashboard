@@ -89,5 +89,5 @@ module.exports = {
     // (These are going to have to me stored multiple times based on the number of nominees assigned)
     "j600": "Opened",   // when an assigned judge opens a nominee
     "j700": "In-Progress",  // when an assigned judge saves a nominee but does submit the review
-    "j800": "Completed", // when an assigned judge completes 
+    "j800": "Completed", // when an assigned judge completes
 };

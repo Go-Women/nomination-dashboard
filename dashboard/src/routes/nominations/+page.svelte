@@ -56,7 +56,7 @@
       if (nomination.nomStatus == "Created" ){ 
         rowsCreated.push({
             id: `a-${nomination.ID}`,
-            nominee: `${nomination.nomFirst} ${nomination.nomLast}`,
+            nomination: `${nomination.nomFirst} ${nomination.nomLast}`,
             category: `${nomination.category}`,
             subcategory: subCat,
             nominator: `${nomination.authorFirst} ${nomination.authorLast}`,

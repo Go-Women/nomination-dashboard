@@ -4,6 +4,9 @@ module.exports = app => {
 
   var router = require("express").Router();
 
+  // Review a Judge (Accept/Reject)
+  router.patch("/review", judges.review);
+
   // Create a new User
   router.post("/", judges.create);
 
