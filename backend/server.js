@@ -27,6 +27,7 @@ require("./app/routes/nominees.routes.js")(app);
 require("./app/routes/judges.routes.js")(app);
 require("./app/routes/nominees.routes.js")(app);
 require("./app/routes/matches.routes.js")(app);
+require("./app/routes/settings.routes.js")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8000;
