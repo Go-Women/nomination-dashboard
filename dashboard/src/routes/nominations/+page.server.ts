@@ -66,7 +66,6 @@ export const actions: Actions = {
     }
 
     if (toCreate) {
-      console.log(data);  
       const res = await fetch(`http://localhost:8000/nominations/review`, {
         method: 'POST',
         body: JSON.stringify(data),
@@ -75,8 +74,8 @@ export const actions: Actions = {
         }
       })
       .then(res => res.json())
+      .then(res => console.log(res))
     } else {
-      console.log(data);  
       const res = await fetch(`http://localhost:8000/nominations/review`, {
         method: 'PATCH',
         body: JSON.stringify(data),
@@ -85,6 +84,7 @@ export const actions: Actions = {
         }
       })
       .then(res => res.json())
+      .then(res => console.log(res))
     }
   },
   reject: async ({request, params}) => {
@@ -96,7 +96,6 @@ export const actions: Actions = {
       data[key] = value
     }
     data['action'] = 'REJECT';
-    console.log(data);
     const res = await fetch(`http://localhost:8000/nominations/review`, {
       method: 'PATCH',
       body: JSON.stringify(data),
@@ -105,5 +104,6 @@ export const actions: Actions = {
       }
     })
     .then(res => res.json())
+    .then(res => console.log(res))
   }
 };

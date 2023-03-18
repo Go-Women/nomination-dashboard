@@ -32,9 +32,10 @@
       size="medium"
       style="justify-text: center;"
       headers={[
-        { key: "id", empty: true},
+        { key: "nomID", empty: true},
         { key: "nominee", value: "Nomination" },
         { key: "category", value: "Category" },
+        { key: "subcategory", value: "Subcategory" },
         { key: "nominator", value: "Nominated By" },
         { key: "date", value: "Date", display: (date) => Date.parse(date).toLocaleString('es-pa'),
           sort: (a, b) => {
@@ -54,8 +55,8 @@
         <ToolbarSearch persistent shouldFilterRows/>
       </ToolbarContent>
     </Toolbar>
-    <svelte:fragment slot="cell" let:cell>
-      {#if cell.key === "id"}
+    <svelte:fragment slot="cell" let:row let:cell>
+      {#if cell.key === "nomID"}
         <Button
           iconDescription="View"
           icon={View}
@@ -79,8 +80,9 @@
       size="medium"
       style="justify-text: center;"
       headers={[
-        { key: "nominee", value: "Nominee" },
+        { key: "nomination", value: "Nomination" },
         { key: "category", value: "Category" },
+        { key: "subcategory", value: "Subcategory" },
         { key: "nominator", value: "Nominated By" },
         { key: "date", value: "Date", display: (date) => Date.parse(date).toLocaleString('es-pa'),
           sort: (a, b) => {

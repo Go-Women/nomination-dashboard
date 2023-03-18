@@ -1,8 +1,8 @@
 <script lang="ts">
   import { BarChartSimple } from "@carbon/charts-svelte";
-
-  import "@carbon/styles/css/styles.css";
   import "@carbon/charts/styles.css";
+  import "@carbon/styles/css/styles.css";
+
   import { Column, Row, Tile, Content } from "carbon-components-svelte";
 
   export let totalNominations: number;

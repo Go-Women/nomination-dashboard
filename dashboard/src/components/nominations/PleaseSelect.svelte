@@ -1,7 +1,11 @@
+<script lang="ts">
+  export let type = "nomination";
+</script>
+
 <main>
   <div class="container">
     <div id="centered">
-      <h3>Please select a nomination to begin reviewing.</h3>
+      <h3>Please select a {type} to begin reviewing.</h3>
     </div>
   </div>
 </main>

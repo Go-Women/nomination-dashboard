@@ -22,13 +22,14 @@
   import Cancel from "carbon-icons-svelte/lib/Close.svelte";
   export let judge;
 
+  
   const categories = [
     { value: "c100", label: "Art" },
     { value: "c200", label: "Athletics" },
     { value: "c300", label: "Business" },
     { value: "c400", label: "Education" },
     { value: "c500", label: "Humanities" },
-    { value: "c600", label: "Public Service/Government" },
+    { value: "c600", label: "Public Service / Government" },
     { value: "c700", label: "STEM" },
     { value: "c800", label: "Other" },
   ];
@@ -37,8 +38,9 @@
     label: string;
   }[] = [];
   setCategory();
-
+  
   function setCategory() {
+    console.log(judge.info.category);
     let cat = judge.info.category;
     if (cat.length > 4) {
         Object.entries(categories).forEach((data, value) => {
@@ -74,11 +76,11 @@
   let email = judge.email;
   // let subcategory = judge.info.subcategory;
   let capacity = judge.info.capacity;
-  let previousJudge = judge.info.previousJudge;
-  let deadline = judge.info.deadline;
-  let active = judge.active;
+  let previousJudge = (judge.info.previousJudge == true || judge.info.previousJudge == "1");
+  let deadline = (judge.info.deadline == true || judge.info.deadline == "1");
+  let active = (judge.active == true || judge.info.active == "1");
   let linkedin = judge.info.linkedin || "";
-  let addInfo = judge.info.additionalInfo || "";
+  let addInfo = judge.info.addInfo || "";
 
   let pronouns = ["She/Her", "He/Him", "They/Them", "Other"];
 

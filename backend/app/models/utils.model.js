@@ -24,27 +24,27 @@ exports.setJSON = (res, name) => {
   return res;
 };
 
-exports.getCodes = (res) => {
-  // TODO: this will turn a category or subcategory when submitted into a their corresponding code
-  let resultCat = [];
-  let resultsubCat = [];
+// exports.getCodes = (res) => {
+//   // TODO: this will turn a category or subcategory when submitted into a their corresponding code
+//   let resultCat = [];
+//   let resultsubCat = [];
   
-  Object.entries(codes).forEach((code, value) => {
-    // check if the category is other
-    if (res.category.includes('Other')) {
-        //  TODO: handle this case
-    } else {
-      if (res.category == code[1])
-        res.category = code[0];
+//   Object.entries(codes).forEach((code, value) => {
+//     // check if the category is other
+//     if (res.category.includes('Other')) {
+//         //  TODO: handle this case
+//     } else {
+//       if (res.category == code[1])
+//         res.category = code[0];
 
-      if (res.subcategory == code[1])
-        res.subcategory = code[0];
-    }
-    // TODO: implement this for status codes
-  });
+//       if (res.subcategory == code[1])
+//         res.subcategory = code[0];
+//     }
+//     // TODO: implement this for status codes
+//   });
 
-  return res;
-};
+//   return res;
+// };
 
 exports.clean = (jsonData) => {
   // TODO: figure out how to handle if BOTH category is chosen without a subcategory and the Other category
@@ -130,14 +130,26 @@ exports.setJSON = (res, name) => {
   return res;
 };
 
-exports.getCodes = (res) => {
+exports.getCodes = (res, type) => {
+  // TODO: support multiple categories and subcategories
   // TODO: this will turn a category or subcategory when submitted into a their corresponding code
   let resultCat = [];
   let resultsubCat = [];
   Object.entries(codes).forEach((code, value) => {
+    // console.log(res.category, res.subcategory);
+    if (type === 'judge') {
+      if (res.judgeStatus == code[1])
+          res.judgeStatus = code[0];
+    } else {
+        if (res.nomStatus == code[1])
+          res.nomStatus = code[0];
+      // TODO add support for match status
+    }
     // check if the category is other
     if (res.category.includes('Other')) {
-        //  TODO: handle this case
+      if (res.category === code[1])
+        res.category = code[0];
+
     } else {
       if (res.category == code[1])
         res.category = code[0];

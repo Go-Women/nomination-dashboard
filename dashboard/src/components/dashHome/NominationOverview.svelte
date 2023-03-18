@@ -1,8 +1,8 @@
 <script lang="ts">
   import { Content, Grid, Row, Column, Tile, ClickableTile } from "carbon-components-svelte";
   export let totalNominations: number;
-  let confirmedCount = 587;
-  let reviewCount = 200;
+  export let createdCount;
+  export let reviewCount;
 </script>
 
 <Content>
@@ -14,11 +14,11 @@
         <Column><Row><h5>Submitted Nominations</h5></Row></Column>
       </Row>
       <Row>
-        <Column><Row><h4>{confirmedCount}</h4></Row></Column>
+        <Column><Row><h4>{reviewCount}</h4></Row></Column>
         <Column><Row><h5>Confirmed Nominations</h5></Row></Column>
       </Row>
       <Row>
-        <Column><Row><h4>{reviewCount}</h4></Row></Column>
+        <Column><Row><h4>{createdCount}</h4></Row></Column>
         <Column><Row><h5>Needs Review</h5></Row></Column>
       </Row>
   </Grid>

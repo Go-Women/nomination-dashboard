@@ -12,7 +12,8 @@
   } from "carbon-components-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
 
-  export let rows;
+  export let rows: any[];
+  export let selectedRowIds: string[] = [];
 
   let pageSize = 15;
   let page = 1;
@@ -53,8 +54,16 @@
 </script>
 
 <main class="bx--content-main">
-  <Row><h3>Information</h3></Row>
-  <DataTable style="justify-text: center;" {headers} {rows} {pageSize} {page} sortable>
+  <DataTable 
+    radio
+    bind:selectedRowIds
+    style="justify-text: center;" 
+    {headers} 
+    {rows} 
+    {pageSize} 
+    {page} 
+    sortable
+  >
     <Toolbar>
       <ToolbarContent>
         <ToolbarSearch persistent shouldFilterRows />
@@ -65,7 +74,7 @@
         <Button
           iconDescription="View"
           icon={View}
-          href={"judges/" + cell.value}
+          href={"judges/" + cell.value.substring(2)}
         />
       {:else if cell.key === "active"}
         <Checkbox checked={cell.value} disabled/>
