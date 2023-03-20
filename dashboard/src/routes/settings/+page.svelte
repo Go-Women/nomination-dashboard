@@ -5,7 +5,7 @@
   import { Content, Grid } from "carbon-components-svelte";
 
   export let data;
-  export let { cohort } = data.props;
+  export let { cohorts } = data.props;
 </script>
 
 <main>

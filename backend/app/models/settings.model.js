@@ -8,10 +8,7 @@ const Cohort = function(cohort) {
 };
 
 Cohort.create = (newCohort, result) => {
-  // TODO: implement
-  // utils.getCodes(newCohort);
-  // utils.clean(newCohort);
-  sql.query("UPDATE Cohorts SET endDate = ? WHERE id = (SELECT MAX(id) FROM Cohorts)", newCohort.startDate, (err, res) => {
+  sql.query("UPDATE Cohort SET endDate = ? WHERE id = (SELECT MAX(id) FROM Cohort)", newCohort.startDate, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -22,7 +19,7 @@ Cohort.create = (newCohort, result) => {
     result(null);
   });
 
-  sql.query("INSERT INTO Cohorts SET ?", newCohort, (err, res) => {
+  sql.query("INSERT INTO Cohort SET ?", newCohort, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -37,17 +34,17 @@ Cohort.create = (newCohort, result) => {
 
 Cohort.getAll = result => {
   // TODO: implement
-  // sql.query("SELECT *, concat(firstName,' ',lastName) as fullName FROM Cohorts", (err, res) => {
-  //   if (err) {
-  //     console.log("error: ", err);
-  //     result(null, err);
-  //     return;
-  //   }
+  sql.query("SELECT * FROM Cohort", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
 
-  //   utils.formatAllData(res, 'cohort');
-  //   console.log("GET /cohorts");
-  //   result(null, res);
-  // });
+    // utils.formatAllData(res, 'cohort');
+    console.log("GET /cohorts");
+    result(null, res);
+  });
 };
 
 module.exports = Cohort;
