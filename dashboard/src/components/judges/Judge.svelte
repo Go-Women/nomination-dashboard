@@ -15,6 +15,7 @@
     NumberInput,
     Grid,
     Checkbox,
+    InlineNotification
   } from "carbon-components-svelte";
   import MultiSelect from "svelte-multiselect";
   import Edit from "carbon-icons-svelte/lib/Edit.svelte";
@@ -107,8 +108,14 @@
   };
 
   let judgeEdit = false;
+  let submitted = false;
   function handleEdit() {
     judgeEdit = !judgeEdit;
+  }
+
+  function handleSubmit() {
+    judgeEdit = !judgeEdit;
+    submitted = true;
   }
 </script>
 
@@ -202,9 +209,16 @@
             on:click|once={handleEdit}>Cancel</Button
           >
           <!-- <Button type="submit">Save</Button> -->
-          <Button iconDescription="Save" type="submit" icon={Save}>Save</Button>
+          <Button iconDescription="Save" type="submit" icon={Save} on:click|once={handleSubmit}>Save</Button>
         </Form>
       {:else}
+        {#if submitted}
+          <InlineNotification
+            lowContrast
+            kind="success"
+            subtitle="Successfully edited Judge"
+          />
+        {/if}
         <StructuredList flush>
           <StructuredListBody>
             <StructuredListRow>
