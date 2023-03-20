@@ -3,23 +3,35 @@ const utils = require("./utils.model.js");
 
 // constructor
 const Cohort = function(cohort) {
-  // TODO: implement
+  this.startDate = nomination.startDate;
+  this.endDate = null;
 };
 
 Cohort.create = (newCohort, result) => {
   // TODO: implement
   // utils.getCodes(newCohort);
   // utils.clean(newCohort);
-  // sql.query("INSERT INTO Cohorts SET ?", newCohort, (err, res) => {
-  //   if (err) {
-  //     console.log("error: ", err);
-  //     result(err, null);
-  //     return;
-  //   }
+  sql.query("UPDATE Cohorts SET endDate = ? WHERE id = (SELECT MAX(id) FROM Cohorts)", newCohort.startDate, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
 
-  //   console.log("created cohort: ", { ...newCohort });
-  //   result(null, { ...newCohort });
-  // });
+    console.log("Ended old cohort");
+    result(null);
+  });
+
+  sql.query("INSERT INTO Cohorts SET ?", newCohort, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    console.log("created cohort: ", { ...newCohort });
+    result(null, { ...newCohort });
+  });
 };
 
 

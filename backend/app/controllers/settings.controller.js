@@ -11,7 +11,7 @@ exports.createCohort = (req, res) => {
 
   // Create a Cohort
   const cohort = new Cohort({
-    // TODO: implement
+    startDate: req.body.startDate || new Date(),
   });
 
   // Save Cohort in the database
