@@ -16,10 +16,8 @@
     Grid,
     Checkbox,
   } from "carbon-components-svelte";
+  import Navigation from "../../components/Navigation.svelte";
 </script>
 
-<div class="bx--content--overview">
-    <Form method="POST">
-        <Button type="submit">New Cohort</Button>
-    </Form>
-</div>
+<main class="bx--content--overview">
+</main>

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Header, HeaderNavItem, HeaderUtilities, SideNav, SideNavItems, SideNavLink, SkipToContent } from "carbon-components-svelte";
-  import { Home, Result, UserMultiple, Compare } from "carbon-icons-svelte";
+  import { Home, Result, UserMultiple, Compare, Save } from "carbon-icons-svelte";
   // import Home from "carbon-icons-svelte/lib/Home.svelte";
   // import Result from "carbon-icons-svelte/lib/Result.svelte";
   // import UserMultiple from "carbon-icons-svelte/lib/UserMultiple.svelte";
@@ -28,5 +28,6 @@
     <SideNavLink icon={Result} text="Nominations" href="/nominations" />
     <SideNavLink icon={UserMultiple} text="Judges" href="/judges" />
     <SideNavLink icon={Compare} text="Matching" href="/matches" />
+    <SideNavLink icon={Save} text="Settings" href="/settings" />
   </SideNavItems>
 </SideNav>
