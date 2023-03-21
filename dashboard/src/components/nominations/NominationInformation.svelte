@@ -10,36 +10,108 @@
     Toggle,
   } from "carbon-components-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
-  export let rows;
+  export let rows: any;
+  export let selectedRowIds: string[] = [];
+  export let reviewed: any;
+
+  var pageSize:number = 25;
+  var page:number = 1;
+  var getPageSizes = (totalItems: number) => {
+    let pages = Math.ceil(totalItems / 25);
+    let pageArray = Array.from({ length: pages }).map((_, i) => (i + 1) * 25);
+    return pageArray;
+  };
+
+  const sortKey:string = "date";
+  const sortDirection = "descending";
 </script>
 
 <main class="bx--content-main">
-  <DataTable
-    style="justify-text: center;"
-    headers={[
-      { key: "data.id", empty: true},
-      { key: "nominee", value: "Nominee" },
-      { key: "nominator", value: "Nominated By" },
-      { key: "date", value: "Date" },
-    ]}
-    rows={rows}
-  >
-  <Toolbar>
-    <ToolbarContent>
-      <ToolbarSearch persistent shouldFilterRows/>
-    </ToolbarContent>
-  </Toolbar>
-  <svelte:fragment slot="cell" let:cell>
-      {#if cell.key === "data.id"}
+  {#if reviewed}
+    <DataTable
+      size="medium"
+      style="justify-text: center;"
+      headers={[
+        { key: "nomID", empty: true},
+        { key: "nominee", value: "Nomination" },
+        { key: "category", value: "Category" },
+        { key: "subcategory", value: "Subcategory" },
+        { key: "nominator", value: "Nominated By" },
+        { key: "date", value: "Date", display: (date) => Date.parse(date).toLocaleString('es-pa'),
+          sort: (a, b) => {
+            const diff = Date.parse(a) - Date.parse(b);
+            if (diff < 0) return -1;
+            if (diff > 0) return 1;
+            return 0;
+          }
+      },
+      {key: "status", value: "Status"}
+      ]}
+      rows={rows}
+      {sortKey} {sortDirection} {pageSize} {page} sortable
+    >
+    <Toolbar>
+      <ToolbarContent>
+        <ToolbarSearch persistent shouldFilterRows/>
+      </ToolbarContent>
+    </Toolbar>
+    <svelte:fragment slot="cell" let:row let:cell>
+      {#if cell.key === "nomID"}
         <Button
           iconDescription="View"
           icon={View}
-          href={"nominations/" + cell.value}
+          href={"nominations/" + cell.value.toString().substring(2, cell.value.length)}
         />
       {:else}
         {cell.value}
       {/if}
     </svelte:fragment>
+    </DataTable>
+    <Pagination
+      bind:pageSize
+      bind:page
+      totalItems={rows.length}
+      pageSizes={getPageSizes(rows.length)}
+    />
+  {:else}
+    <DataTable
+      radio
+      bind:selectedRowIds
+      size="medium"
+      style="justify-text: center;"
+      headers={[
+        { key: "nomination", value: "Nomination" },
+        { key: "category", value: "Category" },
+        { key: "subcategory", value: "Subcategory" },
+        { key: "nominator", value: "Nominated By" },
+        { key: "date", value: "Date", display: (date) => Date.parse(date).toLocaleString('es-pa'),
+          sort: (a, b) => {
+            const diff = Date.parse(a) - Date.parse(b);
+            if (diff < 0) return -1;
+            if (diff > 0) return 1;
+            return 0;
+          }
+      }
+      ]}
+      rows={rows}
+      {sortKey} {sortDirection} {pageSize} {page} sortable
+    >
+    <Toolbar>
+      <ToolbarContent>
+        <ToolbarSearch persistent shouldFilterRows/>
+      </ToolbarContent>
+    </Toolbar>
+    <svelte:fragment slot="cell" let:cell>
+        {cell.value}
+    </svelte:fragment>
+    </DataTable>
+    <Pagination
+      bind:pageSize
+      bind:page
+      totalItems={rows.length}
+      pageSizes={getPageSizes(rows.length)}
+    />
+  {/if}
 
-  </DataTable>
+
 </main>

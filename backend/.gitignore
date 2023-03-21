@@ -4,7 +4,9 @@ dist/
 /build
 /.svelte-kit
 /package
-.env
+app/tests/*.sql
+config/db.config.js
 .env.*
 !.env.example
-tests/*.sql
+.env
+*.sql

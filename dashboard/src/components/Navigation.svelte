@@ -1,15 +1,16 @@
 <script lang="ts">
   import { Header, HeaderNavItem, HeaderUtilities, SideNav, SideNavItems, SideNavLink, SkipToContent } from "carbon-components-svelte";
-  import Home from "carbon-icons-svelte/lib/Home.svelte";
-  import Result from "carbon-icons-svelte/lib/Result.svelte";
-  import UserMultiple from "carbon-icons-svelte/lib/UserMultiple.svelte";
+  import { Home, Result, UserMultiple, Compare } from "carbon-icons-svelte";
+  // import Home from "carbon-icons-svelte/lib/Home.svelte";
+  // import Result from "carbon-icons-svelte/lib/Result.svelte";
+  // import UserMultiple from "carbon-icons-svelte/lib/UserMultiple.svelte";
 
   let isSideNavOpen = false;
 </script>
 
 <Header
   company={"National Women's Hall of Fame"}
-  platformName="| Selection Process"
+  platformName="Nomination Portal"
   href="/home"
   bind:isSideNavOpen
 >
@@ -26,5 +27,6 @@
     <SideNavLink icon={Home} text="Dashboard" href="/home" isSelected />
     <SideNavLink icon={Result} text="Nominations" href="/nominations" />
     <SideNavLink icon={UserMultiple} text="Judges" href="/judges" />
+    <SideNavLink icon={Compare} text="Matching" href="/matches" />
   </SideNavItems>
 </SideNav>

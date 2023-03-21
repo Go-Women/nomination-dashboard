@@ -4,8 +4,9 @@
   import Navigation from "../../../components/Navigation.svelte";
   import Nomination from "../../../components/nominations/Nomination.svelte";
   import { Breadcrumb, BreadcrumbItem, Column, Content, Grid, Row} from "carbon-components-svelte";
+  import AffiliatedNomination from "../../../components/nominees/AffiliatedNomination.svelte";
   export let data;
-  export let { n } = data.props;
+  export let { n, keys } = data.props;
 </script>
 
 <main>
@@ -16,13 +17,15 @@
         <Breadcrumb>
           <BreadcrumbItem href="/home">Home</BreadcrumbItem>
           <BreadcrumbItem href="/nominations">Nominations</BreadcrumbItem>
-          <BreadcrumbItem>{n['nom-first']} {n['nom-last']}</BreadcrumbItem>
+          <BreadcrumbItem>{n['nomFirst']} {n['nomLast']}</BreadcrumbItem>
         </Breadcrumb>
 
         <Grid>
           <Column>
             <Row><h1>Nomination</h1></Row>
-            <Nomination nom={n} />
+            <h2>{n['nomFirst']} {n['nomLast']}</h2>
+            <!-- <Nomination nom={n} /> -->
+            <AffiliatedNomination nomination={n} {keys} />
           </Column>
         </Grid>
       </Column>
