@@ -4,10 +4,6 @@ var nominees = [];
 var matches = [];
 var manualReveiw = [];
 
-//judges[y].judgecapacity //returns judge capacity
-//judges[y].judgecapacity = 0 // judge capacity to 0
-//judges[y].judgeCapacity = judges[y].judgeCapacity--; //minius 1 from judge capacity
-
 // Dataset from GET /matches/data:
 // const tobeMatched = [
 //   [
@@ -167,19 +163,15 @@ function matchCat() {
           }
         }
       }
+      manualReveiw.push(x);
     }
   }
 }
-
-//             judges[y].judgecapacity //returns judge capacity
-//             judges[y].judgecapacity = 0 //returns judge capacity to 0
-//             judges[y].judgeCapacity = judges[y].judgeCapacity--; 
 
 exports.mainMatching = (matches) => {
   // Call to backend GET /matches/data
   // returns [[{},{}..],[{},{},..]] data
   populateJudges(matches[1]);
-  //judges[1].judgeCapacity; //returns capacity
   populateNominees(matches[0]);
   matchSubcat();
   matchCat();
