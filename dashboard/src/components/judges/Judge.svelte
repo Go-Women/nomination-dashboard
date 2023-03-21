@@ -111,6 +111,7 @@
   let submitted = false;
   function handleEdit() {
     judgeEdit = !judgeEdit;
+    submitted = false;
   }
 
   function handleSubmit() {
