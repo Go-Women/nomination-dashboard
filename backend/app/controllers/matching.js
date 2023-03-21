@@ -132,9 +132,11 @@ function matchSubCat() {
         for (let k = 0; k < nomSubCatList.length; k++) {
           for (let m = 0; m < judgeSubCatList.length; m++) {
             if (isJudgeAtCapacity(y)) continue;
-            matches[x] = y;
-            judges[y].judgeCapacity = judges[y].judgeCapacity--;
-            nominees[x].nomineeCapacity = nominees[x].nomineeCapacity--;
+            if (nomSubCatList[k] == judgeSubCatList[m]) {
+              matches[nomSubCatList[k]] = judgeSubCatList[m];
+              judges[y].judgeCapacity = judges[y].judgeCapacity--;
+              nominees[x].nomineeCapacity = nominees[x].nomineeCapacity--;
+            }
           }
         }
       }
@@ -156,9 +158,11 @@ function matchCat() {
           for (let m = 0; m < judgeCatList.length; m++) {
             if (judgeCatList[m] == nomCatList[k]) {
               if (isJudgeAtCapacity(y)) continue;
-              matches[x] = y;
-              judges[y].judgeCapacity = judges[y].judgeCapacity--;
-              nominees[x].nomineeCapacity = nominees[x].nomineeCapacity--;
+              if (nomCatList[k] == judgeCatList[m]) {
+                matches[nomCatList[k]] = judgeCatList[m];
+                judges[y].judgeCapacity = judges[y].judgeCapacity--;
+                nominees[x].nomineeCapacity = nominees[x].nomineeCapacity--;
+              }
             }
           }
         }
@@ -177,6 +181,6 @@ exports.mainMatching = (matches) => {
   populateJudges(matches[1]);
   //judges[1].judgeCapacity; //returns capacity
   populateNominees(matches[0]);
-  //   matchSubcat();
-  //   matchCat();
+  matchSubcat();
+  matchCat();
 }
