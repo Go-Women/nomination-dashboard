@@ -21,16 +21,24 @@ Cohort.create = (newCohort, result) => {
 };
 
 Cohort.end = (newCohort, result) => {
-  //sql.query("SELECT MAX(id) FROM Cohort", )
-  sql.query("UPDATE Cohort SET endDate = ? WHERE id = (SELECT id FROM ( SELECT id FROM Cohort ORDER BY id DESC LIMIT 1) AS t)", newCohort.startDate, (err, res) => {
-     if (err) {
-      console.log("error: ", err);
-      result(err, null);
-      return;
-    }
-    console.log("Ended old cohort");
-    result(null);
-  });
+  // recent = sql.query("SELECT MAX(id) FROM Cohort",[], (err, res) => {
+  //   if (err) {
+  //     console.log("error: ", err);
+  //     result(err, null);
+  //     return;
+  //   }
+  //   result(null);
+  // });
+  // console.log(recent)
+    sql.query("UPDATE Cohort SET endDate = ? WHERE id = (SELECT id FROM ( SELECT id FROM Cohort ORDER BY id DESC LIMIT 1) AS t)", newCohort.startDate, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      console.log("Ended old cohort");
+      result(null);
+    });
 };
 
 // recent = sql.query('SELECT MAX(id) FROM Cohort', (err, res) => {

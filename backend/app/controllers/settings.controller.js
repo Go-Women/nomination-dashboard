@@ -20,7 +20,6 @@ exports.createCohort = (req, res) => {
         message:
           err.message || "Some error occurred while creating the Cohort."
       });
-    else res.send(data);
   });
 
   // Save Cohort in the database
