@@ -128,8 +128,8 @@ function matchSubCat() {
         for (let k = 0; k < nomSubCatList.length; k++) {
           for (let m = 0; m < judgeSubCatList.length; m++) {
             if (isJudgeAtCapacity(y)) continue;
-            if (nomSubCatList[k] == judgeSubCatList[m]) {
-              matches[nomSubCatList[k]] = judgeSubCatList[m];
+            if (nomSubCatList[k] === judgeSubCatList[m]) {
+              matches[x] = y;
               judges[y].judgeCapacity = judges[y].judgeCapacity--;
               nominees[x].nomineeCapacity = nominees[x].nomineeCapacity--;
             }
@@ -152,10 +152,10 @@ function matchCat() {
 
         for (let k = 0; k < nomCatList.length; k++) {
           for (let m = 0; m < judgeCatList.length; m++) {
-            if (judgeCatList[m] == nomCatList[k]) {
+            if (judgeCatList[m] === nomCatList[k]) {
               if (isJudgeAtCapacity(y)) continue;
               if (nomCatList[k] == judgeCatList[m]) {
-                matches[nomCatList[k]] = judgeCatList[m];
+                matches[x] = y;
                 judges[y].judgeCapacity = judges[y].judgeCapacity--;
                 nominees[x].nomineeCapacity = nominees[x].nomineeCapacity--;
               }
