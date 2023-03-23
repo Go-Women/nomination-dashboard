@@ -1,4 +1,5 @@
-import type { PageServerLoad } from "./$types";
+import { Exit } from "carbon-icons-svelte";
+import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({fetch, params}) => {
   const res1 = await fetch(`http://localhost:8000/nominees/${params.id}`);
@@ -25,3 +26,12 @@ export const load: PageServerLoad = async ({fetch, params}) => {
     };
   }
 };
+
+export const actions: Actions = {
+  default: async ({request}) => {
+    console.log('debugging');
+    const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
+    method: 'POST',
+    });
+  }
+}
