@@ -14,6 +14,15 @@ exports.createCohort = (req, res) => {
     startDate: req.body.startDate || new Date(),
   });
 
+  Cohort.end(cohort, (nomErr, data) => {
+    if (nomErr)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the Cohort."
+      });
+    else res.send(data);
+  });
+
   // Save Cohort in the database
   Cohort.create(cohort, (nomErr, data) => {
     if (nomErr)
