@@ -1,3 +1,4 @@
+import { redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
@@ -46,5 +47,6 @@ export const actions: Actions = {
         'Content-type': 'application/json; charset=UTF-8'
       }
     })
+    .then(() => { throw redirect(303, '/matches'); })
   }
 }

@@ -1,8 +1,9 @@
 <script lang="ts">
-  import NomineeInfo from "../../../components/nominees/NomineeInfo.svelte";
-  import Navigation from "../../../components/Navigation.svelte";
+  import NomineeInfo from "../../../../components/nominees/NomineeInfo.svelte";
+  import Navigation from "../../../../components/Navigation.svelte";
   import { Breadcrumb, BreadcrumbItem, Button, Checkbox, Column, Content, Form, FormGroup, RadioButton, RadioButtonGroup, TextArea } from "carbon-components-svelte";
-  import "../../../css/index.css";
+  import "../../../../css/index.css";
+  import { enhance } from "$app/forms";
 
   export let data;
   export let { ID, match, nominee, nominations, keys }: any = data.props;
@@ -26,7 +27,7 @@
             <h2>Evaluate</h2>
             <hr />
             <p class="head">Please evaluate the nominee to the left on the following criteria:</p>
-            <Form method="POST">
+            <form method="POST">
               <input type="hidden" name="matchId" value={ID} />
               <h4>Question 1: The nominee's contributions have been of the greatest value to society and/or the empowerment of women?</h4>
               <FormGroup legendText="Check the boxes if you agree with the statements.">
@@ -60,7 +61,7 @@
               <div id="submit-button">
                 <Button type="submit">Submit</Button>
               </div>
-            </Form>
+            </form>
           </div>
         </div>
       </Column>
