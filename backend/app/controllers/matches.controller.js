@@ -99,3 +99,9 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   // TODO: Implement
 };
+
+exports.verdict = (req, res) => {
+  console.log(req.body);
+  res.status(200).send({message: 'OK'});
+  // TODO: Implement!
+}
