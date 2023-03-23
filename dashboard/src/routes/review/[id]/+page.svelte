@@ -5,7 +5,7 @@
   import "../../../css/index.css";
 
   export let data;
-  export let { match, nominee, nominations, keys }: any = data.props;
+  export let { ID, match, nominee, nominations, keys }: any = data.props;
 
   let q1ck: string[] = [];
   let q2ck: string[] = [];
@@ -27,6 +27,7 @@
             <hr />
             <p class="head">Please evaluate the nominee to the left on the following criteria:</p>
             <Form method="POST">
+              <input type="hidden" name="matchId" value={ID} />
               <h4>Question 1: The nominee's contributions have been of the greatest value to society and/or the empowerment of women?</h4>
               <FormGroup legendText="Check the boxes if you agree with the statements.">
                 <Checkbox name="nomQ1" bind:group={q1ck} value="q101" labelText="The nominee is a leader in their field of achievement" />

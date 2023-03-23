@@ -21,6 +21,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 
     return {
       props: {
+        ID: params.id,
         match,
         nominee,
         nominations,
