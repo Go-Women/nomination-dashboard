@@ -155,7 +155,7 @@ function createMatch(judge, nominee) {
 }
 
 function matchSubCat() {
-  // for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 3; i++) {
   for (let x in nominees) {
     if (checkNomineeOther(nominees[x])) {
       nominees.splice(x, 1); // remove nominee from original list
@@ -195,37 +195,40 @@ function matchSubCat() {
       }
     }
   }
-  // }
+  }
 }
 
 function matchCat() {
   for (let i = 0; i < 3; i++) {
-    for (let x in nominees) {
-      if (isNomineeAtCapacity(x)) continue;
+  for (let x in nominees) {
+      if (isNomineeAtCapacity[nominees[x]]) {
+        // TODO: verify when there's more data
+        nominees.splice(x, 1); // remove nominee from original list
+      } else {
+        for (let y in judges) {
+            // created as a list to support multiple subcategories
+            let judgeCatList = getJudgeCat(judges[y]);
+            let nomCatList = getNomineeCat(nominees[x]);
 
-      for (let y in judges) {
-        let judgeCatList = getJudgeCat(y);
-        let nomCatList = getNomineeCat(x);
-        // console.log(judgeCatList, nomCatList);
-        if (nomCatList == null) continue;
-
-        for (let k = 0; k < nomCatList.length; k++) {
-          for (let m = 0; m < judgeCatList.length; m++) {
-            // console.log(ju)
-            if (judgeCatList[m] === nomCatList[k]) {
-              if (isJudgeAtCapacity(y)) continue;
-              if (nomCatList[k] == judgeCatList[m]) {
-                matches[nominees[x]] = judges[y];
-                // console.log(matches[x]);
-                judges[y].judgeCapacity = judges[y].judgeCapacity--;
-                nominees[x].nomCapacity = nominees[x].nomCapacity--;
+            if (nomCatList != null) {
+              // then check might not be necessary but we could do some error handling instead
+              for (let k = 0; k < nomCatList.length; k++) {
+                for (let m = 0; m < judgeCatList.length; m++) {
+                  // TODO: verify when there's more data
+                  if (!isJudgeAtCapacity(judges[y])) {
+                    if (nomCatList[k] === judgeCatList[m]) {
+                      createMatch(judges[y], nominees[x]);
+                    }
+                  } else {
+                    // judge is at capacity
+                    judges.splice(y, 1); // remove from list
+                  }
+                }
               }
             }
-          }
         }
       }
-      manualReview.push(x);
-    }
+  }
   }
 }
 
@@ -234,12 +237,11 @@ exports.mainMatching = (matches) => {
   populateJudges(matches[1]);
   populateNominees(matches[0]);
   matchSubCat();
-  // matchCat();  // TODO: implement and check this
+  matchCat();  // TODO: check this
   console.log("Matched Results: ", matched);
 
   // STEPS LEFT:
-  // 1. Match Categories
-  // 2. Verify Capacities
-  // 3. Call to backend model with matches
-  // 4. add support for multiple categories and subcategories
+  // 1. Verify Capacities
+  // 2. Call to backend model with matches
+  // 3. add support for multiple categories and subcategories
 };
