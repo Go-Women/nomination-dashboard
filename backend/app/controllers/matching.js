@@ -1,7 +1,13 @@
 const Match = require("../models/matches.model");
 var judges = [];
 var nominees = [];
-var matches = [];
+var matches = []; // initial matches
+var matched = {}; // dictionary of matched candidates
+// {
+//    "nomID": [[nomID, judgeID], ...],
+//    "nomID": [[nomID, judgeID], ...],
+//    ...
+// }
 var manualReview = [];
 
 // Dataset from GET /matches/data:
@@ -115,15 +121,97 @@ function isNomineeAtCapacity(nominee) {
   return false;
 }
 
+/**
+ * used to check if the current nominee judge match exists
+ * @param matches the current matches of nominees for a given ID [[nomID, judgeID], ...]
+ * @param currentMatch an array of [nomID, judgeID]
+ * @returns true if the currentMatch is already matched
+ * @returns false if the currentMatch does not exist
+ */
+function isMatched(matches, currentMatch) {
+  // console.log(matches);
+  for (let i in matches) {
+    if (matches[i][1] == currentMatch[1]) return true;
+  }
+
+  return false;
+}
+
+/**
+ * used to create a current match for a given a judge and nominee
+ * adds nomineeID and judgeID the matched dictionary
+ * @param judge the current judge being checked
+ * @param nominee the current nominee being checked
+ */
+function createMatch(judge, nominee) {
+  let currentMatch = [nominee.nomineeID, judge.judgeID, nominee.nomCategory, nominee.nomSubcategory, judge.judgeCategory, judge.judgeSubcategory];
+  let nomID = nominee.nomineeID;
+  // get current matches
+  if (matched[nomID] && !isMatched(matched[nomID], currentMatch)) {
+    // need to get current judges matched and add to that list
+    matched[nomID].push(currentMatch);
+    judge.judgeCapacity = judge.judgeCapacity--;
+    nominee.nomCapacity = nominee.nomCapacity++;
+  } else {
+    // create the initial match
+    matched[nomID] = [currentMatch];
+    judge.judgeCapacity = judge.judgeCapacity--;
+    nominee.nomCapacity = nominee.nomCapacity++;
+  }
+}
+
 function matchSubCat() {
-  // console.log(nominees);
+  for (let i = 0; i < 3; i++) {
+    for (let x in nominees) {
+      if (checkOtherNominees(nominees[x])) {
+        nominees.splice(x, 1); // remove nominee from original list
+        manualReview.push(nominees[x]); // add to manual review
+      } else {
+        if (isNomineeAtCapacity[nominees[x]]) {
+          // TODO: verify when there's more data
+          nominees.splice(x, 1); // remove nominee from original list
+        } else {
+          for (let y in judges) {
+            if (checkOtherJudges(judges[y])) {
+              judges.splice(y, 1); // remove judge from original list
+              manualReview.push(judges[y]); // add to manual review
+            } else {
+              // created as a list to support multiple subcategories
+              let judgeSubCatList = getJudgeSubCat(judges[y]);
+              let nomSubCatList = getNomineeSubCat(nominees[x]);
+
+              if (nomSubCatList == null) continue;
+              // console.log("NOMINEE", nomSubCatList, "JUDGE: ", judgeSubCatList);
+              for (let k = 0; k < nomSubCatList.length; k++) {
+                for (let m = 0; m < judgeSubCatList.length; m++) {
+                  if (!isJudgeAtCapacity(y)) {
+                    // TODO: verify when there's more data
+                    if (nomSubCatList[k] === judgeSubCatList[m]) {
+                      createMatch(judges[y], nominees[x]);
+                    }
+                  } else {
+                    // judge is at capacity
+                    judges.splice(y, 1); // remove from list
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+function matchCat() {
   // for (let i = 0; i < 3; i++) {
   for (let x in nominees) {
     if (checkOtherNominees(nominees[x])) {
       nominees.splice(x, 1); // remove nominee from original list
       manualReview.push(nominees[x]); // add to manual review
     } else {
-      if (isNomineeAtCapacity[nominees[x]]) {   // TODO: verify when there's more data
+      if (isNomineeAtCapacity[nominees[x]]) {
+        // TODO: verify when there's more data
         nominees.splice(x, 1); // remove nominee from original list
       } else {
         for (let y in judges) {
@@ -132,17 +220,17 @@ function matchSubCat() {
             manualReview.push(judges[y]); // add to manual review
           } else {
             // created as a list to support multiple subcategories
-            let judgeSubCatList = getJudgeSubCat(judges[y]);
-            let nomSubCatList = getNomineeSubCat(nominees[x]);
+            let judgeCatList = getJudgeCat(judges[y]);
+            let nomCatList = getNomineeCat(nominees[x]);
 
-            if (nomSubCatList == null) continue;
-            // console.log("NOMINEE", nomSubCatList, "JUDGE: ", judgeSubCatList);
-            for (let k = 0; k < nomSubCatList.length; k++) {
-              for (let m = 0; m < judgeSubCatList.length; m++) {
-                if (!isJudgeAtCapacity(y)) {     // TODO: verify when there's more data
-                  if (nomSubCatList[k] === judgeSubCatList[m]) {
+            if (nomCatList == null) continue;
+
+            for (let k = 0; k < nomCatList.length; k++) {
+              for (let m = 0; m < judgeCatList.length; m++) {
+                if (!isJudgeAtCapacity(y)) {
+                  // TODO: verify when there's more data
+                  if (nomCatList[k] === judgeCatList[m]) {
                     matches[nominees[x]] = judges[y];
-                    console.log("MATCHED", nominees[x], judges[y]);
                     judges[y].judgeCapacity = judges[y].judgeCapacity--;
                     nominees[x].nomCapacity = nominees[x].nomCapacity++;
                   }
@@ -211,5 +299,5 @@ exports.mainMatching = (matches) => {
   populateNominees(matches[0]);
   matchSubCat();
   // matchCat();
-  // console.log(matches);
+  console.log("Matched Result: ", matched);
 };
