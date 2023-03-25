@@ -3,7 +3,6 @@ var judges = []; // original list of judges needing matches (used to store judge
 var nominees = []; // original list of nominees needing matching (used to store nominee info for match)
 var manualReview = []; // lists of nominees and judges that need manual review
 // TODO: need to think how to handle judges with an other subcategory (might need to have these judges reviewed and assigned a subcategory manually before matching process)
-
 /**
  * {
  *    "nomID": [[nomID, judgeID], ...],
@@ -92,8 +91,8 @@ function isMatched(matches, currentMatch) {
  * @param nominee the current nominee
  */
 function updateCapacity(judge, nominee) {
-  judge.judgeCapacity = judge.judgeCapacity - 1;
-  nominee.nomCapacity = nominee.nomCapacity + 1;
+  judge.judgeCapacity -= 1;
+  nominee.nomCapacity += 1;
 }
 
 /**
@@ -114,7 +113,12 @@ function createMatch(judge, nominee) {
   ];
 
   // check if the current nominee match has already been created and its capacity isn't full
-  if (matched[nomID] && !isMatched(matched[nomID], currentMatch) && nominee.nomCapacity < 3 && judge.judgeCapacity > 0) {
+  if (
+    matched[nomID] &&
+    !isMatched(matched[nomID], currentMatch) &&
+    nominee.nomCapacity < 3 &&
+    judge.judgeCapacity > 0
+  ) {
     // add the current match to the existing nominee matches
     matched[nomID].push(currentMatch);
     updateCapacity(judge, nominee);
@@ -136,7 +140,7 @@ function matchSubCat() {
           // TODO: verify when there's more data
           nominees.splice(x, 1); // remove nominee list
         } else {
-          for (let y in (judges)) {
+          for (let y in judges) {
             let judge = judges[y];
             if (judge.judgeSubcategoryOther != null) {
               manualReview.push(judge); // add to manual review
