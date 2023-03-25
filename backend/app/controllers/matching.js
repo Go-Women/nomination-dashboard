@@ -7,12 +7,12 @@ var manualReview = [nomineesReview, judgesReview]; // lists of nominees and judg
 // TODO: need to think how to handle judges with an other subcategory (might need to have these judges reviewed and assigned a subcategory manually before matching process)
 /**
  * {
- *    "nomID": [[nomID, judgeID], ...],
- *    "nomID": [[nomID, judgeID], ...],
+ *    "nomID": [judgeID, judgeID, judgeID],
+ *    "nomID": [judgeID, judgeID, ...],
  *   ...
  * }
  */
-var matched = {}; // dictionary of matched candidates
+var matched = {}; // object of matched candidates
 
 /**
  * checks whether the nominee needs to be manually reviewed;
@@ -52,14 +52,14 @@ function judgeManualReview(judgeSubCat, id, noMatch) {
 
 /**
  * used to check if the current nominee judge match exists
- * @param matches the current matches of nominees for a given ID [[nomID, judgeID], ...]
- * @param currentMatch an array of [nomID, judgeID]
+ * @param {Array<Int>} judges an array of judge IDs [judgeID, judgeID, ...]
+ * @param {Int} currentJudge the current judge ID that needs to be checked
  * @returns true if the currentMatch is already matched
  * @returns false if the currentMatch does not exist
  */
-function isMatched(matches, currentMatch) {
-  for (let i in matches) {
-    if (matches[i][1] == currentMatch[1]) return true;
+function isMatched(judges, currentJudge) {
+  for (let judge in judges) {
+    if (judge == currentJudge) return true;
   }
 
   return false;
@@ -67,8 +67,8 @@ function isMatched(matches, currentMatch) {
 
 /**
  * used to update the judge and nominee capacities
- * @param judge the current judge
- * @param nominee the current nominee
+ * @param {judge object} judge the current judge
+ * @param {nominee object} nominee the current nominee
  */
 function updateCapacity(judge, nominee) {
   judge.judgeCapacity -= 1;
@@ -114,28 +114,25 @@ function tryMatch(nominee, nomCatSub, judge, judgeCatSub) {
 /**
  * used to create a current match for a given a judge and nominee
  * adds nomineeID and judgeID the matched dictionary
- * @param judge the current judge being checked
- * @param nominee the current nominee being checked
+ * {
+ *   'nomID': [judgeID, judgeID, judgeID],
+ *    ...
+ * }
+ * @param {judge object} judge the current judge being checked
+ * @param {nominee object} nominee the current nominee being checked
  */
 function createMatch(judge, nominee) {
   let nomID = nominee.nomineeID;
-  let currentMatch = [
-    nomID,
-    judge.judgeID,
-    nominee.nomCategory,
-    nominee.nomSubcategory,
-    judge.judgeCategory,
-    judge.judgeSubcategory,
-  ];
+  let judgeID = judge.judgeID;
 
   // check if the current nominee match has already been created and its capacity isn't full
-  if (matched[nomID] &&!isMatched(matched[nomID], currentMatch) && nominee.nomCapacity < 3 && judge.judgeCapacity > 0) {
+  if (matched[nomID] &&!isMatched(matched[nomID], judgeID) && nominee.nomCapacity < 3 && judge.judgeCapacity > 0) {
     // add the current match to the existing nominee matches
-    matched[nomID].push(currentMatch);
+    matched[nomID].push(judgeID);
     updateCapacity(judge, nominee);
   } else if (matched[nomID] === undefined) {
     // create initial match
-    matched[nomID] = [currentMatch];
+    matched[nomID] = [judgeID];
     updateCapacity(judge, nominee);
   }
 }
@@ -169,9 +166,6 @@ function generateMatches() {
           } 
         } 
       }
-      // // remove nominee from having to be manually matched
-      // if (nominee.nomCapacity === 3)
-      //   manualReview[0].delete(nominee.nomineeID);
     }
   }
 }
