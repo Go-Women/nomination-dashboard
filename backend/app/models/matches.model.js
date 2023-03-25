@@ -4,7 +4,7 @@ const utils = require("./utils.model.js");
 // constructor
 const Match = function(match) {
   this.nomineeID = match.nomineeID;
-  this.nomineeID = match.nomineeID;
+  this.judgeID = match.judgeID;
   this.matchStatus = match.matchStatus;
 };
 
@@ -77,7 +77,7 @@ Match.getAll = result => {
 
 Match.getAllMatches = (results) => {
   // get nominees that need to be matched
-  sql.query(`SELECT ID AS nomineeID, category AS nomCategory, subcategory AS nomSubcategory, subcategoryOther AS nomSubcategoryOther
+  sql.query(`SELECT ID AS nomineeID, category AS nomCategory, subcategory AS nomSubcategory, subcategoryOther AS nomSubcategoryOther, nomStatus
     FROM Nominees WHERE nomStatus = 'n200'`, (err, nominees) => {
     if (err) {
       console.log("error: ", err);
