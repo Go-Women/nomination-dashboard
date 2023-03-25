@@ -24,8 +24,8 @@ export const load: PageServerLoad = async ({ fetch }) => {
 
     for (let i = 0; i < nominees.length; i++) {
       const nominee = nominees[i];
-      for (let i = 0; i < 3; i++){
 
+      for (let i = 0; i < 3; i++){
         if (!tryMatchSubcategory(nominee, catMap, matches)) {
           if (!tryMatchCategory(nominee, catMap, matches)) {
             matches.push({
@@ -37,7 +37,6 @@ export const load: PageServerLoad = async ({ fetch }) => {
             });
           }
         }
-
       }
     }
 
@@ -48,43 +47,49 @@ export const load: PageServerLoad = async ({ fetch }) => {
 }
 
 function tryMatchSubcategory(nominee: any, catMap: { [key: string]: CategoryJudges }, matches: Match[]): boolean {
-  if (catMap[nominee.subcategory]) {
-    for (let j = 0; j < catMap[nominee.subcategory].judges.length; j++) {
-      const judge = catMap[nominee.subcategory].judges[j];
-      if (judge.capacity > 0 && !isJudging(nominee.ID, judge.id, matches)) { 
-        judge.capacity -= 1;
-        matches.push({
-          nominee: nominee.ID,
-          matched: true,
-          judge: judge.id,
-          category: undefined,
-          subcategory: nominee.subcategory
-        });
-        return true;
+  const subcategories = nominee.subcategory.split(',');
+  for (let c = 0; c < subcategories.length; c++) {
+    let subcategory = subcategories[c];
+    if (catMap[subcategory]) {
+      for (let j = 0; j < catMap[subcategory].judges.length; j++) {
+        const judge = catMap[subcategory].judges[j];
+        if (judge.capacity > 0 && !isJudging(nominee.ID, judge.id, matches)) { 
+          judge.capacity -= 1;
+          matches.push({
+            nominee: nominee.ID,
+            matched: true,
+            judge: judge.id,
+            category: undefined,
+            subcategory: subcategory
+          });
+          return true;
+        }
       }
     }
-    return false;
   }
   return false;
 };
 
 function tryMatchCategory(nominee: any, catMap: { [key: string]: CategoryJudges }, matches: Match[]): boolean {
-  if (catMap[nominee.category]) {
-    for (let j = 0; j < catMap[nominee.category].judges.length; j++) {
-      const judge = catMap[nominee.category].judges[j];
-      if (judge.capacity > 0 && !isJudging(nominee.ID, judge.id, matches)) { 
-        judge.capacity -= 1;
-        matches.push({
-          nominee: nominee.ID,
-          matched: true,
-          judge: judge.id,
-          category: nominee.category,
-          subcategory: undefined
-        });
-        return true;
+  const categories = nominee.category.split(',');
+  for (let c = 0; c < categories.length; c++) {
+    let category = categories[c];
+    if (catMap[category]) {
+      for (let j = 0; j < catMap[category].judges.length; j++) {
+        const judge = catMap[category].judges[j];
+        if (judge.capacity > 0 && !isJudging(nominee.ID, judge.id, matches)) { 
+          judge.capacity -= 1;
+          matches.push({
+            nominee: nominee.ID,
+            matched: true,
+            judge: judge.id,
+            category: undefined,
+            subcategory: category
+          });
+          return true;
+        }
       }
     }
-    return false;
   }
   return false;
 };
