@@ -14,6 +14,7 @@
 
   export let data;
   export let { matches } = data.props;
+  console.log(matches);
 
   var getInformation = (matches: JSON) => {
     let rows = new Array();
@@ -78,11 +79,11 @@
           kind="error"
           subtitle="There aren't any potential matches yet. Click below to generate new matches."
         />
+        <form method="POST" action="?/generate">
+          <input name="judgeStatus" type="hidden" value='m100' />
+          <Button iconDescription="View" type="submit">Generate New Matches</Button>
+        </form>
       {/if}
-      <form method="POST">
-        <input name="judgeStatus" type="hidden" value='m100' />
-        <Button iconDescription="View" type="submit">Generate New Matches</Button>
-      </form>
     </Grid>
   </Content>
 </main>

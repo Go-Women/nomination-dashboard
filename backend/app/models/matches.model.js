@@ -1,15 +1,17 @@
 const sql = require("../../config/db.js");
 const utils = require("./utils.model.js");
+const matching = require("./matching.js");
 
 // constructor
 const Match = function(match) {
   this.nomineeID = match.nomineeID;
   this.judgeID = match.judgeID;
-  this.matchStatus = match.matchStatus;
+  this.matchStatus = matchStatus.firstName;
 };
 
-Match.create = (newMatch, result) => {
-  sql.query("INSERT INTO Matches SET ?", newMatch, (err, res) => {
+
+Match.create = (newMatches, result) => {
+  sql.query("INSERT INTO Matches (nomineeID, judgeID, matchStatus) VALUES ?", newMatches, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -17,8 +19,8 @@ Match.create = (newMatch, result) => {
     }
 
     // TODO: update nominee and judge statues and capacities
-    console.log("created match: ", { ...newMatch });
-    result(null, { ...newMatch });
+    console.log("created matches: ", { ...newMatches });
+    result(null, { ...newMatches });
   });
 };
 
@@ -59,17 +61,24 @@ Match.getAll = result => {
     FROM Matches AS m 
     INNER JOIN Nominees AS n ON m.nomineeID = n.ID
     INNER JOIN Users AS j ON m.judgeID = j.ID
-    WHERE j.type = 'judge' AND j.active = true`, (err, res) => {
+    WHERE j.type = 'judge' AND j.active = true AND n.Cohort = (SELECT MAX(id) FROM Cohort)`, (err, res) => {
         if (err) {
         console.log("error: ", err);
         result(null, err);
         return;
         }
         
-        utils.formatAllData(res, 'nominee');
-        utils.formatAllData(res, 'judge');
-        utils.getAllJudgesMatchingData(res);
-        utils.setMatchingStatus(res);
+        // Check if their are matches that have been generated before
+        if (res.length != 0) {
+          utils.formatAllData(res, 'nominee');
+          utils.formatAllData(res, 'judge');
+          utils.getAllJudgesMatchingData(res);
+          utils.setMatchingStatus(res);
+        } else {
+          res = [{
+            matchStatus: 'm400'
+          }]
+        }
         console.log("GET /matches");
         result(null, res);
   });
@@ -98,7 +107,19 @@ Match.getAllMatches = (results) => {
       utils.getAllJudgesMatchingData(judges, "data");
       const filteredJudges = utils.filterJudgeStatus(judges, 'j300');
       console.log("GET /matches/data");
-      results(null, [nominees, filteredJudges]);
+      
+      const newMatches = matching.mainMatching([nominees, filteredJudges]);
+      sql.query("INSERT INTO Matches (nomineeID, judgeID, matchStatus) VALUES ?", [newMatches], (err, res) => {
+        if (err) {
+          console.log("error: ", err);
+          results(err, null);
+          return;
+        }
+    
+        // TODO: update nominee and judge statues and capacities
+        console.log("created matches: ", { ...newMatches });
+        results(null, { ...newMatches });
+      });
     });
   });
 };

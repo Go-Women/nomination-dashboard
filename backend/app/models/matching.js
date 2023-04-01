@@ -1,4 +1,4 @@
-const Match = require("../models/matches.model");
+const Match = require("./matches.model");
 var judges = []; // original list of judges needing matches (used to store judge info for match)
 var nominees = []; // original list of nominees needing matching (used to store nominee info for match)
 const nomineesReview = new Set(); // a set of nominee IDs
@@ -179,10 +179,18 @@ exports.mainMatching = (matches) => {
   judges = matches[1];
   generateMatches();
 
-  console.log("\n-----------------------------");
-  console.log("Matched Results: ", matched);
-  console.log("Manual Review: ", manualReview);
+  // console.log("\n-----------------------------");
+  // console.log("Matched Results: ", matched);
+  // console.log("Manual Review: ", manualReview); // TODO: make status to manual review judges maybe dealt with before
   // console.log(nominees.length, judges.length, manualReview.length);
+  var match = [];
+  for (const nominee in matched) {
+    const nomMatch = matched[nominee];    
+    for (const judge in nomMatch) {
+      match.push([parseInt(nominee), nomMatch[judge], "m100"]);
+    }
+  };
+  return match;
 
   // STEPS LEFT:
   // 1. Call to backend model with matches

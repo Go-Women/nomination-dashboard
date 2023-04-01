@@ -5,13 +5,13 @@ module.exports = app => {
     var router = require("express").Router();
   
     // Create a new Match
-    router.post("/", matches.create);
+    // router.post("/", matches.create);
   
     // Retrieve all Matches
     router.get("/", matches.findAll);
 
-    // Retrieve all Matches logic backend
-    router.get("/data", matches.findAllMatches);
+    // create matches
+    router.post("/data", matches.findAllMatches);
   
     // Update a Match with id
     router.patch("/", matches.generate);
