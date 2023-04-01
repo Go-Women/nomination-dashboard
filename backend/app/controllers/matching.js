@@ -2,7 +2,7 @@ const Match = require("../models/matches.model");
 var judges = []; // original list of judges needing matches (used to store judge info for match)
 var nominees = []; // original list of nominees needing matching (used to store nominee info for match)
 const nomineesReview = new Set(); // a set of nominee IDs
-const judgesReview = new Set();   // a set of judge IDs
+const judgesReview = new Set(); // a set of judge IDs
 var manualReview = [nomineesReview, judgesReview]; // lists of nominees and judges that need manual review
 // TODO: need to think how to handle judges with an other subcategory (might need to have these judges reviewed and assigned a subcategory manually before matching process)
 /**
@@ -17,9 +17,9 @@ var matched = {}; // object of matched candidates
 /**
  * checks whether the nominee needs to be manually reviewed;
  * if so adds them a separate list
- * @param {string} subCatOther 
- * @param {int} id 
- * @param {boolean} noMatch 
+ * @param {string} subCatOther
+ * @param {int} id
+ * @param {boolean} noMatch
  * @returns true if it needs to be reviewed; otherwise false
  */
 function nomineeManualReview(subCatOther, id, noMatch) {
@@ -36,10 +36,10 @@ function nomineeManualReview(subCatOther, id, noMatch) {
 /**
  * checks whether the judge needs to be manually reviewed;
  * if so adds them a separate list
- * @param {string} judgeSubCat 
- * @param {int} id 
- * @param {boolean} noMatch 
- * @returns 
+ * @param {string} judgeSubCat
+ * @param {int} id
+ * @param {boolean} noMatch
+ * @returns
  */
 function judgeManualReview(judgeSubCat, id, noMatch) {
   if (judgeSubCat != null || noMatch) {
@@ -58,8 +58,8 @@ function judgeManualReview(judgeSubCat, id, noMatch) {
  * @returns false if the currentMatch does not exist
  */
 function isMatched(judges, currentJudge) {
-  for (let judge in judges) {
-    if (judge == currentJudge) return true;
+  for (let i in judges) {
+    if (judges[i] == currentJudge) return true;
   }
 
   return false;
@@ -78,36 +78,40 @@ function updateCapacity(judge, nominee) {
 /**
  * used to see if a match can be found:
  *  given nominee, subcategory or category with a judge, subcategory or category
- * 
+ *
  * when passing in arguments both nominee and judge need to be either comparing BOTH
  * their categories or BOTH their subcategories (CANNOT compare a category to a subcategory)
- * @param {nominee object} nominee 
- * @param {string subcategory or category} nomCatSub 
- * @param {judge object} judge 
- * @param {judge subcategory or category} judgeCatSub 
+ * @param {nominee object} nominee
+ * @param {string subcategory or category} nomCatSub
+ * @param {judge object} judge
+ * @param {judge subcategory or category} judgeCatSub
  * @returns true if match was created; otherwise false
  */
-function tryMatch(nominee, nomCatSub, judge, judgeCatSub) {
-  if (nomCatSub != null) {
-    if (judge.judgeCapacity > 0) {
-      // then check might not be necessary but we could do some error handling instead
-      for (const nomCat of nomCatSub) {
-        for (const judgeCat of judgeCatSub) {
-          // TODO: verify when there's more data
-          if (nomCat === judgeCat) {
-            createMatch(judge, nominee);
-            // remove nominee from having to be manually matched
-            if (nominee.nomCapacity === 3)
-              manualReview[0].delete(nominee.nomineeID);
-              
-            return true;
+function tryMatch(nominee, nomCatSub, judges, checkCat) {
+  for (let y in judges) {
+    const judge = judges[y];
+    if (!judgeManualReview(judge.judgeSubcategoryOther, judge.judgeID)) {
+      if (nomCatSub != null) {
+        if (judge.judgeCapacity > 0) {
+          // then check might not be necessary but we could do some error handling instead
+          for (const nomCat of nomCatSub) {
+            const judgeList = checkCat ? judge.judgeCategory.split(",") : judge.judgeSubcategory.split(",");
+            for (const judgeCat of judgeList) {
+              if (nomCat === judgeCat) {
+                if (createMatch(judge, nominee)) {
+                  // remove nominee from having to be manually matched
+                  if (nominee.nomCapacity === 3)
+                    manualReview[0].delete(nominee.nomineeID);
+                  return true;
+                }
+              }
+            }
           }
-        }
+        } // judge is at capacity
+        else return false;
       }
-    } else // judge is at capacity
-        return false;
+    }
   }
-
   return false;
 }
 
@@ -126,45 +130,44 @@ function createMatch(judge, nominee) {
   let judgeID = judge.judgeID;
 
   // check if the current nominee match has already been created and its capacity isn't full
-  if (matched[nomID] &&!isMatched(matched[nomID], judgeID) && nominee.nomCapacity < 3 && judge.judgeCapacity > 0) {
+  if (matched[nomID] && !isMatched(matched[nomID], judgeID) && nominee.nomCapacity < 3 && judge.judgeCapacity > 0) {
     // add the current match to the existing nominee matches
     matched[nomID].push(judgeID);
     updateCapacity(judge, nominee);
+    return true;
   } else if (matched[nomID] === undefined) {
     // create initial match
     matched[nomID] = [judgeID];
     updateCapacity(judge, nominee);
+    return true;
+  } else {
+    return false;
   }
 }
 
 /**
  * starts the matches process by checking nominee and judges subcategories and then categories
- * 
+ *
  * if they are the same they are matched and their capacities are updated
- * 
+ *
  * edge cases are where a nominee or judge has an Other category these need to be manually reviewed
  */
 function generateMatches() {
-  for (let x = 0; x < nominees.length; x++) { // loop through all nominees
-    for (let i = 0; i < 3; i++) {   // each nominee should get assigned 3 judges
+  for (let i = 0; i < 3; i++) {
+    // each nominee should get assigned 3 judges
+    for (let x = 0; x < nominees.length; x++) {
+      // loop through all nominees
       const nominee = nominees[x];
-      if (!nomineeManualReview(nominee.nomSubcategoryOther, nominee.nomineeID) && nominee) {
+      if ( !nomineeManualReview(nominee.nomSubcategoryOther, nominee.nomineeID) && nominee) {
         if (nominee.nomCapacity < 3) {
-          for (let y in judges) {
-            const judge = judges[y];
-            if (!judgeManualReview(judge.judgeSubcategoryOther, judge.judgeID)) {
-              // created as a list to support multiple subcategories
-              const judgeSubCatList = judge.judgeSubcategory.split(',');
-              const nomSubCatList = nominee.nomSubcategory.split(',');
-              const judgeCatList = judge.judgeCategory.split(',');
-              const nomCatList = nominee.nomCategory.split(',');
-              if (!tryMatch(nominee, nomSubCatList, judge, judgeSubCatList)) {
-                if (!tryMatch(nominee, nomCatList, judge, judgeCatList))
-                    nomineeManualReview(nominee.nomSubcategoryOther, nominee.nomineeID, true);
-              }
-            }
-          } 
-        } 
+          const nomSubCatList = nominee.nomSubcategory.split(",");
+          const nomCatList = nominee.nomCategory.split(",");
+          if (tryMatch(nominee, nomSubCatList, judges, false)) {
+          } else {
+            if (!tryMatch(nominee, nomCatList, judges, true))
+              nomineeManualReview(nominee.nomSubcategoryOther, nominee.nomineeID, true);
+          }
+        }
       }
     }
   }
