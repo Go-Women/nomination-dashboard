@@ -1,8 +1,10 @@
 import type { Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
+import { FUNCTIONS_KEY } from "$env/static/private";
+
 export const load: PageServerLoad = async ({fetch}) => {
-  const res = await fetch('http://localhost:8000/judges');
+  const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   if (res.ok) {
     const judges = await res.json();
     return {

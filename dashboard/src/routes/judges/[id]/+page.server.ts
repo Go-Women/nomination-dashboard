@@ -1,11 +1,13 @@
 import type { Actions, PageServerLoad } from "./$types";
 
+import { FUNCTIONS_KEY } from "$env/static/private";
+
 export const load: PageServerLoad = async ({fetch, params}) => {
-  const res = await fetch(`http://localhost:8000/judges/${params.id}`);
+  const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/${params.id}`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   if (res.ok) {
-    const judges = await res.json();
+    const judge = await res.json();
     return {
-      props: {j: judges}
+      props: {j: judge}
     };
   }
 };
