@@ -227,7 +227,7 @@ Match.getMatchesReview = (results) => {
       utils.formatAllData(result, "judgeMatch");
     } else {
       result = [{
-        matchStatus: 'Review'
+        matchStatus: 'Unmatched'
       }]
     }
     console.log("GET /matches");
