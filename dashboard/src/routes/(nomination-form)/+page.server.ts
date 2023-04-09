@@ -18,8 +18,6 @@ export const actions: Actions = {
         'Content-type': 'application/json; charset=UTF-8',
         'x-functions-key': FUNCTIONS_KEY
       }
-    })
-    .then(res => res.json())
-    .then(res => console.log(res))
+    });
   } 
 };

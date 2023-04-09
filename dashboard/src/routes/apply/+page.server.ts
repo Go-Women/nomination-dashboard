@@ -1,5 +1,7 @@
 import type { Actions } from "./$types";
 
+import { FUNCTIONS_KEY } from "$env/static/private";
+
 export const actions: Actions = {
   default: async ({request}) => {
     const formData = await request.formData();
@@ -32,14 +34,13 @@ export const actions: Actions = {
     }
     info["judgeStatus"] = "j100";
     data["info"] = info;
-    const res = await fetch('http://localhost:8000/judges', {
+    const res = await fetch('https://nwhofapi.azurewebsites.net/api/judges', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
       }
-    })
-    .then(res => res.json())
-    .then(res => console.log(res));
+    });
   } 
 };

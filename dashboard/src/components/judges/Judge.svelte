@@ -80,7 +80,7 @@
   let deadline = (judge.info.deadline == true || judge.info.deadline == "1");
   let active = (judge.active == true || judge.info.active == "1");
   let linkedin = judge.info.linkedin || "";
-  let addInfo = judge.info.addInfo || "";
+  let additionalInfo = judge.info.additionalInfo || "";
 
   let pronouns = ["She/Her", "He/Him", "They/Them", "Other"];
 
@@ -193,7 +193,7 @@
             <TextInput type="test" name="linkedin" bind:value={linkedin} />
 
             <br /><strong>Additional Information</strong>
-            <TextInput type="text" name="additionalInfo" bind:value={addInfo} />
+            <TextInput type="text" name="additionalInfo" bind:value={additionalInfo} />
           </FormGroup>
           <Button
             kind="danger"
@@ -293,7 +293,7 @@
               <StructuredListCell noWrap
                 ><strong>Additional Information</strong></StructuredListCell
               >
-              <StructuredListCell>{addInfo}</StructuredListCell>
+              <StructuredListCell>{additionalInfo}</StructuredListCell>
             </StructuredListRow>
             <div id="edit-button">
               <Button iconDescription="Edit" icon={Edit} on:click|once={handleEdit}

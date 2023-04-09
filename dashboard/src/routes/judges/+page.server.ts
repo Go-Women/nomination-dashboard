@@ -30,9 +30,9 @@ export const actions: Actions = {
       headers: {
         'Content-type': 'application/json; charset=UTF-8'
       }
-    })
-    .then(res => res.json());
+    });
   },
+  
   reject: async ({request, params}) => {
     const formData = await request.formData();
     const data: { [name: string]: any } = {};
@@ -49,7 +49,6 @@ export const actions: Actions = {
       headers: {
         'Content-type': 'application/json; charset=UTF-8'
       }
-    })
-    .then(res => res.json());
+    });
   }
 };

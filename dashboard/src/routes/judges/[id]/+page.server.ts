@@ -85,14 +85,14 @@ export const actions: Actions = {
     }
 
     data["info"] = JSON.stringify(info);
-    const res = await fetch(`http://localhost:8000/judges/${params.id}`, {
+    console.log(JSON.stringify(data));
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/${params.id}`, {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
       }
-    })
-    .then(res => res.json())
-    .then(res => console.log(`JUDGE ${params.id} UPDATED`))
+    });
   }
 };
