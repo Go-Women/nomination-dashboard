@@ -68,25 +68,23 @@ export const actions: Actions = {
     }
 
     if (toCreate) {
-      const res = await fetch(`http://localhost:8000/nominations/review`, {
+      const res = await fetch(`https://nwhofapi.azurewebsites.net/api/nominations/review`, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
+          'x-functions-key': FUNCTIONS_KEY
         }
-      })
-      .then(res => res.json())
-      .then(res => console.log(res))
+      });
     } else {
-      const res = await fetch(`http://localhost:8000/nominations/review`, {
+      const res = await fetch(`https://nwhofapi.azurewebsites.net/api/nominations/review`, {
         method: 'PATCH',
         body: JSON.stringify(data),
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
+          'x-functions-key': FUNCTIONS_KEY
         }
-      })
-      .then(res => res.json())
-      .then(res => console.log(res))
+      });
     }
   },
   reject: async ({request, params}) => {
@@ -98,14 +96,13 @@ export const actions: Actions = {
       data[key] = value
     }
     data['action'] = 'REJECT';
-    const res = await fetch(`http://localhost:8000/nominations/review`, {
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/nominations/review`, {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
       }
-    })
-    .then(res => res.json())
-    .then(res => console.log(res))
+    });
   }
 };

@@ -23,7 +23,6 @@ export const actions: Actions = {
       data[key] = value;
     }
     data['action'] = 'ACCEPT';
-    console.log(JSON.stringify(data));
     const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/review`, {
       method: 'PATCH',
       body: JSON.stringify(data),

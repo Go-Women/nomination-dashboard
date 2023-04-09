@@ -5,7 +5,6 @@ import { FUNCTIONS_KEY } from "$env/static/private";
 export const load: PageServerLoad = async ({fetch, params}) => {
   const res = await fetch(`https://nwhofapi.azurewebsites.net/api/nominations/${params.id}`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   const res2 = await fetch(`https://nwhofapi.azurewebsites.net/api/keys`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
-  console.log(res.status);
   if (res.ok) {
     const nomination = await res.json();
     const keys = await res2.json();
