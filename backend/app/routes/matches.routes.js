@@ -28,6 +28,9 @@ module.exports = app => {
     // get matches that need to be manually reviewed
     router.get("/manual", matches.findManual);
 
+    // update status of nominee to be put into manual review
+    router.patch("/manual", matches.updateNomineeStatus);
+
     // get matches that do not have 3 judges assigned to them
     // router.patch("/manual", matches.findAllManualReviews);
   

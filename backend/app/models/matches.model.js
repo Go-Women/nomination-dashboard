@@ -316,7 +316,23 @@ Match.setAllManualReviews = (results) => {
     console.log("GET /matches/other");
     results(null, { nomineeOthers: nominees });
   });
-}
+};
+
+Match.nomineeManualReview = (id, status, result) => {
+  sql.query(
+    `UPDATE Nominees SET nomStatus = ?, matchesAssigned = matchesAssigned - 1
+      WHERE ID = ?`, [`${status}`, `${id}`], (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      console.log("updated nominee status: ", { nominee: `${id}`, status: `${status}` });
+      result(null, { nominee: `${id}`, status: `${status}`});
+    }
+  );
+};
 
 Match.updateJudgeStatus = (id, status, result) => {
   //     SET m.matchStatus = ?, j.info = JSON_SET(j.info, '$.judgeStatus', ?)

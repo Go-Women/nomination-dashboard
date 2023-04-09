@@ -76,7 +76,7 @@
         </form>
         <form method="POST" action="?/manual">
           <input name="nomineeID" type="hidden" value={cell.value[0]} />
-          <input name="judgeID" type="hidden" value={cell.value[1]} />
+          <input name="status" type="hidden" value='m200' />
           <Button expressive size="small" type="submit" kind="danger-ghost">Manual Assignment</Button>
         </form>
       {:else}

@@ -128,6 +128,19 @@ exports.findMatchesReview = (req, res) => {
   });
 };
 
+// used to update a nominees status
+exports.updateNomineeStatus = (req, res) => {
+  Match.updateNomineeStatus(`${req.body.nomineeID}`, `${req.body.status}`, (err, data) => {
+    if (err)
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving matches."
+    });
+  
+    res.send(data);
+  });
+};
+
 // // Create all matches from the database for backend
 // exports.generateMatches = (req, res) => {
 //   Match.createAllMatches((err, data) => {

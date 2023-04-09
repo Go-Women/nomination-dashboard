@@ -33,7 +33,7 @@ export const actions: Actions = {
       const [key, value] = field;
       data[key] = value;
     }
-
+    // console.log(data);
     const res = await fetch(`http://localhost:8000/matches/manual`, {
       method: 'PATCH',
       body: JSON.stringify(data),
@@ -75,7 +75,7 @@ export const actions: Actions = {
         data[key] = value
     }
 
-    console.log(data);
+    // console.log(data);
     const res = await fetch(`http://localhost:8000/matches`, {
       method: 'POST',
       body: JSON.stringify(data),
