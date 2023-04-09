@@ -33,6 +33,7 @@
 
   var getMatchesSuggestions = (suggestions: JSON) => {
     let rows = new Array();
+    reviewCount = 0;
     Object.entries(suggestions).forEach(([key, match], index) => {
       let subCat = match.subcategory;
       if (subCat == "" || subCat == null) {
@@ -53,11 +54,15 @@
         judgeSubcategory: match.judgeSubcategory,
         judgeCapacity: match.judgeMatchesAssigned + "/" + match.judgeCapacity,
       };
+
+      if (generatedMatches)
+        reviewCount++;
+
       rows.push(data);
     });
     return rows;
   };
-  export const suggestedMatches = getMatchesSuggestions(suggestions.matches);
+  export const suggestedMatches = getMatchesSuggestions(suggestions);
 
   var getMatches = (matches: JSON) => {
     let rows = new Array();
@@ -139,7 +144,6 @@
     return rows;
   }
 
-
   export const judgesAvailable = getJudgesAvailable(judges);
   // console.log(judgesAvailable);
 
@@ -151,9 +155,15 @@
     return pageArray;
   };
 
-  const reviewStatus = suggestions.matches[0].matchStatus;
-  const manualStatus = manual[0].nomStatus;
-  const matchStatus = matches[0].matchStatus;
+  var generatedMatches = false;   // todo how to make this not reset on refresh maybe using local storage
+  function generateMatches() {
+    generatedMatches = true;
+    getMatchesSuggestions(suggestions);
+  }
+
+  const reviewStatus = suggestions[0].matchStatus;  // default 'Unmatched' otherwise 'Review'
+  const manualStatus = manual[0].nomStatus; // this is automatically updated when a nominee has a subcategory of other default 'None' otherwise 'Manual Review'
+  const matchStatus = matches[0].matchStatus; // default 'Unmatched' once a match is created 'Matched'
 </script>
 
 <main>
@@ -170,14 +180,14 @@
           <h1>Matches</h1>
         </Column>
         <Column>
-          <form method="POST" action="?/generate">
-            <input name="judgeStatus" type="hidden" value='m100' />
-            <Button iconDescription="View" type="submit">Generate New Matches</Button>
-          </form>
+          <!-- <form method="POST" action="?/generate"> -->
+            <!-- <input name="judgeStatus" type="hidden" value='m100' /> -->
+            <Button iconDescription="View" on:click={() => (generateMatches())} type="submit">Generate New Matches</Button>
+          <!-- </form> -->
         </Column>
       </Row>
 
-      {#if matchStatus == "m400"}
+      {#if matchStatus == "Unmatched"}
           <InlineNotification
           lowContrast
           kind="warning"
@@ -189,18 +199,20 @@
           <OverviewMatches {reviewCount} {manualCount} {matchedCount} />
       </div>
       
-      {#if reviewStatus === 'None'}
-        
-        <div id="container">
-          <Accordion size="sm">
-            <AccordionItem open>
-              <svelte:fragment slot="title">
-                <h4>To Review</h4>
-              </svelte:fragment>
-              <Matches rows={suggestedMatches} />
-            </AccordionItem>
-            </Accordion>
-        </div>
+      {#if generatedMatches}
+        {#if reviewStatus === 'Review'}
+          
+          <div id="container">
+            <Accordion size="sm">
+              <AccordionItem open>
+                <svelte:fragment slot="title">
+                  <h4>Matches to Review</h4>
+                </svelte:fragment>
+                <Matches rows={suggestedMatches} />
+              </AccordionItem>
+              </Accordion>
+          </div>
+        {/if}
       {/if}
       {#if matchStatus === 'Matched'}
         <div id="container">
@@ -215,7 +227,7 @@
         </div>
       {/if}
       {#if manualStatus === 'Manual Review'}
-        {#if manualMatches[0].nomineeStatus != "None" }
+        <!-- {#if manualMatches[0].nomineeStatus != "None" } -->
           <br>
           <div id="container">
             <Accordion size="sm">
@@ -227,7 +239,7 @@
               </AccordionItem>
               </Accordion>
           </div>
-        {/if}
+        <!-- {/if} -->
         
       {/if}
     </Grid>

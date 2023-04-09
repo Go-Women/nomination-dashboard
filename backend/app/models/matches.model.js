@@ -109,7 +109,7 @@ Match.getAll = result => {
           utils.setMatchingStatus(res);
         } else {
           res = [{
-            matchStatus: 'm400'
+            matchStatus: 'Unmatched'
           }]
         }
         console.log("GET /matches");
@@ -218,11 +218,20 @@ Match.getMatchesReview = (results) => {
     utils.getAllJudgesMatchingData(judges, "data");
     console.log("GET /matches/judges");
 
-    const result = matching.mainMatching([nominees, judges]);
-    utils.formatAllData(result[1], "nominee");
-    utils.formatAllData(result[1], "judgeMatch");
+    var result = matching.mainMatching([nominees, judges]);
     console.log("GET /matches/review");
-    results(null, { matches: result[1]});
+
+    // Check if their are matches that have been generated before
+    if (result.length != 0) {
+      utils.formatAllData(result, "nominee");
+      utils.formatAllData(result, "judgeMatch");
+    } else {
+      result = [{
+        matchStatus: 'Review'
+      }]
+    }
+    console.log("GET /matches");
+    results(null, { ...result });
     });
   });
 };

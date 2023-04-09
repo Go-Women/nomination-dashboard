@@ -1,9 +1,7 @@
 const Match = require("./matches.model");
 var judges = []; // original list of judges needing matches (used to store judge info for match)
 var nominees = []; // original list of nominees needing matching (used to store nominee info for match)
-const nomineesReview = new Set(); // a set of nominee IDs
-// var manualReview = [nomineesReview]; // lists of nominees and judges that need manual review
-// TODO: need to think how to handle judges with an other subcategory (might need to have these judges reviewed and assigned a subcategory manually before matching process)
+var nomineesReview = new Set(); // a set of nominee IDs
 /**
  * {
  *    "nomID": [judgeID, judgeID, judgeID],
@@ -12,7 +10,6 @@ const nomineesReview = new Set(); // a set of nominee IDs
  * }
  */
 var matched = {}; // object of matched candidates
-
 /**
  * checks whether the nominee needs to be manually reviewed;
  * if so adds them a separate list
@@ -187,15 +184,25 @@ function getMatchDetails(matches) {
 
 // Dataset from GET /matches/data:
 exports.mainMatching = (matches) => {
+  // RESET existing values
+  judges = []; // original list of judges needing matches (used to store judge info for match)
+  nominees = []; // original list of nominees needing matching (used to store nominee info for match)
+  nomineesReview = new Set(); // a set of nominee IDs
+  // /**
+  //  * {
+  //  *    "nomID": [judgeID, judgeID, judgeID],
+  //  *    "nomID": [judgeID, judgeID, ...],
+  //  *   ...
+  //  * }
+  //  */
+  matched = {}; // object of matched candidates 
   nominees = matches[0];
   judges = matches[1];
   generateMatches();
 
   // console.log("\n-----------------------------");
   // console.log("Matched Results: ", matched);
-  // console.log("Manual Review: ", nomineesReview); // TODO: make status to manual review judges maybe dealt with before
-  // console.log(nominees.length, judges.length, manualReview.length);
-  
+  // console.log("Manual Review: ", nomineesReview); 
   var match = [];
   for (const nominee in matched) {
     const nomMatch = matched[nominee];  
@@ -205,7 +212,7 @@ exports.mainMatching = (matches) => {
   };
 
   const matchDetails = getMatchDetails(match);
-  return [match, matchDetails];
+  return matchDetails;
 
   // STEPS LEFT:
   // 2. verify support for multiple categories and subcategories with more data
