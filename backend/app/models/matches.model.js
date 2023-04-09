@@ -24,10 +24,11 @@ Match.create = (newMatches, results) => {
     for (const match of newMatches) {
       // console.log(match);
       sql.query(`UPDATE Nominees, Users
-      SET Nominees.nomStatus = 'm300', Users.info = JSON_SET(Users.info,'$.judgeStatus','m300'),
-      Nominees.matchesAssigned = Nominees.matchesAssigned + 1,
-      Users.info = JSON_SET(Users.info, '$.matchesAssigned', JSON_EXTRACT(Users.info, '$.matchesAssigned') + 1)
-      WHERE Nominees.ID = ? AND Users.ID = ?`, 
+        SET Nominees.nomStatus = IF((Nominees.matchesAssigned + 1) = 3, 'm300', 'n200'), 
+        Users.info = IF((JSON_EXTRACT(Users.info, '$.matchesAssigned') + 1) = JSON_EXTRACT(Users.info, '$.judgeCapacity'), JSON_SET(Users.info,'$.judgeStatus','m300'), JSON_SET(Users.info,'$.judgeStatus','j300')),
+        Nominees.matchesAssigned = Nominees.matchesAssigned + 1,
+        Users.info = JSON_SET(Users.info, '$.matchesAssigned', JSON_EXTRACT(Users.info, '$.matchesAssigned') + 1)
+        WHERE Nominees.ID = ? AND Users.ID = ?`, 
         [match[0], match[1]],(err, matched) => {
           if (err) {
             console.log("error: ", err);
@@ -38,7 +39,8 @@ Match.create = (newMatches, results) => {
           console.log("updated match: ", {match: match[0]})
 
           sql.query(`UPDATE Users
-            SET info = JSON_SET(Users.info,'$.judgeStatus','m300') WHERE ID = ?`, 
+            SET info = IF((JSON_EXTRACT(Users.info, '$.matchesAssigned') + 1) = JSON_EXTRACT(Users.info, '$.judgeCapacity'), JSON_SET(Users.info,'$.judgeStatus','m300'), JSON_SET(Users.info,'$.judgeStatus','j300'))
+            WHERE ID = ?`, 
             match[1],(err, test) => {
           if (err) {
             console.log("error: ", err);
@@ -87,10 +89,10 @@ Match.getAll = result => {
   sql.query(`SELECT m.matchStatus, m.nomineeID, m.judgeID, 
   n.category, n.subcategory, n.subcategoryOther, n.matchesAssigned, n.capacity, concat(n.firstName,' ',n.lastName) as nomFullName,
   concat(j.firstName,' ',j.lastName) as judgeFullName,
-  JSON_EXTRACT(j.info,'$.category') AS judgeCategory,
-  JSON_EXTRACT(j.info,'$.subcategory') AS judgeSubcategory,
-  JSON_EXTRACT(j.info,'$.matchesAssigned') AS judgeMatchesAssigned,
-  JSON_EXTRACT(j.info,'$.capacity') AS judgeCapacity
+  JSON_UNQUOTE(JSON_EXTRACT(j.info,'$.category')) AS judgeCategory,
+  JSON_UNQUOTE(JSON_EXTRACT(j.info,'$.subcategory')) AS judgeSubcategory,
+  JSON_UNQUOTE(JSON_EXTRACT(j.info,'$.matchesAssigned')) AS judgeMatchesAssigned,
+  JSON_UNQUOTE(JSON_EXTRACT(j.info,'$.capacity')) AS judgeCapacity
   FROM Matches AS m
   INNER JOIN Nominees AS n ON m.nomineeID = n.ID
   INNER JOIN Users AS j ON m.judgeID = j.ID
@@ -104,7 +106,7 @@ Match.getAll = result => {
         // Check if their are matches that have been generated before
         if (res.length != 0) {
           utils.formatAllData(res, 'nominee');
-          utils.formatAllData(res, 'judges');
+          utils.formatAllData(res, 'judgeMatch');
           // utils.getAllJudgesMatchingData(res);
           utils.setMatchingStatus(res);
         } else {
@@ -218,20 +220,28 @@ Match.getMatchesReview = (results) => {
     utils.getAllJudgesMatchingData(judges, "data");
     console.log("GET /matches/judges");
 
-    var result = matching.mainMatching([nominees, judges]);
+    sql.query(`SELECT nomineeID, judgeID FROM Matches
+    WHERE matchStatus = 'm300'`, (err, currentMatches) => {
+    if (err) {
+      console.log("error: ", err);
+      results(null, err);
+      return;
+    }
+    var result = matching.mainMatching([nominees, judges, currentMatches]);
     console.log("GET /matches/review");
 
-    // Check if their are matches that have been generated before
-    if (result.length != 0) {
-      utils.formatAllData(result, "nominee");
-      utils.formatAllData(result, "judgeMatch");
-    } else {
-      result = [{
-        matchStatus: 'Unmatched'
-      }]
-    }
-    console.log("GET /matches");
-    results(null, { ...result });
+      // Check if their are matches that have been generated before
+      if (result.length != 0) {
+        utils.formatAllData(result, "nominee");
+        utils.formatAllData(result, "judgeMatch");
+      } else {
+        result = [{
+          matchStatus: 'Unmatched'
+        }]
+      }
+      console.log("GET /matches");
+      results(null, { ...result });
+      });
     });
   });
 };

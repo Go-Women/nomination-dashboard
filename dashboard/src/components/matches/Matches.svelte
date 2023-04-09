@@ -8,10 +8,13 @@
     Button
   } from "carbon-components-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
+  import { empty } from "svelte/internal";
 
   export let rows: any;
+  export var review: boolean;
 
-  const headers = [
+
+  const headers = (review) ? [
     { key: "id", empty: true },
     { key: "nomineeName", value: "Nominee" },
     { key: "nomineeCategory", value: "Nominee Category" },
@@ -20,9 +23,20 @@
     { key: "judgeCategory", value: "Judge Category" },
     { key: "judgeSubcategory", value: "Judge Subcategory" },
     { key: "judgeCapacity", value: "Judge Capacity" },
-    { key: "action", value: "Action" },
-  ];
+    { key: "action", value: "Action" }
+  ] :
 
+  [
+    { key: "id", empty: true },
+    { key: "nomineeName", value: "Nominee" },
+    { key: "nomineeCategory", value: "Nominee Category" },
+    { key: "nomineeSubcategory", value: "Nominee Subcategory" },
+    { key: "judgeName", value: "Judge" },
+    { key: "judgeCategory", value: "Judge Category" },
+    { key: "judgeSubcategory", value: "Judge Subcategory" },
+    { key: "judgeCapacity", value: "Judge Capacity" }
+  ]
+  
   let pageSize = 25;
   let page = 1;
   var getPageSizes = (totalItems: number) => {
@@ -54,9 +68,17 @@
           icon={View}
           href={"matches/" + cell.value}
         />
-      {:else if cell.key === "action"}
+      {:else if cell.key === "action" && review}
+        <form method="POST" action="?/match">
+          <input name="nominee" type="hidden" value={cell.value[0]} />
+          <input name="judges" type="hidden" value={cell.value[1]} />
           <Button expressive size="small" type="submit" kind="ghost">Accept</Button>
+        </form>
+        <form method="POST" action="?/manual">
+          <input name="nomineeID" type="hidden" value={cell.value[0]} />
+          <input name="judgeID" type="hidden" value={cell.value[1]} />
           <Button expressive size="small" type="submit" kind="danger-ghost">Manual Assignment</Button>
+        </form>
       {:else}
         {cell.value}
       {/if}

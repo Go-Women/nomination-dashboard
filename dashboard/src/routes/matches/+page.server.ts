@@ -1,13 +1,13 @@
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ fetch, params }) => {
+export const load: PageServerLoad = async ({ fetch }) => {
   const res1 = await fetch(`http://localhost:8000/matches`);
   const res2 = await fetch(`http://localhost:8000/matches/review`);
   const res3 = await fetch(`http://localhost:8000/matches/judges`);
   const res4 = await fetch(`http://localhost:8000/matches/nominees`);
   const res5 = await fetch(`http://localhost:8000/matches/manual`);
 
-  if (res1.ok && res2.ok && res3.ok && res4.ok) {
+  if (res1.ok && res2.ok && res3.ok && res4.ok && res5.ok) {
     const matches = await res1.json();
     const review = await res2.json();
     const judges = await res3.json();
@@ -16,17 +16,17 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
     return {
       props: { 
         matches: matches,
-        suggestions: review,
         judges: judges,
         nominees: nominees,
-        manual: manualReview
+        manual: manualReview,
+        suggestions: review
       }
     };
   }
 };
 
 export const actions: Actions = {
-  update: async ({request}) => {
+  manual: async ({request}) => {
     const formData = await request.formData();
     const data: { [name: string]: any } = {};
     for (let field of formData) {
@@ -34,7 +34,7 @@ export const actions: Actions = {
       data[key] = value;
     }
 
-    const res = await fetch(`http://localhost:8000/matches`, {
+    const res = await fetch(`http://localhost:8000/matches/manual`, {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {

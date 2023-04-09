@@ -29,7 +29,7 @@
   export let reviewCount: number = 0;
   export let manualCount: number = Object.keys(manual).length;
   export let matchedCount: number = 0;
-  export let unmatchedCount: number = 0;
+  // export let unmatchedCount: number = 0;
 
   var getMatchesSuggestions = (suggestions: JSON) => {
     let rows = new Array();
@@ -43,7 +43,7 @@
       let data = {
         id: index + 1,
         matchStatus: match.matchStatus,
-        nomineeID: match.nomineeID,
+        nomineeID: match.nomID,
         judgeID: match.judgeID,
         nomineeName: match.nomFullName,
         nomineeCategory: match.category,
@@ -53,6 +53,7 @@
         judgeCategory: match.judgeCategory,
         judgeSubcategory: match.judgeSubcategory,
         judgeCapacity: match.judgeMatchesAssigned + "/" + match.judgeCapacity,
+        action: [match.nomID, match.judgeID]
       };
 
       if (generatedMatches)
@@ -91,7 +92,7 @@
     });
     return rows;
   };
-  export const reviewMatches = getMatches(matches);
+  export const confirmedMatches = getMatches(matches);
 
   var getManualInformation = (manual: JSON) => {
     let rows = new Array();
@@ -159,7 +160,12 @@
   function generateMatches() {
     generatedMatches = true;
     getMatchesSuggestions(suggestions);
-  }
+  };
+
+  function setMatchedCount() {
+    matchedCount = Object.keys(matches).length;
+    return matchedCount;
+  };
 
   const reviewStatus = suggestions[0].matchStatus;  // default 'Unmatched' otherwise 'Review'
   const manualStatus = manual[0].nomStatus; // this is automatically updated when a nominee has a subcategory of other default 'None' otherwise 'Manual Review'
@@ -201,27 +207,26 @@
       
       {#if generatedMatches}
         {#if reviewStatus === 'Review'}
-          
           <div id="container">
             <Accordion size="sm">
               <AccordionItem open>
                 <svelte:fragment slot="title">
                   <h4>Matches to Review</h4>
                 </svelte:fragment>
-                <Matches rows={suggestedMatches} />
+                <Matches rows={suggestedMatches} review={true}/>
               </AccordionItem>
               </Accordion>
           </div>
         {/if}
       {/if}
-      {#if matchStatus === 'Matched'}
+      {#if matchStatus === 'Matched' && setMatchedCount() > 0}
         <div id="container">
           <Accordion size="sm">
             <AccordionItem>
               <svelte:fragment slot="title">
                 <h4>Matches</h4>
               </svelte:fragment>
-              <Matches rows={reviewMatches} />
+              <Matches rows={confirmedMatches}  review={false}/>
             </AccordionItem>
             </Accordion>
         </div>
@@ -250,7 +255,7 @@
     padding-top: 4rem;
     padding-left: 2rem;
   }
-  .half-container {
+  /* .half-container {
     width: 100%;
     display: grid;
     grid-template-columns: 3% 1fr 1fr 1%;
@@ -274,5 +279,5 @@
     width: 100%;
     grid-column: 3;
     grid-row: 2;
-  }
+  } */
 </style>
