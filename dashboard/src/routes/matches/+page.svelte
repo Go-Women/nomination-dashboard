@@ -6,27 +6,37 @@
     Grid,
     Button,
     InlineNotification,
+    Accordion,
+    AccordionItem,
+    Row,
+    Column,
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
   import "../../css/index.css";
   import Navigation from "../../components/Navigation.svelte";
   import Matches from "../../components/matches/Matches.svelte";
+  import OverviewMatches from "../../components/matches/OverviewMatches.svelte";
+  import ManualMatches from "../../components/matches/ManualMatches.svelte";
 
   export let data;
-  export let { matches } = data.props;
-  console.log(matches);
+  // matches --> confirmed matches
+  // suggestions --> visible when clicking on generate matches (shows match suggestions)
+  // judges --> any judges that can be selected to match
+  // nominees --> that can be selected to match
+  // manual --> any nominees with an other category or ones marked for manual review/unmatched
+  export let { matches, suggestions, judges, nominees, manual } = data.props;
 
-  var getInformation = (matches: JSON) => {
+  export let reviewCount: number = 0;
+  export let manualCount: number = Object.keys(manual).length;
+  export let matchedCount: number = 0;
+  export let unmatchedCount: number = 0;
+
+  var getMatchesSuggestions = (suggestions: JSON) => {
     let rows = new Array();
-    Object.entries(matches).forEach(([key, match], index) => {
+    Object.entries(suggestions).forEach(([key, match], index) => {
       let subCat = match.subcategory;
       if (subCat == "" || subCat == null) {
         subCat = match.subcategoryOther;
-      }
-
-      let judgeSubCat = match.judgeSubcategory;
-      if (judgeSubCat == "" || judgeSubCat == null) {
-        judgeSubCat = match.judgeSubcategoryOther;
       }
 
       let data = {
@@ -37,18 +47,101 @@
         nomineeName: match.nomFullName,
         nomineeCategory: match.category,
         nomineeSubcategory: subCat,
+        nomineeCapacity: match.matchesAssigned + "/" + match.capacity,
         judgeName: match.judgeFullName,
         judgeCategory: match.judgeCategory,
-        judgeSubcategory: judgeSubCat,
-        judgeCapacity: match.judgeCapacity,
-        // status: match.status, TODO: implement status
+        judgeSubcategory: match.judgeSubcategory,
+        judgeCapacity: match.judgeMatchesAssigned + "/" + match.judgeCapacity,
+      };
+      rows.push(data);
+    });
+    return rows;
+  };
+  export const suggestedMatches = getMatchesSuggestions(suggestions.matches);
+
+  var getMatches = (matches: JSON) => {
+    let rows = new Array();
+    Object.entries(matches).forEach(([key, match], index) => {
+      let subCat = match.subcategory;
+      if (subCat == "" || subCat == null) {
+        subCat = match.subcategoryOther;
+      }
+
+      let data = {
+        id: index + 1,
+        matchStatus: match.matchStatus,
+        nomineeID: match.nomineeID,
+        judgeID: match.judgeID,
+        nomineeName: match.nomFullName,
+        nomineeCategory: match.category,
+        nomineeSubcategory: subCat,
+        nomineeCapacity: match.matchesAssigned + "/" + match.capacity,
+        judgeName: match.judgeFullName,
+        judgeCategory: match.judgeCategory,
+        judgeSubcategory: match.judgeSubcategory,
+        judgeCapacity: match.judgeMatchesAssigned + "/" + match.judgeCapacity,
       };
 
       rows.push(data);
     });
     return rows;
   };
-  export const rows = getInformation(matches);
+  export const reviewMatches = getMatches(matches);
+
+  var getManualInformation = (manual: JSON) => {
+    let rows = new Array();
+    Object.entries(manual).forEach(([key, nominee], index) => {
+      let subCat = nominee.subcategory;
+      if (subCat == "" || subCat == null) {
+        subCat = nominee.subcategoryOther;
+      }
+
+      let data = {
+        id: nominee.nomineeID,
+        nomineeID: nominee.nomineeID,
+        nomineeName: nominee.fullName,
+        nomineeCategory: nominee.category,
+        nomineeSubcategory: subCat,
+        nomineeStatus: nominee.nomStatus,
+        nomineeCapacity: nominee.matchesAssigned + "/" + nominee.capacity
+      };
+
+      if (nominee.nomStatus != "None")
+        if (nominee.nomStatus == "m200")
+          manualCount += 1;
+      
+      rows.push(data);
+    });
+    return rows;
+  }
+  export const manualMatches = getManualInformation(manual);
+
+  var getJudgesAvailable = (judges: JSON) => {
+    let rows = new Array();
+    
+    Object.entries(judges).forEach(([key, judge], index) => {
+      let data = {
+        rowID: index,
+        id: judge.judgeID,
+        judgeName: judge.fullName,
+        judgeCategory: judge.category,
+        judgeSubcategory: judge.subcategory,
+        judgeStatus: judge.judgeStatus,
+        judgeCapacity: judge.judgeMatchesAssigned + "/" + judge.judgeCapacity,
+        bio: (judge.bio == "null") ? null : judge.bio,
+        linkedin: (judge.linkedin == "null") ? null : judge.linkedin,
+        addInfo: (judge.addInfo == "null") ? null : judge.addInfo,
+        previousJudge: judge.previousJudge
+      };
+
+      rows.push(data);
+    });
+    return rows;
+  }
+
+
+  export const judgesAvailable = getJudgesAvailable(judges);
+  // console.log(judgesAvailable);
 
   let pageSize = 25;
   let page = 1;
@@ -58,7 +151,9 @@
     return pageArray;
   };
 
-  const status = matches[0].matchStatus;  // TODO: fix this
+  const reviewStatus = suggestions.matches[0].matchStatus;
+  const manualStatus = manual[0].nomStatus;
+  const matchStatus = matches[0].matchStatus;
 </script>
 
 <main>
@@ -70,20 +165,102 @@
         <BreadcrumbItem>Matching</BreadcrumbItem>
       </Breadcrumb>
 
-      <h1>Matches</h1>
-      {#if status === 'Review'}
-        <Matches {rows} />
-      {:else}
-        <InlineNotification
+      <Row>
+        <Column>
+          <h1>Matches</h1>
+        </Column>
+        <Column>
+          <form method="POST" action="?/generate">
+            <input name="judgeStatus" type="hidden" value='m100' />
+            <Button iconDescription="View" type="submit">Generate New Matches</Button>
+          </form>
+        </Column>
+      </Row>
+
+      {#if matchStatus == "m400"}
+          <InlineNotification
           lowContrast
-          kind="error"
-          subtitle="There aren't any potential matches yet. Click below to generate new matches."
+          kind="warning"
+          subtitle="Click match button to generate matches."
         />
-        <form method="POST" action="?/generate">
-          <input name="judgeStatus" type="hidden" value='m100' />
-          <Button iconDescription="View" type="submit">Generate New Matches</Button>
-        </form>
+      {/if}
+      
+      <div id="container">
+          <OverviewMatches {reviewCount} {manualCount} {matchedCount} />
+      </div>
+      
+      {#if reviewStatus === 'None'}
+        
+        <div id="container">
+          <Accordion size="sm">
+            <AccordionItem open>
+              <svelte:fragment slot="title">
+                <h4>To Review</h4>
+              </svelte:fragment>
+              <Matches rows={suggestedMatches} />
+            </AccordionItem>
+            </Accordion>
+        </div>
+      {/if}
+      {#if matchStatus === 'Matched'}
+        <div id="container">
+          <Accordion size="sm">
+            <AccordionItem>
+              <svelte:fragment slot="title">
+                <h4>Matches</h4>
+              </svelte:fragment>
+              <Matches rows={reviewMatches} />
+            </AccordionItem>
+            </Accordion>
+        </div>
+      {/if}
+      {#if manualStatus === 'Manual Review'}
+        {#if manualMatches[0].nomineeStatus != "None" }
+          <br>
+          <div id="container">
+            <Accordion size="sm">
+              <AccordionItem>
+                <svelte:fragment slot="title">
+                  <h4>Manual Assignment</h4>
+                </svelte:fragment>
+                <ManualMatches rows={manualMatches} judges={judgesAvailable}/>
+              </AccordionItem>
+              </Accordion>
+          </div>
+        {/if}
+        
       {/if}
     </Grid>
   </Content>
 </main>
+<style>
+  main {
+    padding-top: 4rem;
+    padding-left: 2rem;
+  }
+  .half-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 3% 1fr 1fr 1%;
+    grid-template-rows: auto 1fr;
+    row-gap: 0;
+    column-gap: 1em;
+  }
+
+  #container {
+    padding-left: 4rem;
+    padding-right: 2rem;
+  }
+
+  #half-left {
+    width: 100%;
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  #half-right {
+    width: 100%;
+    grid-column: 3;
+    grid-row: 2;
+  }
+</style>

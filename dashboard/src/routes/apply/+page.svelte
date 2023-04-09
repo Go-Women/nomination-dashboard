@@ -21,7 +21,6 @@
   let sec_humanities = false;
   let sec_gov = false;
   let sec_stem = false;
-  let sec_other = false;
 
   let contribs: string[] = [];
   let contribsSub: string[] = [];
@@ -129,7 +128,6 @@
         <Checkbox name="category" bind:group={contribs} value="c500" labelText="Humanities" bind:checked={sec_humanities} />
         <Checkbox name="category" bind:group={contribs} value="c600" labelText="Public Service / Government" bind:checked={sec_gov} />
         <Checkbox name="category" bind:group={contribs} value="c700" labelText="STEM" bind:checked={sec_stem} />
-        <Checkbox name="category" bind:group={contribs} value="c800" labelText="Other" bind:checked={sec_other} />
         <input type="hidden" name="category" bind:value={contribs}>
       </FormGroup>
       {#if sec_art}
@@ -197,13 +195,7 @@
           <Checkbox name="subcategory" bind:group={contribsSub} value="s710" labelText="Physics" />
           <Checkbox name="subcategory" bind:group={contribsSub} value="s711" labelText="Technology" />
         </FormGroup>
-      {/if}
       <input type="hidden" name="subcategory" bind:value={contribsSub}>
-      {#if sec_other}
-        <FormGroup legendText="My nominee made contributions within this subcategory: Other">
-          <TextInput name="subcategoryOther" placeholder="Please type another option here" required />
-        </FormGroup>
-      {/if}
       <hr />
       <h4>All prospective judges are asked to please provide one or both of the following:</h4>
       <TextInput name="linkedin" type="url" labelText="Link to your LinkedIn profile, or another online resource that provides information about your background" placeholder="https://linkedin.com/in/example" />

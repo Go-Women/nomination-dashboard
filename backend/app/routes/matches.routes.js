@@ -10,17 +10,35 @@ module.exports = app => {
     // Retrieve all Matches
     router.get("/", matches.findAll);
 
+    // Create a new Match
+    router.post("/", matches.create);
+
     // create matches
-    router.post("/data", matches.findAllMatches);
+    // router.post("/data", matches.generateMatches);
+
+    // get all judges that can be matched
+    router.get("/judges", matches.findAllJudges);
+
+    // get all nominees that can be matched
+    router.get("/nominees", matches.findAllNominees);
+
+    // get all suggested matches that need to be reviewed
+    router.get("/review", matches.findMatchesReview);
+
+    // get matches that need to be manually reviewed
+    router.get("/manual", matches.findManual);
+
+    // get matches that do not have 3 judges assigned to them
+    // router.patch("/manual", matches.findAllManualReviews);
   
     // Update a Match with id
-    router.patch("/", matches.generate);
+    // router.patch("/", matches.findAll);
 
     // Retrieve a single Match with id
-    router.get("/:id", matches.findOne);
+    // router.get("/:id", matches.findOne);
 
     // Update a Match with id
-    router.patch("/:id", matches.update);
+    // router.patch("/:id", matches.update);
   
     // this based on user authentication eventually
     app.use('/matches', router);

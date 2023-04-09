@@ -5,8 +5,7 @@
     ToolbarContent,
     ToolbarSearch,
     Pagination,
-    Button,
-    Row,
+    Button
   } from "carbon-components-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
 
@@ -56,10 +55,8 @@
           href={"matches/" + cell.value}
         />
       {:else if cell.key === "action"}
-        <!-- <Row> -->
           <Button expressive size="small" type="submit" kind="ghost">Accept</Button>
           <Button expressive size="small" type="submit" kind="danger-ghost">Manual Assignment</Button>
-        <!-- </Row> -->
       {:else}
         {cell.value}
       {/if}
