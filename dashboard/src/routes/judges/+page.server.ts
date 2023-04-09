@@ -23,12 +23,13 @@ export const actions: Actions = {
       data[key] = value;
     }
     data['action'] = 'ACCEPT';
-    // console.log(JSON.stringify(data));
-    const res = await fetch(`http://localhost:8000/judges/review`, {
+    console.log(JSON.stringify(data));
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/review`, {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
-        'Content-type': 'application/json; charset=UTF-8'
+        'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
       }
     });
   },
@@ -43,11 +44,12 @@ export const actions: Actions = {
     }
     data['action'] = 'REJECT';
     // console.log(JSON.stringify(data));
-    const res = await fetch(`http://localhost:8000/judges/review`, {
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/review`, {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
-        'Content-type': 'application/json; charset=UTF-8'
+        'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
       }
     });
   }
