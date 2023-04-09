@@ -211,7 +211,7 @@
             <Accordion size="sm">
               <AccordionItem open>
                 <svelte:fragment slot="title">
-                  <h4>Matches to Review</h4>
+                  <h4>Suggested Matches Review</h4>
                 </svelte:fragment>
                 <Matches rows={suggestedMatches} review={true}/>
               </AccordionItem>
