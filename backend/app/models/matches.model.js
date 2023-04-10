@@ -359,6 +359,30 @@ Match.updateJudgeStatus = (id, status, result) => {
   );
 };
 
+Match.updateNomineeStatus = (id, status, result) => {
+  sql.query(
+    `UPDATE Nominees SET nomStatus = ?
+     WHERE ID = ?`, [`${status}`, `${id}`], (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        // not found Nominee with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      console.log("updated nominee match: ", { id: `${id}`, nomStatus: `${status}` });
+      result(null, { nomStatus: `${status}`});
+    }
+  );
+};
+
+
+
 Match.updateById = (id, nominee, result) => {
   // TODO: Needs to be implemented
 };

@@ -8,7 +8,6 @@
     Button
   } from "carbon-components-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
-  import { empty } from "svelte/internal";
 
   export let rows: any;
   export var review: boolean;
