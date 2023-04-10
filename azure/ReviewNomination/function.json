@@ -1,0 +1,20 @@
+﻿{
+  "bindings": [
+    {
+      "name": "req",
+      "route": "nominations/review",
+      "authLevel": "function",
+      "methods": [
+        "post",
+        "patch"
+      ],
+      "direction": "in",
+      "type": "httpTrigger"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    }
+  ]
+}

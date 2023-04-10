@@ -1,0 +1,19 @@
+﻿{
+  "bindings": [
+    {
+      "name": "req",
+      "route": "nominations",
+      "authLevel": "function",
+      "methods": [
+        "post"
+      ],
+      "direction": "in",
+      "type": "httpTrigger"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    }
+  ]
+}
