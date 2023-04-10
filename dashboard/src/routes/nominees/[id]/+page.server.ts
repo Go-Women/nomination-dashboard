@@ -28,10 +28,22 @@ export const load: PageServerLoad = async ({fetch, params}) => {
 };
 
 export const actions: Actions = {
-  default: async ({request}) => {
-    console.log('debugging');
-    const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
-    method: 'POST',
-    });
+  default: async ({request, params}) => {
+    const formData = await request.formData();
+    const data: { [name: string]: any } = {};
+    for (let field of formData) {
+      const [key, value] = field;
+      data[key] = value;
+    }
+    //console.log(data);
+    const res = await fetch(`http://localhost:8000/nominations/${params.id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+    headers: {
+       'Content-type': 'application/json; charset=UTF-8',
+    }
+    })
+    .then(res => res.json());
+    //console.log(res);
   }
 }

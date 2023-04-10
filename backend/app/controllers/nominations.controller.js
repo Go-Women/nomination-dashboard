@@ -163,7 +163,7 @@ exports.update = (req, res) => {
   }
 
   Nomination.updateById(
-    req.params.id,
+    req.body.nomID,
     new Nomination(req.body),
     (err, data) => {
       if (err) {

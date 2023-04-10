@@ -93,40 +93,45 @@
         <Row>
           <Column>
             <Form>
-              <Checkbox checked={ckboxCkr('nomQ1', 'q101')} labelText={keys['q101']} />
-              <Checkbox checked={ckboxCkr('nomQ1', 'q102')} labelText={keys['q102']} />
-              <Checkbox checked={ckboxCkr('nomQ1', 'q103')} labelText={keys['q103']} />
-              <Checkbox checked={ckboxCkr('nomQ1', 'q104')} labelText={keys['q104']} />
-              <Checkbox checked={ckboxCkr('nomQ1', 'q105')} labelText={keys['q105']} />
+              <Checkbox disabled checked={ckboxCkr('nomQ1', 'q101')} labelText={keys['q101']} />
+              <Checkbox disabled checked={ckboxCkr('nomQ1', 'q102')} labelText={keys['q102']} />
+              <Checkbox disabled checked={ckboxCkr('nomQ1', 'q103')} labelText={keys['q103']} />
+              <Checkbox disabled checked={ckboxCkr('nomQ1', 'q104')} labelText={keys['q104']} />
+              <Checkbox disabled checked={ckboxCkr('nomQ1', 'q105')} labelText={keys['q105']} />
             </Form>
           </Column>
           <Column>
-            <TextArea name='Q1desc' style="color: black" rows={3} value={nomination. nomQ2Description}/>
+            <TextArea name='nomQ1Description' style="color: black" rows={3} value={nomination. nomQ1Description}/>
           </Column>
         </Row>
         <Row style="margin-top: 1em;"><Column style="font-weight: bold;">Question 2</Column></Row>
         <Row>
           <Column>
             <Form>
-              <Checkbox checked={ckboxCkr('nomQ2', 'q201')} labelText={keys['q201']} />
-              <Checkbox checked={ckboxCkr('nomQ2', 'q202')} labelText={keys['q202']} />
-              <Checkbox checked={ckboxCkr('nomQ2', 'q203')} labelText={keys['q203']} />
+              <Checkbox disabled checked={ckboxCkr('nomQ2', 'q201')} labelText={keys['q201']} />
+              <Checkbox disabled checked={ckboxCkr('nomQ2', 'q202')} labelText={keys['q202']} />
+              <Checkbox disabled checked={ckboxCkr('nomQ2', 'q203')} labelText={keys['q203']} />
             </Form>
           </Column>
           <Column>
-            <TextArea name='Q2desc' style="color: black" rows={3} value={nomination. nomQ2Description} />
+            <TextArea name='nomQ2Description' style="color: black" rows={3} value={nomination. nomQ2Description} />
           </Column>
         </Row>
         <Row style="margin-top: 1em;"><Column style="font-weight: bold;">Question 3</Column></Row>
         <Row>
           <Column>
             <Form>
-              <Checkbox checked={ckboxCkr('nomQ3', 'q301')} labelText={keys['q301']} />
-              <Checkbox checked={ckboxCkr('nomQ3', 'q302')} labelText={keys['q302']} />
+              <Checkbox disabled checked={ckboxCkr('nomQ3', 'q301')} labelText={keys['q301']} />
+              <Checkbox disabled checked={ckboxCkr('nomQ3', 'q302')} labelText={keys['q302']} />
             </Form>
           </Column>
           <Column>
-            <TextArea name='Q3Desc' type='Q3Desc' style="color: black" rows={3} value={nomination. nomQ3Description} />
+            <TextArea name='nomQ3Description' type='Q3Desc' style="color: black" rows={3} value={nomination. nomQ3Description} />
+          </Column>
+        </Row>
+        <Row>
+          <Column>
+            <TextArea hidden name='nomID' type='nomID' style="color: black" rows={3} value={nomination.ID} />
           </Column>
         </Row>
         {#if nomination.nomAdditionalInfo && nomination.nomAdditionalInfo.length > 0}
@@ -212,7 +217,7 @@
         </Form>
       </Column>
       <Column>
-        <TextArea style="color: black" rows={3} value={nomination. nomQ2Description} disabled />
+        <TextArea style="color: black" rows={3} value={nomination. nomQ1Description} disabled />
       </Column>
     </Row>
     <Row style="margin-top: 1em;"><Column style="font-weight: bold;">Question 2</Column></Row>
