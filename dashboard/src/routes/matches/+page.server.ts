@@ -1,17 +1,21 @@
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ fetch }) => {
-  const res1 = await fetch(`http://localhost:8000/matches`);
-  const res2 = await fetch(`http://localhost:8000/matches/review`);
-  const res3 = await fetch(`http://localhost:8000/matches/judges`);
-  const res4 = await fetch(`http://localhost:8000/matches/nominees`);
-  const res5 = await fetch(`http://localhost:8000/matches/manual`);
+import { FUNCTIONS_KEY } from "$env/static/private";
 
-  if (res1.ok && res2.ok && res3.ok && res4.ok && res5.ok) {
+export const load: PageServerLoad = async ({ fetch }) => {
+  const res1 = await fetch(`https://nwhofapi.azurewebsites.net/api/matches`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+  const res2 = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/review`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+  const res3 = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/candidates`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+  const res5 = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/manual`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+
+  if (res1.ok && res2.ok && res3.ok && res5.ok) {
     const matches = await res1.json();
     const review = await res2.json();
-    const judges = await res3.json();
-    const nominees = await res4.json();
+    const candidates = await res3.json();
+
+    const judges = candidates['judges'];
+    const nominees = candidates['nominees'];
+    
     const manualReview = await res5.json();
     return {
       props: { 
@@ -34,15 +38,14 @@ export const actions: Actions = {
       data[key] = value;
     }
     // console.log(data);
-    const res = await fetch(`http://localhost:8000/matches/manual`, {
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/manual`, {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
       }
-    })
-    .then(res => res.json())
-    .then(res => console.log(res))
+    });
   },
   generate: async ({request}) => {
     const formData = await request.formData();
@@ -58,9 +61,7 @@ export const actions: Actions = {
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       }
-    })
-    .then(res => res.json())
-    .then(res => console.log(res))
+    });
   },
   match: async ({request}) => {
     const formData = await request.formData();
@@ -76,14 +77,13 @@ export const actions: Actions = {
     }
 
     // console.log(data);
-    const res = await fetch(`http://localhost:8000/matches`, {
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/matches`, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
       }
-    })
-    .then(res => res.json())
-    .then(res => console.log(res))
+    });
   }
 };
