@@ -23,6 +23,7 @@ exports.create = (req, res) => {
     nominations: req.body.nominations
   });
 
+  // Update a Nominations Status
   Nomination.updateStatus(req.body.nominationID, nominee.nomStatus, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
@@ -81,3 +82,21 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   // TODO: Implement
 };
+
+// Update a Nominee with the verdict decided by a judge
+exports.verdict = (req, res) => {
+  const id = `${req.body.nomineeID}`
+  Nominee.addReview(`${req.body.data}`, `${id}`, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `No nominee found with id ${req.params.id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Nominee with id " + req.params.id
+        });
+      }
+    } else res.send(data);
+  });
+}

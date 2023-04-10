@@ -36,17 +36,31 @@ export const actions: Actions = {
   default: async ({request}) => {
     const formData = await request.formData();
     const data: { [name: string]: any } = {};
+    var verdict = '{';
     for (let field of formData) {
       const [key, value] = field;
-      data[key] = value;
+      if (key === "nomineeID")
+        data[key] = value;
+      if (key === "nomQ1")
+        verdict += '"nomQ1": "' + value + '"';
+      if (key === "nomQ2")
+        verdict += ', "nomQ2": "' + value + '"';
+      if (key === "nomQ3")
+        verdict += ', "nomQ3": "' + value + '"';
+      if (key === "nomAdditionalInfo")
+        verdict += ', "nomAdditionalInfo": "' + value + '"';
+      if (key === "verdict")
+        verdict += ', "verdict": ' + value;
     }
-    const res = await fetch('http://localhost:8000/matches/verdict', {
+    verdict += '}';
+    data["data"] = verdict;
+    const res = await fetch('http://localhost:8000/nominees/verdict', {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
         'Content-type': 'application/json; charset=UTF-8'
       }
     })
-    .then(() => { throw redirect(303, '/matches'); })
+    .then(() => { throw redirect(303, '/nominees'); })
   }
 }

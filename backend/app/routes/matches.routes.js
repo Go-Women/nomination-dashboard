@@ -3,9 +3,6 @@ module.exports = app => {
     const matches = require("../controllers/matches.controller.js");
   
     var router = require("express").Router();
-
-    // Apply a verdict (Accept/Reject)
-    router.patch("/verdict", matches.verdict);
   
     // Create a new Match
     router.post("/", matches.create);
