@@ -121,26 +121,24 @@ Nomination.updateStatus = (id, status, result) => {
 
 Nomination.updateById = (id, nomination, result) => {
   // TODO: Needs to be implemented
-  // sql.query(
-  //   "UPDATE Nominations ",
-  //   [],
-  //   (err, res) => {
-  //     if (err) {
-  //       console.log("error: ", err);
-  //       result(null, err);
-  //       return;
-  //     }
+  sql.query("UPDATE Nominations SET nomQ1Description = ?, nomQ2Description = ?, nomQ3Description = ? WHERE id = ?", 
+  [nomination.nomQ1Description, nomination.nomQ2Description, nomination.nomQ3Description, id], (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
 
-  //     if (res.affectedRows == 0) {
-  //       // not found Nomination with the id
-  //       result({ kind: "not_found" }, null);
-  //       return;
-  //     }
+      if (res.affectedRows == 0) {
+        // not found Nomination with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
 
-  //     console.log("updated nomination: ", { id: id, ...nomination });
-  //     result(null, { id: id, ...nomination });
-  //   }
-  // );
+      console.log("updated nomination: ", { id: id, ...nomination });
+      result(null, { id: id, ...nomination });
+    }
+  );
 };
 
 module.exports = Nomination;

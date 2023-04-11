@@ -30,7 +30,7 @@ Match.findById = (id, result) => {
   FROM Matches AS m 
   INNER JOIN Nominees AS n ON m.nomineeID = n.ID
   INNER JOIN Users AS j ON m.judgeID = j.ID
-  WHERE m.ID = ?`, id, (err, res) => {
+  WHERE m.ID = ? AND cohort = (SELECT MAX(id) FROM Cohorts)`, id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -59,7 +59,7 @@ Match.getAll = result => {
     FROM Matches AS m 
     INNER JOIN Nominees AS n ON m.nomineeID = n.ID
     INNER JOIN Users AS j ON m.judgeID = j.ID
-    WHERE j.type = 'judge' AND j.active = true`, (err, res) => {
+    WHERE j.type = 'judge' AND j.active = true AND cohort = (SELECT MAX(id) FROM Cohorts)`, (err, res) => {
         if (err) {
         console.log("error: ", err);
         result(null, err);
@@ -78,7 +78,7 @@ Match.getAll = result => {
 Match.getAllMatches = (results) => {
   // get nominees that need to be matched
   sql.query(`SELECT ID AS nomineeID, category AS nomCategory, subcategory AS nomSubcategory, subcategoryOther AS nomSubcategoryOther
-    FROM Nominees WHERE nomStatus = 'n200'`, (err, nominees) => {
+    FROM Nominees WHERE nomStatus = 'n200' AND cohort = (SELECT MAX(id) FROM Cohorts)`, (err, nominees) => {
     if (err) {
       console.log("error: ", err);
       results(null, err);

@@ -11,7 +11,15 @@ exports.createCohort = (req, res) => {
 
   // Create a Cohort
   const cohort = new Cohort({
-    // TODO: implement
+    startDate: req.body.startDate || new Date(),
+  });
+
+  Cohort.end(cohort, (nomErr, data) => {
+    if (nomErr)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the Cohort."
+      });
   });
 
   // Save Cohort in the database
@@ -32,6 +40,17 @@ exports.findAllCohorts = (req, res) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while retrieving Cohorts."
+      });
+    else res.send(data);
+  });
+};
+
+exports.findCurrentCohort = (req, res) => {
+  Cohort.getMax((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Cohort."
       });
     else res.send(data);
   });

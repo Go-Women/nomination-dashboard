@@ -6,6 +6,7 @@
   import "carbon-components-svelte/css/all.css";
   import Login from "carbon-icons-svelte/lib/Login.svelte";
   import "../../css/index.css";
+  import { currentCohort } from '../../stores.js';
 
   // let theme = "g90";
 
@@ -239,6 +240,7 @@
         </FormGroup>
       {/if}
       <TextArea name="nomAdditionalInfo" labelText="Please use this space to communicate any additional information about this nomination. (Optional)" placeholder="Type here..." />
+      <input type="hidden" name="cohort" value={$currentCohort}>
       <div id="submit-button">
         <Button type="submit">Submit</Button>
       </div>

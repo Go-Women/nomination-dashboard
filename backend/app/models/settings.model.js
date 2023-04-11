@@ -3,39 +3,91 @@ const utils = require("./utils.model.js");
 
 // constructor
 const Cohort = function(cohort) {
-  // TODO: implement
+  this.startDate = cohort.startDate;
+  this.endDate = cohort.startDate;
 };
 
 Cohort.create = (newCohort, result) => {
-  // TODO: implement
-  // utils.getCodes(newCohort);
-  // utils.clean(newCohort);
-  // sql.query("INSERT INTO Cohorts SET ?", newCohort, (err, res) => {
+  sql.query("INSERT INTO Cohort SET ?", newCohort, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    console.log("created cohort: ", { ...newCohort });
+    result(null, { ...newCohort });
+  });
+};
+
+Cohort.end = (newCohort, result) => {
+  // recent = sql.query("SELECT MAX(id) FROM Cohort",[], (err, res) => {
   //   if (err) {
   //     console.log("error: ", err);
   //     result(err, null);
   //     return;
   //   }
-
-  //   console.log("created cohort: ", { ...newCohort });
-  //   result(null, { ...newCohort });
+  //   result(null);
   // });
+  // console.log(recent)
+    sql.query("UPDATE Cohort SET endDate = ? WHERE id = (SELECT id FROM ( SELECT id FROM Cohort ORDER BY id DESC LIMIT 1) AS t)", newCohort.startDate, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      console.log("Ended old cohort");
+      result(null);
+    });
 };
+
+// recent = sql.query('SELECT MAX(id) FROM Cohort', (err, res) => {
+//   if (err) {
+//     console.log("error: ", err);
+//     result(err, null);
+//     return;
+//   }
+
+//   console.log(recent);
+//   result(null);
+// });
+// sql.query("UPDATE Cohort SET endDate = ? WHERE id = ?", [newCohort.startDate, recent], (err, res) => {
+//   if (err) {
+//     console.log("error: ", err);
+//     result(err, null);
+//     return;
+//   }
+
+//   console.log("Ended old cohort");
+//   result(null);
+// });
 
 
 Cohort.getAll = result => {
   // TODO: implement
-  // sql.query("SELECT *, concat(firstName,' ',lastName) as fullName FROM Cohorts", (err, res) => {
-  //   if (err) {
-  //     console.log("error: ", err);
-  //     result(null, err);
-  //     return;
-  //   }
+  sql.query("SELECT * FROM Cohort", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
 
-  //   utils.formatAllData(res, 'cohort');
-  //   console.log("GET /cohorts");
-  //   result(null, res);
-  // });
+    // utils.formatAllData(res, 'cohort');
+    console.log("GET /cohorts");
+    result(null, res);
+  });
+};
+
+Cohort.getMax = result => {
+  sql.query("SELECT MAX(id) FROM cohort", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    console.log("GET CURRENT /cohorts");
+    result(null, res);
+  });
 };
 
 module.exports = Cohort;
