@@ -13,12 +13,14 @@ module.exports = async function (context, req) {
     });
     
     try {
-        const id = req.body.nomineeID;
+        const nomID = req.body.nomineeID;
         const verdict = req.body.data;
-        await db.query(sqlQuery, [
+        const matchID = req.body.matchID;
+        await db.query(sqlQuery1, [
             verdict,
-            id
+            nomID
         ]);
+        await db.query(sqlQuery2, matchID);
         context.res = {
             status: 200,
             body: "OK",
@@ -37,7 +39,7 @@ module.exports = async function (context, req) {
     }
 }
 
-const sqlQuery = `
+const sqlQuery1 = `
 UPDATE 
   Nominees 
 SET 
@@ -54,4 +56,13 @@ SET
   ) 
 WHERE 
   id = ?
+`;
+
+const sqlQuery2 = `
+UPDATE 
+  Matches 
+SET
+  matchStatus = 'm500'
+WHERE
+  ID = ?
 `;
