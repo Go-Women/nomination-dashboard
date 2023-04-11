@@ -20,9 +20,8 @@
   import Edit from "carbon-icons-svelte/lib/Edit.svelte";
   import Save from "carbon-icons-svelte/lib/Save.svelte";
   import Cancel from "carbon-icons-svelte/lib/Close.svelte";
-  export let judge;
+  export let judge: any;
 
-  
   const categories = [
     { value: "c100", label: "Art" },
     { value: "c200", label: "Athletics" },
@@ -33,14 +32,69 @@
     { value: "c700", label: "STEM" },
     { value: "c800", label: "Other" },
   ];
+
+
+  const subcategories = [
+    { value: "s100", label: "General" },
+    { value: "s101", label: "Architecture" },
+    { value: "s102", label: "Art History" },
+    { value: "s103", label: "Cinema" },
+    { value: "s104", label: "Design" },
+    { value: "s105", label: "Literature" },
+    { value: "s106", label: "Music" },
+    { value: "s107", label: "Painting / Drawing" },
+    { value: "s108", label: "Sculpting" },
+    { value: "s109", label: "Theater / Dance" },
+
+    { value: "s201", label: "Competition Sports" },
+    { value: "s202", label: "Individual Sports" },
+    { value: "s203", label: "Team Sports" },
+    { value: "s204", label: "Sports / Team Management" },
+
+    { value: "s301", label: "CEO / Corporate Leadership" },
+    { value: "s302", label: "Entrepreneurship" },
+    { value: "s303", label: "Inventing / Patent Holding" },
+
+    { value: "s401", label: "Early Education" },
+    { value: "s402", label: "Higher Education" },
+    { value: "s403", label: "Research" },
+
+    { value: "s501", label: "Ancient / Modern Languages" },
+    { value: "s502", label: "Literature" },
+    { value: "s503", label: "Philosophy / Religion" },
+    { value: "s504", label: "Social Reformation" },
+
+    { value: "s601", label: "Activism" },
+    { value: "s602", label: "Legal / Judicial" },
+    { value: "s603", label: "Military" },
+    { value: "s604", label: "Politics" },
+
+    { value: "s701", label: "Astronomy" },
+    { value: "s702", label: "Architecture" },
+    { value: "s703", label: "Biology" },
+    { value: "s704", label: "Chemistry" },
+    { value: "s705", label: "Climate / Earth Sciences" },
+    { value: "s706", label: "Computer Science" },
+    { value: "s707", label: "Mathematics" },
+    { value: "s708", label: "Medicine" },
+    { value: "s709", label: "Engineering" },
+    { value: "s710", label: "Physics" },
+    { value: "s711", label: "Technology" },
+  ];
+
   const selectedCategories: {
     value: string;
     label: string;
   }[] = [];
   setCategory();
+
+  const selectedSubcategories: {
+    value: string;
+    label: string;
+  }[] = [];
+  setSubcategory();
   
   function setCategory() {
-    console.log(judge.info.category);
     let cat = judge.info.category;
     if (cat.length > 4) {
         Object.entries(categories).forEach((data, value) => {
@@ -65,17 +119,39 @@
     return selectedCategories;
   };
 
+  function setSubcategory() {
+    let cat = judge.info.subcategory;
+    if (cat.length > 4) {
+        Object.entries(subcategories).forEach((data, value) => {
+          let items = data[1];
+          let split = cat.split(',');
+          for (const i in split) {
+              if (items.label == split[i]) {
+                let item = { value: items.value, label: items.label };
+                selectedSubcategories.push(item);
+              }    
+          }
+          return selectedSubcategories;   
+        });
+    } else {
+        Object.entries(subcategories).forEach((data, value) => {
+          if (data[1].label == judge.info.subcategory) {
+            let item = { value: data[1].value, label: data[1].label };
+            selectedSubcategories.push(item);
+          }
+        });
+    }
+    return selectedSubcategories;
+  };
+
   // Form sections
-  let firstName = judge.firstName;
-  let lastName = judge.lastName;
-  let name = firstName + " " + lastName;
+  let name = judge.fullName;
   let bio = judge.info.bio || "";
   let conflicts = judge.info.conflicts || "";
   let phoneNumber = judge.info.phoneNumber;
   let pronoun = judge.info.pronouns;
   let email = judge.email;
-  // let subcategory = judge.info.subcategory;
-  let capacity = judge.info.capacity;
+  let capacity = judge.info.matchesAssigned + "/" + judge.info.capacity;
   let previousJudge = (judge.info.previousJudge == true || judge.info.previousJudge == "1");
   let deadline = (judge.info.deadline == true || judge.info.deadline == "1");
   let active = (judge.active == true || judge.info.active == "1");
@@ -176,6 +252,17 @@
                 value="value"
               />
             </Grid>
+
+            <br /><strong>Subcategories</strong>
+            <Grid style="padding-top: 1rem">
+              <MultiSelect
+                name="subcategory"
+                options={subcategories}
+                selected={selectedSubcategories}
+                label="label"
+                value="value"
+              />
+            </Grid>
           </FormGroup>
           <FormGroup>
             <br /><strong>Capacity</strong>
@@ -266,6 +353,19 @@
                 name="category"
                 options={categories}
                 selected={selectedCategories}
+                label="label"
+                value="value"
+                disabled
+              />
+            </StructuredListRow>
+            <StructuredListRow>
+              <StructuredListCell noWrap
+                ><strong>Subcategory</strong></StructuredListCell
+              >
+              <MultiSelect
+                name="subcategory"
+                options={subcategories}
+                selected={selectedSubcategories}
                 label="label"
                 value="value"
                 disabled

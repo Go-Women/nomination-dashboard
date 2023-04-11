@@ -2,7 +2,7 @@ import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({fetch}) => {
   const res1 = await fetch('http://localhost:8000/nominations');
-  const res2 = await fetch('http://localhost:8000/nominees')
+  const res2 = await fetch('http://localhost:8000/nominees');
 
   if (res1.ok && res2.ok) {
     const noms = await res1.json();

@@ -10,12 +10,15 @@ exports.create = (req, res) => {
     });
   }
 
+  
+  const nomStat = (req.body.subcategoryOther == null) ? "n200" : "m200";
+
   // Create a Nominee
   const nominee = new Nominee({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     cohort: req.body.cohort || 4, // TODO: change this when cohort is implemented
-    nomStatus: "n200",
+    nomStatus: nomStat,
     yob: req.body.yob,
     category: req.body.category,
     subcategory: req.body.subcategory || null,
