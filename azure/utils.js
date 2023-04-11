@@ -51,12 +51,12 @@ exports.clean = (jsonData) => {
   // sets subcategory default to General is if other is not chosen
   // this assumes that the other field requires the user to type something in that field
   // TODO: support this for judges
-  if (jsonData.subcategory === undefined && jsonData.subcategoryOther === undefined) {
+  if (jsonData.subcategory == undefined && jsonData.subcategoryOther == undefined) {
     jsonData.subcategory = 's100';
   }
 
   return nomination;
-};
+}
 
 exports.merge = (nominee, nomination) => {
   let merged = JSON.parse(nominee.nominations);
@@ -66,14 +66,14 @@ exports.merge = (nominee, nomination) => {
   nominee.nomStatus = 'n200';
 
   return nominee;
-};
+}
 
 exports.formatJudgeInput = (judge) => {
     judge.email = judge.info.email;
     judge.active = judge.info.active;
     judge.info = JSON.stringify([judge.info]);
     return judge;
-};
+}
 
 exports.setCategories = (res, cat, subCat, nomStatus, type) => {
   let resultCat = [];
@@ -93,11 +93,7 @@ exports.setCategories = (res, cat, subCat, nomStatus, type) => {
       res.category = resultCat.join(",");
     }
 
-    // TODO: fix this once judge subcategory is supported on the frontend
-    // BUG: with judge other subcategory
-    // Right now all judges subcategories are mark as general when trying to edit a judge
-    // console.log("SUBCATEGORY: ", res.subcategory);
-    if (subCat === null || subCat === undefined) {
+    if (subCat == null || subCat == undefined) {
       res.subcategory = "General";
     } else {
       if (code[0] === subCat && subCat.length == 4) {
@@ -114,14 +110,56 @@ exports.setCategories = (res, cat, subCat, nomStatus, type) => {
     }
 
     if (nomStatus !== undefined && nomStatus !== null)
-    if (code[0] === nomStatus)
-      if (type === 'judge')
-        res.judgeStatus = code[1];
-      else
-        res.nomStatus = code[1];
+      if (code[0] === nomStatus)
+        if (type === 'judge' || type === 'judges')
+          res.judgeStatus = code[1];
+        else
+          res.nomStatus = code[1];
   });
 
   // TODO: handle other subcategory
+  return res;
+};
+
+exports.setJudgeCategories = (res, cat, subCat, nomStatus) => {
+  let resultCat = [];
+  let resultsubCat = [];
+  
+  Object.entries(codes).forEach((code, value) => {
+    // console.log("CATEGORY: ", res.category);
+    if (code[0] === cat && cat.length == 4) {
+      res.judgeCategory = code[1];
+    } else if (cat.length > 4 && cat.includes(",")){
+      let cats = cat.split(',');
+      for (const i in cats) {
+        if (code[0] === cats[i]) {
+          resultCat.push(code[1]);
+        }
+      }
+      res.judgeCategory = resultCat.join(",");
+    }
+
+    if (subCat == null || subCat == undefined) {
+      res.judgeSubcategory = "General";
+    } else {
+      if (code[0] === subCat && subCat.length == 4) {
+        res.judgeSubcategory = code[1];
+        // console.log("SUBCATEGORY: ", res.subcategory);
+      } else if (subCat.length > 4 && subCat.includes(",")){
+        let subCats = subCat.split(',');
+        for (const i in subCats) {
+          if (code[0] === subCats[i])
+            resultsubCat.push(code[1]);
+        }
+        res.judgeSubcategory = resultsubCat.join(",");
+      }
+    }
+
+    if (nomStatus !== undefined && nomStatus !== null)
+      if (code[0] === nomStatus)
+          res.judgeStatus = code[1];
+  });
+
   return res;
 };
 
@@ -168,12 +206,12 @@ exports.clean = (jsonData) => {
   // sets subcategory default to General is if other is not chosen
   // this assumes that the other field requires the user to type something in that field
   // TODO: support this for judges
-  if (jsonData.subcategory === undefined && jsonData.subcategoryOther === undefined) {
+  if (jsonData.subcategory == undefined && jsonData.subcategoryOther == undefined) {
     jsonData.subcategory = 's100';
   }
 
   return jsonData;
-};
+}
 
 exports.merge = (nominee, nomination) => {
   let merged = JSON.parse(nominee.nominations);
@@ -183,14 +221,14 @@ exports.merge = (nominee, nomination) => {
   nominee.nomStatus = 'n200';
 
   return nominee;
-};
+}
 
 exports.formatJudgeInput = (judge) => {
     judge.email = judge.info.email;
     judge.active = judge.info.active;
     judge.info = JSON.stringify([judge.info]);
     return judge;
-};
+}
 
 // format data when individually being accessed
 exports.formatSingleData = (res, type) => {
@@ -204,6 +242,18 @@ exports.formatSingleData = (res, type) => {
     subCat = res.info.subcategory;
     nomStatus = res.info.judgeStatus;
     res.info = this.setCategories(res.info, cat, subCat, nomStatus, type);
+  } else if  (type === 'judges') {
+    // Handle Code Formats
+    judgeStatus = res.judgeStatus;
+    cat = res.judgeCategory;
+    subCat = res.judgeSubcategory;
+    res = this.setCategories(res, cat, subCat, judgeStatus, type);
+  } else if  (type === 'judgeMatch') {
+    // Handle Code Formats
+    judgeStatus = res.judgeStatus;
+    cat = res.judgeCategory;
+    subCat = res.judgeSubcategory;
+    res = this.setJudgeCategories(res, cat, subCat, judgeStatus);
   } else if (type === 'nominee') {
     // Handle Code Formats
     nomStatus = res.nomStatus;
@@ -234,6 +284,22 @@ exports.formatAllData = (res, type) => {
   });
 };
 
+exports.getAllNomineeMatchingData = (res) => {
+  Object.entries(res).forEach((data, value) => {
+    this.getNomineeMatchingData(data[1]);
+  });
+};
+
+exports.getNomineeMatchingData = (res) => {
+  res.nomCapacity = res.capacity;
+  res.matchesAssigned = res.matchesAssigned;
+
+  if ("capacity" in res)
+    delete res["capacity"];
+  
+  return res;
+}
+
 exports.getAllJudgesMatchingData = (res, type) => {
   Object.entries(res).forEach((data, value) => {
     this.getMatchingData(data[1], type);
@@ -241,20 +307,20 @@ exports.getAllJudgesMatchingData = (res, type) => {
 };
 
 exports.getMatchingData = (res, type) => {
-  if (type === "data") {
-    res.info = JSON.parse(res.info);
-  }
+  // if (type === "data") {
+  //   res.info = JSON.parse(res.info);
+  // }
   
-  const info = res.info;
+  // const info = res.info;
   
-  res.judgeCategory = info.category;
-  res.judgeSubcategory = info.subcategory;
-  res.judgeSubcategoryOther = info.subcategoryOther;
-  res.judgeCapacity = info.capacity;
-  res.judgeStatus = info.judgeStatus;
+  res.judgeCategory = res.judgeCategory;
+  res.judgeSubcategory = res.judgeSubcategory;
+  res.judgeMatchesAssigned = parseInt(res.judgeMatchesAssigned);
+  res.judgeCapacity = parseInt(res.judgeCapacity);
+  res.judgeStatus = res.judgeStatus;
 
-  if ("info" in res)
-    delete res["info"];
+  // if ("info" in res)
+  //   delete res["info"];
 
   return res;
 };
@@ -277,4 +343,4 @@ exports.filterJudgeStatus = (res, status) => {
   });
   
   return activeJudges;
-};
+}
