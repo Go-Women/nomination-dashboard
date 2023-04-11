@@ -195,6 +195,7 @@
           <Checkbox name="subcategory" bind:group={contribsSub} value="s710" labelText="Physics" />
           <Checkbox name="subcategory" bind:group={contribsSub} value="s711" labelText="Technology" />
         </FormGroup>
+      {/if}
       <input type="hidden" name="subcategory" bind:value={contribsSub}>
       <hr />
       <h4>All prospective judges are asked to please provide one or both of the following:</h4>
