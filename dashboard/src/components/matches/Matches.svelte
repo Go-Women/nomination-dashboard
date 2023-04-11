@@ -14,7 +14,6 @@
 
 
   const headers = (review) ? [
-    { key: "id", empty: true },
     { key: "nomineeName", value: "Nominee" },
     { key: "nomineeCategory", value: "Nominee Category" },
     { key: "nomineeSubcategory", value: "Nominee Subcategory" },
