@@ -1,7 +1,15 @@
 import { redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
-import { FUNCTIONS_KEY } from "$env/static/private";
+import { dev } from "$app/environment";
+
+let FUNCTIONS_KEY: string;
+if (dev) {
+  const { DEFAULT_KEY } = await import("$env/static/private");
+  FUNCTIONS_KEY = DEFAULT_KEY;
+} else {
+  FUNCTIONS_KEY = `${process.env.DEFAULTKEY}`;
+}
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
   const resMatch = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/${params.id}`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
