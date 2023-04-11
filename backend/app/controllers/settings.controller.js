@@ -45,6 +45,17 @@ exports.findAllCohorts = (req, res) => {
   });
 };
 
+exports.findCurrentCohort = (req, res) => {
+  Cohort.getMax((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Cohort."
+      });
+    else res.send(data);
+  });
+};
+
 // Update a Cohort identified by the id in the request
 exports.update = (req, res) => {
   // TODO: Implement

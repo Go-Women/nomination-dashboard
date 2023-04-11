@@ -78,4 +78,16 @@ Cohort.getAll = result => {
   });
 };
 
+Cohort.getMax = result => {
+  sql.query("SELECT MAX(id) FROM cohort", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+    console.log("GET CURRENT /cohorts");
+    result(null, res);
+  });
+};
+
 module.exports = Cohort;
