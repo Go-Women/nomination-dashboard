@@ -9,7 +9,6 @@ const app = express();
 app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
-// app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 

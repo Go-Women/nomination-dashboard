@@ -10,12 +10,15 @@ exports.create = (req, res) => {
     });
   }
 
+  
+  const nomStat = (req.body.subcategoryOther == null) ? "n200" : "m200";
+
   // Create a Nominee
   const nominee = new Nominee({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     cohort: req.body.cohort || 4, // TODO: change this when cohort is implemented
-    nomStatus: "n200",
+    nomStatus: nomStat,
     yob: req.body.yob,
     category: req.body.category,
     subcategory: req.body.subcategory || null,
@@ -23,6 +26,7 @@ exports.create = (req, res) => {
     nominations: req.body.nominations
   });
 
+  // Update a Nominations Status
   Nomination.updateStatus(req.body.nominationID, nominee.nomStatus, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
@@ -81,3 +85,20 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   // TODO: Implement
 };
+
+// Update a Nominee with the verdict decided by a judge
+exports.verdict = (req, res) => {
+  Nominee.addReview(`${req.body.data}`, `${req.body.nomineeID}`, `${req.body.matchID}`, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `No nominee found with id ${req.params.id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Nominee with id " + req.params.id
+        });
+      }
+    } else res.send(data);
+  });
+}

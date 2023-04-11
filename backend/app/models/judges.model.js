@@ -28,7 +28,7 @@ Judge.create = (newJudge, result) => {
 };
 
 Judge.findById = (id, result) => {
-  sql.query(`SELECT * FROM Users WHERE id = ${id} AND type='judge'`, (err, res) => {
+  sql.query(`SELECT *, concat(firstName,' ',lastName) AS fullName FROM Users WHERE id = ${id} AND type='judge'`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
