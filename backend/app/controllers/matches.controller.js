@@ -29,29 +29,6 @@ exports.create = (req, res) => {
     });
 };
 
-// exports.generate = (req, res) => {
-//     // Validate Request
-//     if (!req.body) {
-//       res.status(400).send({
-//         message: "Content can not be empty!"
-//       });
-//     }
-
-//     Match.updateStatus(`${req.body.judgeStatus}`, (err, data) => {
-//       if (err) {
-//         if (err.kind === "not_found") {
-//           res.status(404).send({
-//             message: `Status not found for Matches ${req.body.judgeStatus}`
-//           });
-//         } else {
-//           res.status(500).send({
-//             message: `Error updating Matches with status ${req.body.judgeStatus}` 
-//           });
-//         }
-//       } else res.send(data);
-//     });
-// };
-
 // Retrieve all nominees for manual review (nominees with subcategory other or not matched with 3 judges)
 exports.findManual = (req, res) => {
   Match.getNomineesManualReview((err, data) => {
@@ -155,23 +132,23 @@ exports.updateNomineeStatus = (req, res) => {
 //   });
 // };
 
-// // Find a single Match with a id
-// exports.findOne = (req, res) => {
-//     // TODO: implement this
-//   Match.findById(req.params.id, (err, data) => {
-//     if (err) {
-//       if (err.kind === "not_found") {
-//         res.status(404).send({
-//           message: `No match found with id ${req.params.id}.`
-//         });
-//       } else {
-//         res.status(500).send({
-//           message: `Error retrieving Match with id ${req.params.id}`
-//         });
-//       }
-//     } else res.send(data);
-//   });
-// };
+// Find a single Match with a id
+exports.findOne = (req, res) => {
+    // TODO: implement this
+  Match.findById(req.params.id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `No match found with id ${req.params.id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: `Error retrieving Match with id ${req.params.id}`
+        });
+      }
+    } else res.send(data);
+  });
+};
 
 // // Update a Judges Match Status identified by the id in the request
 // exports.updateJudgeStat = (id, judgeStatus) => {

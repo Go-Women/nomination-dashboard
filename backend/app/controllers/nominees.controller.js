@@ -88,8 +88,7 @@ exports.update = (req, res) => {
 
 // Update a Nominee with the verdict decided by a judge
 exports.verdict = (req, res) => {
-  const id = `${req.body.nomineeID}`
-  Nominee.addReview(`${req.body.data}`, `${id}`, (err, data) => {
+  Nominee.addReview(`${req.body.data}`, `${req.body.nomineeID}`, `${req.body.matchID}`, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({

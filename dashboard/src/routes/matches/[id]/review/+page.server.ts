@@ -42,21 +42,34 @@ export const actions: Actions = {
     const verdict:{[key:string]:any} = {};
     for (let field of formData) {
       const [key, value] = field;
-      if (key === "nomineeID")
-        data[key] = value;
-      if (key === "nomQ1")
-        verdict["nomQ1"] = value;
-      if (key === "nomQ2")
-        verdict["nomQ2"] = value;
-      if (key === "nomQ3")
-        verdict["nomQ3"] = value;
-      if (key === "nomAdditionalInfo")
-        verdict["nomAdditionalInfo"] = value;
-      if (key === "verdict")
-        verdict["verdict"] = value;
+      switch (key) {
+        case "nomQ1":
+          verdict["nomQ1"] = value;
+          break;
+        case "nomQ2":
+          verdict["nomQ2"] = value;
+          break;
+        case "nomQ3":
+          verdict["nomQ3"] = value;
+          break;
+        case "nomAdditionalInfo":
+          verdict["nomAdditionalInfo"] = value;
+          break;
+        case "verdict":
+          verdict["verdict"] = value;
+          break;
+        case "judgeID":
+          verdict["judgeID"] = value;
+          data[key] = value;
+          break;
+        default:
+          data[key] = value;
+          break;
+      }
     }
 
     data["data"] = JSON.stringify(verdict);
+    console.log(data);
     const res = await fetch('https://nwhofapi.azurewebsites.net/api/nominees/verdict', {
       method: 'PATCH',
       body: JSON.stringify(data),

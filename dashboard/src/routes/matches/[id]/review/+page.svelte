@@ -20,15 +20,16 @@
       <Column>
         <div class="split-container">
           <div class="left-side">
-            <NomineeInfo {nominee} {nominations} {keys} verdict={true}/>
+            <NomineeInfo {nominee} {nominations} {keys}/>
           </div>
           <div class="right-side">
             <h2>Evaluate</h2>
             <hr />
             <p class="head">Please evaluate the nominee to the left on the following criteria:</p>
             <form method="POST">
-              <!-- <input type="hidden" name="matchId" value={ID} /> -->
               <input type="hidden" name="nomineeID" value={nominee.ID} />
+              <input type="hidden" name="judgeID" value={match.judgeID} />
+              <input type="hidden" name="matchID" value={ID} />
               <h4>Question 1: The nominee's contributions have been of the greatest value to society and/or the empowerment of women?</h4>
               <FormGroup legendText="Check the boxes if you agree with the statements.">
                 <Checkbox bind:group={q1ck} value="q101" labelText="The nominee is a leader in their field of achievement" />

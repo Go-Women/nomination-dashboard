@@ -4,9 +4,6 @@ module.exports = app => {
   
     var router = require("express").Router();
   
-    // Create a new Match
-    // router.post("/", matches.create);
-  
     // Retrieve all Matches
     router.get("/", matches.findAll);
 
@@ -30,15 +27,12 @@ module.exports = app => {
 
     // update status of nominee to be put into manual review
     router.patch("/manual", matches.updateNomineeStatus);
-
-    // get matches that do not have 3 judges assigned to them
-    // router.patch("/manual", matches.findAllManualReviews);
   
     // Update a Match with id
     // router.patch("/", matches.findAll);
 
     // Retrieve a single Match with id
-    // router.get("/:id", matches.findOne);
+    router.get("/:id", matches.findOne);
 
     // Update a Match with id
     // router.patch("/:id", matches.update);

@@ -140,15 +140,15 @@ Nominee.updateById = (id, nominee, result) => {
  * @param {*} id 
  * @param {*} result 
  */
-Nominee.addReview = (verdict, id, result) => {
+Nominee.addReview = (verdict, nomID, matchID, result) => {
   sql.query(
     `UPDATE Nominees SET 
-     verdict = IF(verdict IS NULL OR JSON_TYPE(verdict) != 'ARRAY', 
+      verdict = IF(verdict IS NULL OR JSON_TYPE(verdict) != 'ARRAY', 
       JSON_ARRAY(), verdict),
-     verdict = JSON_ARRAY_APPEND(
+      verdict = JSON_ARRAY_APPEND(
         verdict, '$', CAST(? AS JSON)
-      )
-     WHERE id = ? `, [`${verdict}`, `${BigInt(id)}`], (err, res) => {
+      ),
+     WHERE ID = ? `, [`${verdict}`, `${BigInt(nomID)}`], (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(null, err);
@@ -161,11 +161,20 @@ Nominee.addReview = (verdict, id, result) => {
         return;
       }
 
-      console.log("PATCH /nominee/:id/review");
+      sql.query(
+        `UPDATE Matches SET matchStatus = 'm500' WHERE ID = ?`, [`${BigInt(matchID)}`], (err, matchUpdate) => {
+          if (err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+          }
+
+      console.log(matchUpdate);
+      console.log("PATCH /match/:id/review");
       console.log("updated nominee: ", { id: `${BigInt(id)}`, verdict: `${verdict}`});
       result(null, { id: `${id}`, verdict: `${verdict}` });
-    }
-  );
+      });
+    });
 };
 
 module.exports = Nominee;
