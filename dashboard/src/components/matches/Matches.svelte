@@ -14,6 +14,7 @@
 
 
   const headers = (review) ? [
+    { key: "id", empty: true },
     { key: "nomineeName", value: "Nominee" },
     { key: "nomineeCategory", value: "Nominee Category" },
     { key: "nomineeSubcategory", value: "Nominee Subcategory" },
@@ -25,6 +26,7 @@
   ] :
 
   [
+    { key: "id", empty: true },
     { key: "nomineeName", value: "Nominee" },
     { key: "nomineeCategory", value: "Nominee Category" },
     { key: "nomineeSubcategory", value: "Nominee Subcategory" },
@@ -59,7 +61,13 @@
       </ToolbarContent>
     </Toolbar>
     <svelte:fragment slot="cell" let:cell>
-      {#if cell.key === "action" && review}
+      {#if cell.key === "id" && !review}
+        <Button
+          iconDescription="View"
+          icon={View}
+          href={"matches/" + cell.value + "/review"}
+        />
+      {:else if cell.key === "action" && review}
         <form method="POST" action="?/match">
           <input name="nominee" type="hidden" value={cell.value[0]} />
           <input name="judges" type="hidden" value={cell.value[1]} />
