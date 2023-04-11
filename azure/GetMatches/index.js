@@ -45,6 +45,7 @@ module.exports = async function (context, req) {
 
 const sqlQuery = `
 SELECT 
+  m.ID,
   m.matchStatus, 
   m.nomineeID, 
   m.judgeID, 

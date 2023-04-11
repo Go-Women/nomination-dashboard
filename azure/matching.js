@@ -1,4 +1,3 @@
-const Match = require("./matches.model");
 var judges = []; // original list of judges needing matches (used to store judge info for match)
 var nominees = []; // original list of nominees needing matching (used to store nominee info for match)
 var nomineesReview = new Set(); // a set of nominee IDs
