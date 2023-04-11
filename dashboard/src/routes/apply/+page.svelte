@@ -207,7 +207,7 @@
         you may have in judging certain nominees or categories of nominees, please note them here.
       </p>
       <TextArea name="conflicts" labelText="Conflicts (optional)" placeholder="Type here..." />
-      <TextArea name="addInfo" labelText="Is there anything else you'd like to share with Hall staff? (optional)" placeholder="Type here..." />
+      <TextArea name="additionalInfo" labelText="Is there anything else you'd like to share with Hall staff? (optional)" placeholder="Type here..." />
       <div id="submit-button">
         <Button type="submit">Submit</Button>
       </div>

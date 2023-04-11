@@ -1,8 +1,10 @@
 import type { Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
+import { FUNCTIONS_KEY } from "$env/static/private";
+
 export const load: PageServerLoad = async ({fetch}) => {
-  const res = await fetch('http://localhost:8000/judges');
+  const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   if (res.ok) {
     const judges = await res.json();
     return {
@@ -21,16 +23,16 @@ export const actions: Actions = {
       data[key] = value;
     }
     data['action'] = 'ACCEPT';
-    // console.log(JSON.stringify(data));
-    const res = await fetch(`http://localhost:8000/judges/review`, {
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/review`, {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
-        'Content-type': 'application/json; charset=UTF-8'
+        'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
       }
-    })
-    .then(res => res.json());
+    });
   },
+  
   reject: async ({request, params}) => {
     const formData = await request.formData();
     const data: { [name: string]: any } = {};
@@ -41,13 +43,13 @@ export const actions: Actions = {
     }
     data['action'] = 'REJECT';
     // console.log(JSON.stringify(data));
-    const res = await fetch(`http://localhost:8000/judges/review`, {
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/review`, {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
-        'Content-type': 'application/json; charset=UTF-8'
+        'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
       }
-    })
-    .then(res => res.json());
+    });
   }
 };
