@@ -1,5 +1,4 @@
 import type { Actions, PageServerLoad } from "./$types";
-
 import { dev } from "$app/environment";
 
 let FUNCTIONS_KEY: string;
@@ -11,7 +10,7 @@ if (dev) {
 }
 
 export const load: PageServerLoad = async ({fetch, params}) => {
-  const res = await fetch(`https://nwhofapi.azurewebsites.net/api/nominees`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+  const res = await fetch(`http://localhost:8000/nominees`);
   if (res.ok) {
     const nominees = await res.json();
     return {

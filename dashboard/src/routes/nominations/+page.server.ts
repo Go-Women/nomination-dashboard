@@ -1,5 +1,4 @@
 import type { Actions, PageServerLoad } from "./$types";
-
 import { dev } from "$app/environment";
 
 let FUNCTIONS_KEY: string;
@@ -11,8 +10,8 @@ if (dev) {
 }
 
 export const load: PageServerLoad = async ({fetch}) => {
-  const res1 = await fetch(`https://nwhofapi.azurewebsites.net/api/nominations`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
-  const res2 = await fetch(`https://nwhofapi.azurewebsites.net/api/nominees`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+  const res1 = await fetch('http://localhost:8000/nominations');
+  const res2 = await fetch('http://localhost:8000/nominees');
 
   if (res1.ok && res2.ok) {
     const noms = await res1.json();
@@ -76,23 +75,25 @@ export const actions: Actions = {
     }
 
     if (toCreate) {
-      const res = await fetch(`https://nwhofapi.azurewebsites.net/api/nominations/review`, {
+      const res = await fetch(`http://localhost:8000/nominations/review`, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
-          'x-functions-key': FUNCTIONS_KEY
         }
-      });
+      })
+      .then(res => res.json())
+      .then(res => console.log(res))
     } else {
-      const res = await fetch(`https://nwhofapi.azurewebsites.net/api/nominations/review`, {
+      const res = await fetch(`http://localhost:8000/nominations/review`, {
         method: 'PATCH',
         body: JSON.stringify(data),
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
-          'x-functions-key': FUNCTIONS_KEY
         }
-      });
+      })
+      .then(res => res.json())
+      .then(res => console.log(res))
     }
   },
   reject: async ({request, params}) => {
@@ -104,13 +105,14 @@ export const actions: Actions = {
       data[key] = value
     }
     data['action'] = 'REJECT';
-    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/nominations/review`, {
+    const res = await fetch(`http://localhost:8000/nominations/review`, {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
-        'x-functions-key': FUNCTIONS_KEY
       }
-    });
+    })
+    .then(res => res.json())
+    .then(res => console.log(res))
   }
 };

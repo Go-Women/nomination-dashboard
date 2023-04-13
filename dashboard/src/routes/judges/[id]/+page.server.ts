@@ -1,5 +1,4 @@
 import type { Actions, PageServerLoad } from "./$types";
-
 import { dev } from "$app/environment";
 
 let FUNCTIONS_KEY: string;
@@ -11,11 +10,11 @@ if (dev) {
 }
 
 export const load: PageServerLoad = async ({fetch, params}) => {
-  const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/${params.id}`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+  const res = await fetch(`http://localhost:8000/judges/${params.id}`);
   if (res.ok) {
-    const judge = await res.json();
+    const judges = await res.json();
     return {
-      props: {j: judge}
+      props: {j: judges}
     };
   }
 };
@@ -93,14 +92,14 @@ export const actions: Actions = {
     }
 
     data["info"] = JSON.stringify(info);
-    console.log(JSON.stringify(data));
-    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/${params.id}`, {
+    const res = await fetch(`http://localhost:8000/judges/${params.id}`, {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
-        'x-functions-key': FUNCTIONS_KEY
       }
-    });
+    })
+    .then(res => res.json())
+    .then(res => console.log(`JUDGE ${params.id} UPDATED`))
   }
 };

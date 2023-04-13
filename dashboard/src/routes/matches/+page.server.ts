@@ -1,5 +1,4 @@
 import type { Actions, PageServerLoad } from "./$types";
-
 import { dev } from "$app/environment";
 
 let FUNCTIONS_KEY: string;
@@ -20,11 +19,10 @@ export const load: PageServerLoad = async ({ fetch }) => {
     const matches = await res1.json();
     const review = await res2.json();
     const candidates = await res3.json();
-
     const judges = candidates['judges'];
     const nominees = candidates['nominees'];
-    
     const manualReview = await res5.json();
+
     return {
       props: { 
         matches: matches,

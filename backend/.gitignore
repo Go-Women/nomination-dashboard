@@ -1,0 +1,12 @@
+.DS_Store
+node_modules
+dist/
+/build
+/.svelte-kit
+/package
+app/tests/*.sql
+config/db.config.js
+.env.*
+!.env.example
+.env
+*.sql

@@ -74,7 +74,7 @@
       }
 
       let data = {
-        id: match.ID,
+        id: index + 1,
         matchStatus: match.matchStatus,
         nomineeID: match.nomineeID,
         judgeID: match.judgeID,
