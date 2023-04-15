@@ -5,6 +5,7 @@
   export let nominee: any;
   export let keys: any;
   export let nominations: any[];
+  export let review: boolean;
   let fullName = `${nominee.firstName} ${nominee.lastName}`;
 </script>
 
@@ -39,7 +40,7 @@
     </Grid>
     <h3>Submitted Nominations</h3>
     {#each nominations as nomination}
-      <AffiliatedNomination nomination={nomination} keys={keys} />
+      <AffiliatedNomination {nomination} {keys} {review}/>
     {/each}
   </div>
 </main>

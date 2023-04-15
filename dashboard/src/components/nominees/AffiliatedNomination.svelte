@@ -8,6 +8,7 @@
 
   export let nomination: Nomination;
   export let keys: any;
+  export let review: boolean;
 
   let ckboxCkr = (question: string, key: string): boolean => {
     return nomination[question].includes(key);
@@ -39,18 +40,20 @@
     <Form method = "POST">
       <FormGroup>
       <Grid>
-        <Row>
-          <Column>Nominator</Column>
-          <Column>{`${nomination.authorFirst} ${nomination.authorLast}`}</Column>
-        </Row>
-        <Row>
-          <Column>Nominator Email</Column>
-          <Column>{nomination.authorEmail}</Column>
-        </Row>
-        <Row>
-          <Column>Nomination Date</Column>
-          <Column>{new Date(nomination.date).toLocaleDateString('es-pa')}</Column>
-        </Row>
+        {#if !review}
+          <Row>
+            <Column>Nominator</Column>
+            <Column>{`${nomination.authorFirst} ${nomination.authorLast}`}</Column>
+          </Row>
+          <Row>
+            <Column>Nominator Email</Column>
+            <Column>{nomination.authorEmail}</Column>
+          </Row>
+          <Row>
+            <Column>Nomination Date</Column>
+            <Column>{new Date(nomination.date).toLocaleDateString('es-pa')}</Column>
+          </Row>
+        {/if}
         <Row style="margin-top: 1em;">
           <Column style="font-weight: bold;">Responses</Column>
         </Row>
@@ -155,18 +158,20 @@
   </Form>
   {:else}
   <Grid>
-    <Row>
-      <Column>Nominator</Column>
-      <Column>{`${nomination.authorFirst} ${nomination.authorLast}`}</Column>
-    </Row>
-    <Row>
-      <Column>Nominator Email</Column>
-      <Column>{nomination.authorEmail}</Column>
-    </Row>
-    <Row>
-      <Column>Nomination Date</Column>
-      <Column>{nomination.date}</Column>
-    </Row>
+    {#if !review}
+      <Row>
+        <Column>Nominator</Column>
+        <Column>{`${nomination.authorFirst} ${nomination.authorLast}`}</Column>
+      </Row>
+      <Row>
+        <Column>Nominator Email</Column>
+        <Column>{nomination.authorEmail}</Column>
+      </Row>
+      <Row>
+        <Column>Nomination Date</Column>
+        <Column>{nomination.date}</Column>
+      </Row>
+    {/if}
     <Row style="margin-top: 1em;">
       <Column style="font-weight: bold;">Responses</Column>
     </Row>

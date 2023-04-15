@@ -7,10 +7,12 @@
 
   export let data;
   export let { ID, match, nominee, nominations, keys }: any = data.props;
+  export let review = true;
 
   let q1ck: string[] = [];
   let q2ck: string[] = [];
   let q3ck: string[] = [];
+
 </script>
 
 <main>
@@ -20,7 +22,7 @@
       <Column>
         <div class="split-container">
           <div class="left-side">
-            <NomineeInfo {nominee} {nominations} {keys}/>
+            <NomineeInfo {nominee} {nominations} {keys} {review}/>
           </div>
           <div class="right-side">
             <h2>Evaluate</h2>
