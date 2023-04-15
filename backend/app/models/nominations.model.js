@@ -63,7 +63,9 @@ Nomination.createNominee = (newNominee, id, result) => {
 };
 
 Nomination.findById = (id, result) => {
-  sql.query(`SELECT * FROM Nominations WHERE id = ?`, id, (err, res) => {
+  sql.query(`SELECT ID, DATE_FORMAT(date, "%m/%d/%Y") as date, authorFirst, authorLast, authorEmail, 
+  nomFirst, nomLast, cohort, category, subcategory, subcategoryOther, nomQ1, nomQ1Description, nomQ2, nomQ2Description, nomQ3, nomQ3Description, nomDeceased, nomAchieved, nomAdditionalInfo
+  FROM Nominations WHERE id = ?`, id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);

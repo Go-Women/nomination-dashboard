@@ -65,8 +65,6 @@
           icon={View}
           href={"nominees/" + cell.value}
         />
-      {:else if cell.key === "category"}
-        {formatCategories(cell.value)}
       {:else}
         {cell.value}
       {/if}

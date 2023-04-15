@@ -30,10 +30,8 @@
         status: nominee.status,
         yob: nominee.yob,
         category: nominee.category,
-        subcategory: nominee.subcategory,
-        subcategoryOther: nominee.subcategoryOther,
-        nominationIDs: nominee.nominations,
-        nomineesSub: subcategory,
+        subcategory: subcategory,
+        subcategoryOther: nominee.subcategoryOther
       };
 
       rows.push(data);

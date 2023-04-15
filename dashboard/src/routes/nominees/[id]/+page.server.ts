@@ -33,9 +33,9 @@ export const actions: Actions = {
     const data: { [name: string]: any } = {};
     for (let field of formData) {
       const [key, value] = field;
+          if (i == cats.length - 1)
       data[key] = value;
     }
-    //console.log(data);
     const res = await fetch(`http://localhost:8000/nominations/${params.id}`, {
     method: 'PATCH',
     body: JSON.stringify(data),
@@ -43,7 +43,7 @@ export const actions: Actions = {
        'Content-type': 'application/json; charset=UTF-8',
     }
     })
-    .then(res => res.json());
-    //console.log(res);
+    .then(res => res.json())
+    .then(res => console.log(res));
   }
 }
