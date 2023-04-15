@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Header, HeaderNavItem, HeaderUtilities, SideNav, SideNavItems, SideNavLink, SkipToContent } from "carbon-components-svelte";
-  import { Home, Result, UserMultiple, Compare, UserCertification } from "carbon-icons-svelte";
+  import { Home, Result, UserMultiple, Compare, UserCertification, Save } from "carbon-icons-svelte";
 
   let isSideNavOpen = false;
 </script>

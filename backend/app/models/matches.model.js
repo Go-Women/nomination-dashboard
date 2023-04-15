@@ -63,7 +63,7 @@ Match.findById = (id, result) => {
   FROM Matches AS m 
   INNER JOIN Nominees AS n ON m.nomineeID = n.ID
   INNER JOIN Users AS j ON m.judgeID = j.ID
-  WHERE m.ID = ? AND cohort = (SELECT MAX(id) FROM Cohorts)`, id, (err, res) => {
+  WHERE m.ID = ? AND cohort = (SELECT MAX(id) FROM Cohort)`, id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -86,7 +86,7 @@ Match.findById = (id, result) => {
 
 Match.getAll = result => {
   // get all matches in the matching table that are marked as matched
-  sql.query(`SELECT m.matchStatus, m.nomineeID, m.judgeID, 
+  sql.query(`SELECT m.ID, m.matchStatus, m.nomineeID, m.judgeID, 
   n.category, n.subcategory, n.subcategoryOther, n.matchesAssigned, n.capacity, concat(n.firstName,' ',n.lastName) as nomFullName,
   concat(j.firstName,' ',j.lastName) as judgeFullName,
   JSON_UNQUOTE(JSON_EXTRACT(j.info,'$.category')) AS judgeCategory,

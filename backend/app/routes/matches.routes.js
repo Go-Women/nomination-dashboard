@@ -22,6 +22,8 @@ module.exports = app => {
     // get matches that need to be manually reviewed
     router.get("/manual", matches.findManual);
 
+    // router.get("/candidates", matches.findManual);
+
     // update status of nominee to be put into manual review
     router.patch("/manual", matches.updateNomineeStatus);
   
