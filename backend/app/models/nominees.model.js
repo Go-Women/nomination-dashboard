@@ -134,4 +134,47 @@ Nominee.updateById = (id, nominee, result) => {
   // );
 };
 
+/**
+ * 
+ * @param {*} verdict 
+ * @param {*} id 
+ * @param {*} result 
+ */
+Nominee.addReview = (verdict, nomID, matchID, result) => {
+  sql.query(
+    `UPDATE Nominees SET 
+      verdict = IF(verdict IS NULL OR JSON_TYPE(verdict) != 'ARRAY', 
+      JSON_ARRAY(), verdict),
+      verdict = JSON_ARRAY_APPEND(
+        verdict, '$', CAST(? AS JSON)
+      ),
+     WHERE ID = ? `, [`${verdict}`, `${BigInt(nomID)}`], (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        // not found Nomination with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      sql.query(
+        `UPDATE Matches SET matchStatus = 'm500' WHERE ID = ?`, [`${BigInt(matchID)}`], (err, matchUpdate) => {
+          if (err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+          }
+
+      console.log(matchUpdate);
+      console.log("PATCH /match/:id/review");
+      console.log("updated nominee: ", { id: `${BigInt(id)}`, verdict: `${verdict}`});
+      result(null, { id: `${id}`, verdict: `${verdict}` });
+      });
+    });
+};
+
 module.exports = Nominee;

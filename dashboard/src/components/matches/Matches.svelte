@@ -5,15 +5,15 @@
     ToolbarContent,
     ToolbarSearch,
     Pagination,
-    Button,
-    Row,
+    Button
   } from "carbon-components-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
 
   export let rows: any;
+  export var review: boolean;
 
-  const headers = [
-    { key: "id", empty: true },
+
+  const headers = (review) ? [
     { key: "nomineeName", value: "Nominee" },
     { key: "nomineeCategory", value: "Nominee Category" },
     { key: "nomineeSubcategory", value: "Nominee Subcategory" },
@@ -21,9 +21,20 @@
     { key: "judgeCategory", value: "Judge Category" },
     { key: "judgeSubcategory", value: "Judge Subcategory" },
     { key: "judgeCapacity", value: "Judge Capacity" },
-    { key: "action", value: "Action" },
-  ];
+    { key: "action", value: "Action" }
+  ] :
 
+  [
+    { key: "id", empty: true },
+    { key: "nomineeName", value: "Nominee" },
+    { key: "nomineeCategory", value: "Nominee Category" },
+    { key: "nomineeSubcategory", value: "Nominee Subcategory" },
+    { key: "judgeName", value: "Judge" },
+    { key: "judgeCategory", value: "Judge Category" },
+    { key: "judgeSubcategory", value: "Judge Subcategory" },
+    { key: "judgeCapacity", value: "Judge Capacity" }
+  ]
+  
   let pageSize = 25;
   let page = 1;
   var getPageSizes = (totalItems: number) => {
@@ -49,17 +60,23 @@
       </ToolbarContent>
     </Toolbar>
     <svelte:fragment slot="cell" let:cell>
-      {#if cell.key === "id"}
+      {#if cell.key === "id" && !review}
         <Button
           iconDescription="View"
           icon={View}
-          href={"matches/" + cell.value}
+          href={"matches/" + cell.value + "/review"}
         />
-      {:else if cell.key === "action"}
-        <!-- <Row> -->
+      {:else if cell.key === "action" && review}
+        <form method="POST" action="?/match">
+          <input name="nominee" type="hidden" value={cell.value[0]} />
+          <input name="judges" type="hidden" value={cell.value[1]} />
           <Button expressive size="small" type="submit" kind="ghost">Accept</Button>
+        </form>
+        <form method="POST" action="?/manual">
+          <input name="nomineeID" type="hidden" value={cell.value[0]} />
+          <input name="status" type="hidden" value='m200' />
           <Button expressive size="small" type="submit" kind="danger-ghost">Manual Assignment</Button>
-        <!-- </Row> -->
+        </form>
       {:else}
         {cell.value}
       {/if}

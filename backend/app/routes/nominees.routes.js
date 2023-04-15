@@ -11,6 +11,9 @@ module.exports = app => {
   // Retrieve all Nominees
   router.get("/", nominees.findAll);
 
+  // Apply a verdict (Accept/Reject) for nominee judge review
+  router.patch("/verdict", nominees.verdict);
+
   // Retrieve a single Nominee with id
   router.get("/:id", nominees.findOne);
 

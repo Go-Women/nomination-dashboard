@@ -1,0 +1,19 @@
+﻿{
+  "bindings": [
+    {
+      "name": "req",
+      "route": "judges/review",
+      "authLevel": "function",
+      "methods": [
+        "patch"
+      ],
+      "direction": "in",
+      "type": "httpTrigger"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    }
+  ]
+}
