@@ -26,5 +26,6 @@
     <SideNavLink icon={UserCertification} text="Nominees" href="/nominees" />
     <SideNavLink icon={UserMultiple} text="Judges" href="/judges" />
     <SideNavLink icon={Compare} text="Matching" href="/matches" />
+    <SideNavLink icon={Save} text="Settings" href="/settings" />
   </SideNavItems>
 </SideNav>

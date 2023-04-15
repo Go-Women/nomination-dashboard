@@ -1,6 +1,7 @@
 module.exports = app => {
   // contains all the routes for Nominees page
   const nominees = require("../controllers/nominees.controller.js");
+  const nominations = require("../controllers/nominations.controller.js");
 
   var router = require("express").Router();
 
@@ -19,6 +20,10 @@ module.exports = app => {
   // Update a Nominee with id
   router.patch("/:id", nominees.update);
 
+  // Update an afilliated Nomination
+  router.post("/:id", nominations.update);
+
   // this based on user authentication eventually
   app.use('/nominees', router);
+
 };

@@ -21,6 +21,7 @@ app.get('/keys', (req, res) => {
   res.json((codes));
 });
 
+require("./app/routes/settings.routes.js")(app);
 require("./app/routes/nominations.routes.js")(app);
 require("./app/routes/nominees.routes.js")(app);
 require("./app/routes/judges.routes.js")(app);

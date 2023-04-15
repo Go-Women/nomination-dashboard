@@ -63,7 +63,7 @@ Match.findById = (id, result) => {
   FROM Matches AS m 
   INNER JOIN Nominees AS n ON m.nomineeID = n.ID
   INNER JOIN Users AS j ON m.judgeID = j.ID
-  WHERE m.ID = ?`, id, (err, res) => {
+  WHERE m.ID = ? AND cohort = (SELECT MAX(id) FROM Cohorts)`, id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);

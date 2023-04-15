@@ -63,7 +63,9 @@ Nomination.createNominee = (newNominee, id, result) => {
 };
 
 Nomination.findById = (id, result) => {
-  sql.query(`SELECT * FROM Nominations WHERE id = ?`, id, (err, res) => {
+  sql.query(`SELECT ID, DATE_FORMAT(date, "%m/%d/%Y") as date, authorFirst, authorLast, authorEmail, 
+  nomFirst, nomLast, cohort, category, subcategory, subcategoryOther, nomQ1, nomQ1Description, nomQ2, nomQ2Description, nomQ3, nomQ3Description, nomDeceased, nomAchieved, nomAdditionalInfo
+  FROM Nominations WHERE id = ?`, id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -121,26 +123,24 @@ Nomination.updateStatus = (id, status, result) => {
 
 Nomination.updateById = (id, nomination, result) => {
   // TODO: Needs to be implemented
-  // sql.query(
-  //   "UPDATE Nominations ",
-  //   [],
-  //   (err, res) => {
-  //     if (err) {
-  //       console.log("error: ", err);
-  //       result(null, err);
-  //       return;
-  //     }
+  sql.query("UPDATE Nominations SET nomQ1Description = ?, nomQ2Description = ?, nomQ3Description = ? WHERE id = ?", 
+  [nomination.nomQ1Description, nomination.nomQ2Description, nomination.nomQ3Description, id], (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
 
-  //     if (res.affectedRows == 0) {
-  //       // not found Nomination with the id
-  //       result({ kind: "not_found" }, null);
-  //       return;
-  //     }
+      if (res.affectedRows == 0) {
+        // not found Nomination with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
 
-  //     console.log("updated nomination: ", { id: id, ...nomination });
-  //     result(null, { id: id, ...nomination });
-  //   }
-  // );
+      console.log("updated nomination: ", { id: id, ...nomination });
+      result(null, { id: id, ...nomination });
+    }
+  );
 };
 
 module.exports = Nomination;

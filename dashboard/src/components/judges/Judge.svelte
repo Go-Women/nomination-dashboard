@@ -96,7 +96,7 @@
   
   function setCategory() {
     let cat = judge.info.category;
-    if (cat.length > 4) {
+    if (cat.includes(",")) {
         Object.entries(categories).forEach((data, value) => {
           let items = data[1];
           let split = cat.split(',');

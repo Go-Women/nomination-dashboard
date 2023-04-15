@@ -1,4 +1,4 @@
-import type { PageServerLoad } from "./$types";
+import type { Actions, PageServerLoad } from "./$types";
 import { dev } from "$app/environment";
 
 let FUNCTIONS_KEY: string;
@@ -34,3 +34,24 @@ export const load: PageServerLoad = async ({fetch, params}) => {
     };
   }
 };
+
+export const actions: Actions = {
+  default: async ({request, params}) => {
+    const formData = await request.formData();
+    const data: { [name: string]: any } = {};
+    for (let field of formData) {
+      const [key, value] = field;
+          if (i == cats.length - 1)
+      data[key] = value;
+    }
+    const res = await fetch(`http://localhost:8000/nominations/${params.id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+    headers: {
+       'Content-type': 'application/json; charset=UTF-8',
+    }
+    })
+    .then(res => res.json())
+    .then(res => console.log(res));
+  }
+}
