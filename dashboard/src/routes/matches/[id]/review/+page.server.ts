@@ -1,4 +1,4 @@
-import { redirect } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 
 import { dev } from "$app/environment";
@@ -20,12 +20,14 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
     const keys = await resKeys.json();
 
     const resNominee = await fetch(`https://nwhofapi.azurewebsites.net/api/nominees/${match.nomineeID}`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+    if (!resNominee.ok) throw error(resNominee.status, 'An error occured while fetching nominee data for this page.');
     const nominee = await resNominee.json();
 
     let nominations: any[] = [];
     const nominationIDs: any[] = JSON.parse(nominee.nominations);
     for (const child of nominationIDs) {
       const result = await fetch(`https://nwhofapi.azurewebsites.net/api/nominations/${child['ID']}`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+      if (!result.ok) throw error(result.status, 'An error occured while fetching nomination data for this page.');
       const nomination = await result.json();
       nominations.push(nomination);
     }
@@ -39,6 +41,12 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
         keys
       }
     }
+  } else {
+    if (!resMatch.ok) {
+      if (resMatch.status == 404) throw error (404, `The requested page does not exist on this server.`)
+      else throw error (resMatch.status, 'An error occured while fetching match data for this page.');
+    }
+    if (!resKeys.ok) throw error (resKeys.status, 'An error occured while fetching keys data for this page.');
   }
 }
 

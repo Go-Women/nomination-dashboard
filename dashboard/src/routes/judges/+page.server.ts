@@ -1,4 +1,4 @@
-import type { Actions } from "@sveltejs/kit";
+import { error, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 import { dev } from "$app/environment";
@@ -18,6 +18,8 @@ export const load: PageServerLoad = async ({fetch}) => {
     return {
       props: {judges: judges}
     };
+  } else {
+    throw error(res.status, 'An error occured while fetching data for this page.')
   }
 }
 

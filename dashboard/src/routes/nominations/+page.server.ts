@@ -1,6 +1,7 @@
 import type { Actions, PageServerLoad } from "./$types";
 
 import { dev } from "$app/environment";
+import { error } from "@sveltejs/kit";
 
 let FUNCTIONS_KEY: string;
 if (dev) {
@@ -24,6 +25,9 @@ export const load: PageServerLoad = async ({fetch}) => {
         nominees: nominees
       }
     };
+  } else {
+    if (!res1.ok) throw error(res1.status, 'An error occured while fetching nomination data for this page.');
+    if (!res2.ok) throw error(res2.status, 'An error occured while fetching nominee data for this page.');
   }
 }
 
