@@ -25,7 +25,7 @@
   ] :
 
   [
-    { key: "id", empty: true },
+    { key: "matchID", empty: true },
     { key: "nomineeName", value: "Nominee" },
     { key: "nomineeCategory", value: "Nominee Category" },
     { key: "nomineeSubcategory", value: "Nominee Subcategory" },
@@ -60,7 +60,7 @@
       </ToolbarContent>
     </Toolbar>
     <svelte:fragment slot="cell" let:cell>
-      {#if cell.key === "id" && !review}
+      {#if cell.key === "matchID" && !review}
         <Button
           iconDescription="View"
           icon={View}
