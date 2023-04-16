@@ -27,7 +27,6 @@
   ] :
 
   [
-    { key: "matchID", empty: true },
     { key: "nomineeName", value: "Nominee" },
     { key: "nomineeCategory", value: "Nominee Category" },
     { key: "nomineeSubcategory", value: "Nominee Subcategory" },
@@ -66,18 +65,12 @@
       {#if review}
         <form method="POST" action="?/suggestions">
           <input type="hidden" name="matchSelections" value={JSON.stringify(matchActions)}>
-          <Button type="submit" size="field" kind="secondary">Confirm Selections</Button>
+          <Button type="submit" size="field" kind="primary">Confirm Selections</Button>
         </form>
       {/if}
     </Toolbar>
     <svelte:fragment slot="cell" let:cell>
-      {#if cell.key === "matchID" && !review}
-        <Button
-          iconDescription="View"
-          icon={Launch}
-          href={"matches/" + cell.value + "/review"}
-        />
-      {:else if cell.key === "action" && review}
+      {#if cell.key === "action" && review}
         <RadioButtonGroup name="action-rb-group" orientation="vertical">
           <RadioButton
             name={`action:${cell.value[0]}:${cell.value[1]}`}
@@ -117,7 +110,7 @@
   {#if review}
     <form method="POST" action="?/suggestions">
       <input type="hidden" name="matchSelections" value={JSON.stringify(matchActions)}>
-      <Button type="submit" size="field" kind="secondary">Confirm Selections</Button>
+      <Button type="submit" size="field" kind="primary">Confirm Selections</Button>
     </form>
   {/if}
 </main>

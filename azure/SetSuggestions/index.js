@@ -17,31 +17,37 @@ module.exports = async function (context, req) {
       const accepted = req.body['accept'];
 
       // Create Matches
-      for (const nom of accepted) {
-        matches.push([parseInt(nom[0]), parseInt(nom[1]), "m300"]);
-      }
+      if (accepted.length > 0) {
+        for (const nom of accepted) {
+          matches.push([parseInt(nom[0]), parseInt(nom[1]), "m300"]);
+        }
 
-      await db.query("INSERT INTO Matches (nomineeID, judgeID, matchStatus) VALUES ?", [matches]);
-
-      for (const match of matches) {
-          await db.query(sqlQuery1, [
-              match[0],
-              match[1]
-          ]);
-          await db.query(sqlQuery2, match[1]);
+        await db.query("INSERT INTO Matches (nomineeID, judgeID, matchStatus) VALUES ?", [matches]);
+      
+        for (const match of matches) {
+            await db.query(sqlQuery1, [
+                match[0],
+                match[1]
+            ]);
+            await db.query(sqlQuery2, match[1]);
+        }
       }
 
       const manualReview = [];
       const manual = req.body["manual"];
-      for (const nom of manual) {
-        manualReview.push([parseInt(nom[0]), nom[1]]);
-      }
 
-      for (const nom of manualReview) {
-        await db.query("UPDATE Nominees SET nomStatus = ? WHERE ID = ?", [
-          nom[1],
-          nom[0]
-        ]);
+      // Add Manual Review
+      if (manual.length > 0) {
+        for (const nom of manual) {
+          manualReview.push([parseInt(nom[0]), nom[1]]);
+        }
+
+        for (const nom of manualReview) {
+          await db.query("UPDATE Nominees SET nomStatus = ? WHERE ID = ?", [
+            nom[1],
+            nom[0]
+          ]);
+        }
       }
       
       context.res = {
