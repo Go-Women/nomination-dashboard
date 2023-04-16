@@ -35,6 +35,31 @@ export const load: PageServerLoad = async ({ fetch }) => {
   }
 };
 
+
+function formatSuggestions(selections: ''){
+  const nominations = JSON.parse(`${selections}`);
+  var acceptArr = [];
+  var manualArr = [];
+  for (const [key, value] of Object.entries(nominations)) {
+    var selected = key.split(":");
+    switch (value) {
+      case 'MANUAL':
+        manualArr.push(selected);
+        break;
+      case 'ACCEPT':
+        acceptArr.push(selected);
+        break;
+      default:
+        break;
+    }
+  }
+
+  return {
+    accept: acceptArr,
+    manual: manualArr
+  };
+}
+
 export const actions: Actions = {
   manual: async ({request}) => {
     const formData = await request.formData();
@@ -91,5 +116,42 @@ export const actions: Actions = {
         'x-functions-key': FUNCTIONS_KEY
       }
     });
-  }
+  },
+  suggestions: async ({request}) => {
+    const formData = await request.formData();
+    const data: { [name: string]: any } = {};
+    for (let field of formData) {
+      const [key, value] = field;
+      if (key === 'matchSelections')
+        data['accept'] = formatSuggestions(value).accept;
+        data['manual'] = formatSuggestions(value).manual;
+    }
+    // console.log(data);
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/review`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
+      }
+    });
+  },
+  unmatch: async ({request}) => {
+    const formData = await request.formData();
+    const data: { [name: string]: any } = {};
+    for (let field of formData) {
+      data[key] = value
+    }
+
+    console.log(data);
+    // TODO
+    // const res = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/undo`, {
+    //   method: 'POST',
+    //   body: JSON.stringify(data),
+    //   headers: {
+    //     'Content-type': 'application/json; charset=UTF-8',
+    //     'x-functions-key': FUNCTIONS_KEY
+    //   }
+    // });
+  },
 };

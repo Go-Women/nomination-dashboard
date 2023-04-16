@@ -88,6 +88,7 @@
         judgeCategory: match.judgeCategory,
         judgeSubcategory: match.judgeSubcategory,
         judgeCapacity: match.judgeMatchesAssigned + "/" + match.judgeCapacity,
+        action: [match.nomID, match.judgeID, match.ID]
       };
 
       rows.push(data);

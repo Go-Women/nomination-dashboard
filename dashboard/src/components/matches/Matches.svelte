@@ -6,14 +6,10 @@
     ToolbarSearch,
     Pagination,
     Button,
-
     RadioButtonGroup,
-
     RadioButton
-
-
   } from "carbon-components-svelte";
-  import View from "carbon-icons-svelte/lib/Launch.svelte";
+  import {Launch, Undo} from "carbon-icons-svelte";
 
   export let rows: any;
   export var review: boolean;
@@ -38,7 +34,8 @@
     { key: "judgeName", value: "Judge" },
     { key: "judgeCategory", value: "Judge Category" },
     { key: "judgeSubcategory", value: "Judge Subcategory" },
-    { key: "judgeCapacity", value: "Judge Capacity" }
+    { key: "judgeCapacity", value: "Judge Capacity" },
+    { key: "action", value: "Action" }
   ]
   
   let pageSize = 25;
@@ -66,16 +63,22 @@
       <ToolbarContent>
         <ToolbarSearch persistent shouldFilterRows />
       </ToolbarContent>
+      {#if review}
+        <form method="POST" action="?/suggestions">
+          <input type="hidden" name="matchSelections" value={JSON.stringify(matchActions)}>
+          <Button type="submit" size="field" kind="secondary">Confirm Selections</Button>
+        </form>
+      {/if}
     </Toolbar>
     <svelte:fragment slot="cell" let:cell>
       {#if cell.key === "matchID" && !review}
         <Button
           iconDescription="View"
-          icon={View}
+          icon={Launch}
           href={"matches/" + cell.value + "/review"}
         />
       {:else if cell.key === "action" && review}
-        <RadioButtonGroup name="action-rb-group">
+        <RadioButtonGroup name="action-rb-group" orientation="vertical">
           <RadioButton
             name={`action:${cell.value[0]}:${cell.value[1]}`}
             value=0
@@ -86,19 +89,24 @@
             name={`action:${cell.value[0]}:${cell.value[1]}`}
             value=1
             labelText="Manual Assignment"
-            on:change={() => matchActions[`${cell.value[0]}:${cell.value[1]}`] = 'MANUAL'}
+            on:change={() => matchActions[`${cell.value[0]}:${"m200"}`] = 'MANUAL'}
           />
         </RadioButtonGroup>
+
+      {:else if cell.key === "action" && !review}
+        <form method="POST" action="?/unmatch">
+          <input name="match" type="hidden" value={cell.value[0]} />
+          <input name="status" type="hidden" value='m200' />
+          <Button
+              iconDescription="Un-match"
+              icon={Undo}
+            />
+        </form>
       {:else}
         {cell.value}
       {/if}
     </svelte:fragment>
   </DataTable>
-
-  <form method="POST" action="TODO">
-    <input type="hidden" name="matchSelections" value={JSON.stringify(matchActions)}>
-    <Button type="submit">Submit Selections</Button>
-  </form>
 
   <Pagination
     bind:pageSize
@@ -106,4 +114,10 @@
     totalItems={rows.length}
     pageSizes={getPageSizes(rows.length)}
   />
+  {#if review}
+    <form method="POST" action="?/suggestions">
+      <input type="hidden" name="matchSelections" value={JSON.stringify(matchActions)}>
+      <Button type="submit" size="field" kind="secondary">Confirm Selections</Button>
+    </form>
+  {/if}
 </main>
