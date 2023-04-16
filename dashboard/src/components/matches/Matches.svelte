@@ -5,7 +5,13 @@
     ToolbarContent,
     ToolbarSearch,
     Pagination,
-    Button
+    Button,
+
+    RadioButtonGroup,
+
+    RadioButton
+
+
   } from "carbon-components-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
 
@@ -42,6 +48,8 @@
     let pageArray = Array.from({ length: pages }).map((_, i) => (i + 1) * 25);
     return pageArray;
   };
+
+  let matchActions: {[key:string]:any} = {};
 </script>
 
 <main class="bx--content-main">
@@ -67,21 +75,30 @@
           href={"matches/" + cell.value + "/review"}
         />
       {:else if cell.key === "action" && review}
-        <form method="POST" action="?/match">
-          <input name="nominee" type="hidden" value={cell.value[0]} />
-          <input name="judges" type="hidden" value={cell.value[1]} />
-          <Button expressive size="small" type="submit" kind="ghost">Accept</Button>
-        </form>
-        <form method="POST" action="?/manual">
-          <input name="nomineeID" type="hidden" value={cell.value[0]} />
-          <input name="status" type="hidden" value='m200' />
-          <Button expressive size="small" type="submit" kind="danger-ghost">Manual Assignment</Button>
-        </form>
+        <RadioButtonGroup name="action-rb-group">
+          <RadioButton
+            name={`action:${cell.value[0]}:${cell.value[1]}`}
+            value=0
+            labelText="Accept"
+            on:change={() => matchActions[`${cell.value[0]}:${cell.value[1]}`] = 'ACCEPT'}
+          />
+          <RadioButton
+            name={`action:${cell.value[0]}:${cell.value[1]}`}
+            value=1
+            labelText="Manual Assignment"
+            on:change={() => matchActions[`${cell.value[0]}:${cell.value[1]}`] = 'MANUAL'}
+          />
+        </RadioButtonGroup>
       {:else}
         {cell.value}
       {/if}
     </svelte:fragment>
   </DataTable>
+
+  <form method="POST" action="TODO">
+    <input type="hidden" name="matchSelections" value={JSON.stringify(matchActions)}>
+    <Button type="submit">Submit Selections</Button>
+  </form>
 
   <Pagination
     bind:pageSize
