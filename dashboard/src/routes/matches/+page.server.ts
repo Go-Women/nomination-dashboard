@@ -134,7 +134,7 @@ export const actions: Actions = {
         'Content-type': 'application/json; charset=UTF-8',
         'x-functions-key': FUNCTIONS_KEY
       }
-    }).then(res => console.log(res));
+    });
   },
   unmatch: async ({request}) => {
     const formData = await request.formData();

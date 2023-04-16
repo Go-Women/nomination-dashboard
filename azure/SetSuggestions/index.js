@@ -14,7 +14,7 @@ module.exports = async function (context, req) {
   
   try {
       const matches = [];
-      const accepted = `${req.body['accept']}`;
+      const accepted = req.body['accept'];
 
       // Create Matches
       for (const nom of accepted) {
@@ -32,7 +32,8 @@ module.exports = async function (context, req) {
       }
 
       const manualReview = [];
-      for (const nom of `${req.body.manual}`) {
+      const manual = req.body["manual"];
+      for (const nom of manual) {
         manualReview.push([parseInt(nom[0]), nom[1]]);
       }
 
@@ -68,19 +69,8 @@ Users
 SET 
 Nominees.nomStatus = IF(
   (Nominees.matchesAssigned + 1) = 3, 
-  'm300', 
+  'n500', 
   'n200'
-), 
-Users.info = IF(
-  (
-    JSON_EXTRACT(Users.info, '$.matchesAssigned') + 1
-  ) = JSON_EXTRACT(Users.info, '$.judgeCapacity'), 
-  JSON_SET(
-    Users.info, '$.judgeStatus', 'm300'
-  ), 
-  JSON_SET(
-    Users.info, '$.judgeStatus', 'j300'
-  )
 ), 
 Nominees.matchesAssigned = Nominees.matchesAssigned + 1, 
 Users.info = JSON_SET(
@@ -102,7 +92,7 @@ info = IF(
     JSON_EXTRACT(Users.info, '$.matchesAssigned') + 1
   ) = JSON_EXTRACT(Users.info, '$.judgeCapacity'), 
   JSON_SET(
-    Users.info, '$.judgeStatus', 'm300'
+    Users.info, '$.judgeStatus', 'm500'
   ), 
   JSON_SET(
     Users.info, '$.judgeStatus', 'j300'
