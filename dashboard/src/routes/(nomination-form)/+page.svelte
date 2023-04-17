@@ -7,8 +7,6 @@
   import Login from "carbon-icons-svelte/lib/Login.svelte";
   import "../../css/index.css";
 
-  // let theme = "g90";
-
   let cohort = "2025";
   let deadline = "2023/12/31";
 
@@ -39,9 +37,14 @@
     return item.text.toLowerCase().includes(value.toLowerCase());
   }
   let selectedYear = `${currentYear}`;
+  const recap = `${"6LcWfZMlAAAAALLZClm5DBoA5mvNRGntmJs6FdCY"}`;
 </script>
 
 <main>
+  <!-- <head>
+    <title>reCAPTCHA: Nomination Submission</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  </head> -->
   <!-- <Theme bind:theme persist persistKey="__carbon-theme" />
 
   <RadioButtonGroup legendText="Color Theme" bind:selected={theme}>
@@ -240,17 +243,17 @@
       {/if}
       <TextArea name="nomAdditionalInfo" labelText="Please use this space to communicate any additional information about this nomination. (Optional)" placeholder="Type here..." />
       <div id="submit-button">
+        <!-- <div class="g-recaptcha" data-sitekey={recap}></div> -->
         <Button type="submit">Submit</Button>
       </div>
     </Form>
   </div>
 
-  <div id="col-3">
+  <!-- <div id="col-3">
     <div id="login-button">
       <Button kind="tertiary" size="small" icon={Login} href="/login">Portal Login</Button>
     </div>
-  </div>
-
+  </div> -->
 </main>
 
 <style>

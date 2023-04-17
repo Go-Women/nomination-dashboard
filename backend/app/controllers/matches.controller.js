@@ -105,6 +105,13 @@ exports.findMatchesReview = (req, res) => {
   });
 };
 
+  var matches = [];
+  const accepted = req.body.accept;
+
+  // Create Matches
+  for (const nom of accepted) {
+    matches.push([parseInt(nom[0]), parseInt(nom[1]), "m300"]);
+  }
 // used to update a nominees status
 exports.updateNomineeStatus = (req, res) => {
   Match.updateNomineeStatus(`${req.body.nomineeID}`, `${req.body.status}`, (err, data) => {
