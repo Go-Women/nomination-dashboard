@@ -143,15 +143,8 @@ export const actions: Actions = {
       const [key, value] = field;
       data[key] = value;
     }
-    // remember to set nom and match status also check if capacity status has been set for any
-    // nomStat --> n200
-    // matchStat --> m400
-    // j500 --> capacity
-    // n500 --> capacity
-    console.log(data);
-    // TODO
-    // const res = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/undo`, {
-    const res = await fetch(`http://localhost:8000/matches/undo`, {
+    // console.log(data);
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/undo`, {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
