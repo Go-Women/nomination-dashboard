@@ -1,4 +1,3 @@
-const utils = require('../utils.js');
 const { makeDb } = require('../asyncdb.js');
 
 module.exports = async function (context, req) {
@@ -16,8 +15,11 @@ module.exports = async function (context, req) {
         const nomID = req.body.nomineeID;
         const verdict = req.body.data;
         const matchID = req.body.matchID;
+        const nomStatus = req.body.nomStatus;
+
         await db.query(sqlQuery1, [
             verdict,
+            nomStatus,
             nomID
         ]);
         await db.query(sqlQuery2, matchID);
@@ -53,7 +55,8 @@ SET
     verdict, 
     '$', 
     CAST(? AS JSON)
-  ) 
+  ),
+  nomStatus = IF(JSON_LENGTH(verdict) = capacity, 'm500', ?)
 WHERE 
   id = ?
 `;

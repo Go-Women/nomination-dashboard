@@ -32,6 +32,7 @@
               <input type="hidden" name="nomineeID" value={nominee.ID} />
               <input type="hidden" name="judgeID" value={match.judgeID} />
               <input type="hidden" name="matchID" value={ID} />
+              <input type="hidden" name="nomStatus" value={nominee.nomStatus} />
               <h4>Question 1: The nominee's contributions have been of the greatest value to society and/or the empowerment of women?</h4>
               <FormGroup legendText="Check the boxes if you agree with the statements.">
                 <Checkbox bind:group={q1ck} value="q101" labelText="The nominee is a leader in their field of achievement" />
