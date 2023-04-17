@@ -49,7 +49,6 @@
         nomineeName: match.nomFullName,
         nomineeCategory: match.category,
         nomineeSubcategory: subCat,
-        nomineeCapacity: match.matchesAssigned + "/" + match.capacity,
         judgeName: match.judgeFullName,
         judgeCategory: match.judgeCategory,
         judgeSubcategory: match.judgeSubcategory,
@@ -87,7 +86,7 @@
         judgeCategory: match.judgeCategory,
         judgeSubcategory: match.judgeSubcategory,
         judgeCapacity: match.judgeMatchesAssigned + "/" + match.judgeCapacity,
-        action: [match.ID, match.nomID, match.judgeID]
+        action: [match.ID, match.nomineeID, match.judgeID, match.category]
       };
 
       rows.push(data);

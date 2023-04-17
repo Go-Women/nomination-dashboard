@@ -30,6 +30,7 @@
     { key: "nomineeName", value: "Nominee" },
     { key: "nomineeCategory", value: "Nominee Category" },
     { key: "nomineeSubcategory", value: "Nominee Subcategory" },
+    { key: "nomineeCapacity", value: "Nominee Capacity" },
     { key: "judgeName", value: "Judge" },
     { key: "judgeCategory", value: "Judge Category" },
     { key: "judgeSubcategory", value: "Judge Subcategory" },
@@ -87,13 +88,12 @@
         </RadioButtonGroup>
 
       {:else if cell.key === "action" && !review}
-        <form method="POST" action="?/unmatch">
-          <input name="match" type="hidden" value={cell.value[0]} />
-          <input name="status" type="hidden" value='m200' />
-          <Button
-              iconDescription="Un-match"
-              icon={Undo}
-            />
+        <form method="POST" action="?/undo">
+          <input name="id" type="hidden" value={cell.value[0]} />
+          <input name="nomID" type="hidden" value={cell.value[1]} />
+          <input name="judgeID" type="hidden" value={cell.value[2]} />
+          <input name="cat" type="hidden" value={cell.value[3]} />
+          <Button type="submit" iconDescription="Undo Match" icon={Undo} kind="secondary"/>
         </form>
       {:else}
         {cell.value}

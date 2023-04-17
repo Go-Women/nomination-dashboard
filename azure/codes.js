@@ -78,7 +78,7 @@ module.exports = {
     "m100": "Review",   // when match suggestion is created
     "m200": "Manual Review",  // when a nominee category is other
     "m300": "Matched",  // match confirmed
-    "m400": "Unmatched",    // manual review
+    "m400": "Unmatched",    // archive of matches that were undone
     "m500": "Judge Reviewed",
 
     // judge status

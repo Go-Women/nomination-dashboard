@@ -136,23 +136,28 @@ export const actions: Actions = {
       }
     });
   },
-  unmatch: async ({request}) => {
+  undo: async ({request}) => {
     const formData = await request.formData();
     const data: { [name: string]: any } = {};
     for (let field of formData) {
       const [key, value] = field;
       data[key] = value;
     }
-
+    // remember to set nom and match status also check if capacity status has been set for any
+    // nomStat --> n200
+    // matchStat --> m400
+    // j500 --> capacity
+    // n500 --> capacity
     console.log(data);
     // TODO
     // const res = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/undo`, {
-    //   method: 'POST',
-    //   body: JSON.stringify(data),
-    //   headers: {
-    //     'Content-type': 'application/json; charset=UTF-8',
-    //     'x-functions-key': FUNCTIONS_KEY
-    //   }
-    // });
+    const res = await fetch(`http://localhost:8000/matches/undo`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
+      }
+    });
   },
 };
