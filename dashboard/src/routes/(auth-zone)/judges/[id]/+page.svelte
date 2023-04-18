@@ -1,6 +1,7 @@
 <script lang="ts">
   import "carbon-components-svelte/css/all.css";
-  import "../../../css/index.css";
+  import "../../../../css/index.css";
+  import Judge from "../../../../components/judges/Judge.svelte";
   import {
     Content,
     Column,
@@ -10,7 +11,7 @@
     Grid,
   } from "carbon-components-svelte";
   export let data;
-  export let { m } = data.props;
+  export let { j } = data.props;
 </script>
 
 <main>
@@ -19,18 +20,14 @@
       <Column>
         <Breadcrumb>
           <BreadcrumbItem href="/home">Home</BreadcrumbItem>
-          <BreadcrumbItem href="/matches">Matches</BreadcrumbItem>
-          <BreadcrumbItem>{m.nomFullName}</BreadcrumbItem>
+          <BreadcrumbItem href="/judges">Judges</BreadcrumbItem>
+          <BreadcrumbItem>{j.firstName} {j.lastName}</BreadcrumbItem>
         </Breadcrumb>
 
         <Grid>
           <Column>
-            <Row><h1>Match</h1></Row>
-            <Row
-              ><h4>
-                Nominee: {m.nomFullName} -> Judge: {m.judgeFullName}
-              </h4></Row
-            >
+            <Row><h1>Judge</h1></Row>
+            <Judge judge={j} />
           </Column>
         </Grid>
       </Column>

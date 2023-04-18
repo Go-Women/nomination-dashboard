@@ -12,10 +12,10 @@
     Column,
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
-  import "../../css/index.css";
-  import Matches from "../../components/matches/Matches.svelte";
-  import OverviewMatches from "../../components/matches/OverviewMatches.svelte";
-  import ManualMatches from "../../components/matches/ManualMatches.svelte";
+  import "../../../css/index.css";
+  import Matches from "../../../components/matches/Matches.svelte";
+  import OverviewMatches from "../../../components/matches/OverviewMatches.svelte";
+  import ManualMatches from "../../../components/matches/ManualMatches.svelte";
 
   export let data;
   // matches --> confirmed matches

@@ -1,9 +1,9 @@
 <script lang="ts">
   import "carbon-components-svelte/css/all.css";
-  import "../../../css/index.css";
-  import Nomination from "../../../components/nominations/Nomination.svelte";
+  import "../../../../css/index.css";
+  import Nomination from "../../../../components/nominations/Nomination.svelte";
   import { Breadcrumb, BreadcrumbItem, Column, Content, Grid, Row} from "carbon-components-svelte";
-  import AffiliatedNomination from "../../../components/nominees/AffiliatedNomination.svelte";
+  import AffiliatedNomination from "../../../../components/nominees/AffiliatedNomination.svelte";
   export let data;
   export let { n, keys } = data.props;
 </script>

@@ -5,14 +5,14 @@
       BreadcrumbItem, Column
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
-  import "../../css/index.css";
+  import "../../../css/index.css";
 
-  import AcceptReject from "../../components/nominations/AcceptReject.svelte";
-  import NominationInformation from "../../components/nominations/NominationInformation.svelte";
-  import NominationOverview from "../../components/nominations/NominationOverview.svelte";
+  import AcceptReject from "../../../components/nominations/AcceptReject.svelte";
+  import NominationInformation from "../../../components/nominations/NominationInformation.svelte";
+  import NominationOverview from "../../../components/nominations/NominationOverview.svelte";
 
   import fuzzysort from "fuzzysort";
-  import PleaseSelect from "../../components/nominations/PleaseSelect.svelte";
+  import PleaseSelect from "../../../components/nominations/PleaseSelect.svelte";
 
   export let data;
   export let { nominations, nominees } = data.props;

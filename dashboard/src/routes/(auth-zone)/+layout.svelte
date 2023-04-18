@@ -1,5 +1,5 @@
 <script lang="ts">  
-  import Navigation from "../components/Navigation.svelte";
+  import Navigation from "../../components/Navigation.svelte";
   import { auth, logOut } from '$lib/firebase/clientApp';
   import { onAuthStateChanged, type User } from 'firebase/auth';
   import { onMount } from 'svelte';

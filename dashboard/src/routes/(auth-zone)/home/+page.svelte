@@ -8,12 +8,11 @@
     ClickableTile,
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
-  import "../../css/index.css";
-  import Navigation from "../../components/Navigation.svelte";
-  import NominationOverview from "../../components/dashHome/NominationOverview.svelte";
-  import JudgeProcess from "../../components/dashHome/JudgeProcess.svelte";
-  import NominationsCategories from "../../components/dashHome/NominationsCategories.svelte";
-  import Nominees from "../../components/dashHome/Nominees.svelte";
+  import "../../../css/index.css";
+  import NominationOverview from "../../../components/dashHome/NominationOverview.svelte";
+  import JudgeProcess from "../../../components/dashHome/JudgeProcess.svelte";
+  import NominationsCategories from "../../../components/dashHome/NominationsCategories.svelte";
+  import Nominees from "../../../components/dashHome/Nominees.svelte";
 
   let logo =
     "https://www.womenofthehall.org/wp-content/themes/NWHoF/assets/imgs/logo-nwhof.png";

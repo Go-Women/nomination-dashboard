@@ -1,6 +1,6 @@
 <script lang="ts">
   import "carbon-components-svelte/css/all.css";
-  import "../../css/index.css";
+  import "../../../css/index.css";
   import {
     Column,
     Breadcrumb,
@@ -8,10 +8,10 @@
     Accordion,
     AccordionItem,
   } from "carbon-components-svelte";
-  import JudgesInformation from "../../components/judges/JudgesInformation.svelte";
-  import JudgeOverview from "../../components/judges/JudgeOverview.svelte";
-  import JudgeAcceptReject from "../../components/judges/JudgeAcceptReject.svelte";
-    import PleaseSelect from "../../components/nominations/PleaseSelect.svelte";
+  import JudgesInformation from "../../../components/judges/JudgesInformation.svelte";
+  import JudgeOverview from "../../../components/judges/JudgeOverview.svelte";
+  import JudgeAcceptReject from "../../../components/judges/JudgeAcceptReject.svelte";
+    import PleaseSelect from "../../../components/nominations/PleaseSelect.svelte";
   import { Swim } from "carbon-icons-svelte";
 
   export let data;

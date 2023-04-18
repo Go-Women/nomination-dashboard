@@ -1,6 +1,6 @@
 <script lang="ts">
   import "carbon-components-svelte/css/all.css";
-  import "../../css/index.css";
+  import "../../../css/index.css";
   import {
     Content,
     Grid,
@@ -9,7 +9,7 @@
     Breadcrumb,
     BreadcrumbItem,
   } from "carbon-components-svelte";
-  import NomineesOverview from "../../components/nominees/NomineesOverview.svelte";
+  import NomineesOverview from "../../../components/nominees/NomineesOverview.svelte";
 
   export let data;
   export let { nominees } = data.props;

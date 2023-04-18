@@ -1,7 +1,7 @@
 <script lang="ts">
-  import NomineeInfo from "../../../../components/nominees/NomineeInfo.svelte";
+  import NomineeInfo from "../../../../../components/nominees/NomineeInfo.svelte";
   import { Breadcrumb, BreadcrumbItem, Button, Checkbox, Column, Content, Form, FormGroup, RadioButton, RadioButtonGroup, TextArea } from "carbon-components-svelte";
-  import "../../../../css/index.css";
+  import "../../../../../css/index.css";
   import { enhance } from "$app/forms";
 
   export let data;
