@@ -14,6 +14,7 @@
   export let rows: any;
   export var review: boolean;
 
+  let nbsp = '\u00A0';
 
   const headers = (review) ? [
     { key: "nomineeName", value: "Nominee" },
@@ -72,21 +73,22 @@
     </Toolbar>
     <svelte:fragment slot="cell" let:cell>
       {#if cell.key === "action" && review}
-        <RadioButtonGroup name="action-rb-group" orientation="vertical">
-          <RadioButton
-            name={`action:${cell.value[0]}:${cell.value[1]}`}
-            value=0
-            labelText="Accept"
-            on:change={() => matchActions[`${cell.value[0]}:${cell.value[1]}`] = 'ACCEPT'}
-          />
-          <RadioButton
-            name={`action:${cell.value[0]}:${cell.value[1]}`}
-            value=1
-            labelText="Manual Assignment"
-            on:change={() => matchActions[`${cell.value[0]}:${"m200"}`] = 'MANUAL'}
-          />
-        </RadioButtonGroup>
-
+        <div class="radios">
+          <RadioButtonGroup name="action-rb-group" orientation="vertical">
+            <RadioButton
+              name={`action:${cell.value[0]}:${cell.value[1]}`}
+              value=0
+              labelText="Accept"
+              on:change={() => matchActions[`${cell.value[0]}:${cell.value[1]}`] = 'ACCEPT'}
+            />
+            <RadioButton
+              name={`action:${cell.value[0]}:${cell.value[1]}`}
+              value=1
+              labelText={`Manual${nbsp}Assignment`}
+              on:change={() => matchActions[`${cell.value[0]}:${"m200"}`] = 'MANUAL'}
+            />
+          </RadioButtonGroup>
+        </div>
       {:else if cell.key === "action" && !review}
         <form method="POST" action="?/undo">
           <input name="id" type="hidden" value={cell.value[0]} />
@@ -114,3 +116,9 @@
     </form>
   {/if}
 </main>
+
+<style>
+  .radios {
+    
+  }
+</style>
