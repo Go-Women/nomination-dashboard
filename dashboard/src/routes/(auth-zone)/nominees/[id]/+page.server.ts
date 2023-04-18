@@ -1,6 +1,7 @@
 import type { PageServerLoad } from "./$types";
 
 import { dev } from "$app/environment";
+import { error } from "@sveltejs/kit";
 
 let FUNCTIONS_KEY: string;
 if (dev) {
@@ -33,5 +34,11 @@ export const load: PageServerLoad = async ({fetch, params}) => {
         keys
       }
     };
+  } else {
+    if (!res1.ok) {
+      if (res1.status == 404) throw error(404, `The requested page goes not exist on the server.`);
+      else throw error(res1.status, 'An error occured while fetching nominee data for this page.');
+    }
+    if (!res2.ok) throw error(res2.status, 'An error occured while fetching keys data for this page.');
   }
 };
