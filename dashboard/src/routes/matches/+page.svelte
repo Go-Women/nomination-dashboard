@@ -189,7 +189,7 @@
         <Column>
           <!-- <form method="POST" action="?/generate"> -->
             <!-- <input name="judgeStatus" type="hidden" value='m100' /> -->
-            <Button iconDescription="View" on:click={() => (generateMatches())} type="submit">Generate New Matches</Button>
+            <Button iconDescription="View" on:click={() => (generateMatches())} type="submit" style="float: right">Generate New Matches</Button>
           <!-- </form> -->
         </Column>
       </Row>
@@ -214,7 +214,7 @@
                 <svelte:fragment slot="title">
                   <h4>Suggested Matches Review</h4>
                 </svelte:fragment>
-                <Matches rows={suggestedMatches} review={true}/>
+                  <Matches rows={suggestedMatches} review={true}/>
               </AccordionItem>
               </Accordion>
           </div>
@@ -256,6 +256,7 @@
     padding-top: 4rem;
     padding-left: 2rem;
   }
+  
   /* .half-container {
     width: 100%;
     display: grid;

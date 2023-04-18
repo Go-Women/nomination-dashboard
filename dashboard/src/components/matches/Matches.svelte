@@ -50,10 +50,10 @@
   let matchActions: {[key:string]:any} = {};
 </script>
 
-<main class="bx--content-main">
+<main style="width: 100%;">
   <br/>
   <DataTable
-    style="justify-text: center;"
+    style="justify-text: center; width: 100%;"
     {headers}
     {rows}
     {pageSize}
@@ -118,7 +118,5 @@
 </main>
 
 <style>
-  .radios {
-    
-  }
+
 </style>
