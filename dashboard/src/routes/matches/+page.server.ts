@@ -1,6 +1,7 @@
 import type { Actions, PageServerLoad } from "./$types";
 
 import { dev } from "$app/environment";
+import { error } from "@sveltejs/kit";
 
 let FUNCTIONS_KEY: string;
 if (dev) {
@@ -34,6 +35,11 @@ export const load: PageServerLoad = async ({ fetch }) => {
         suggestions: review
       }
     };
+  } else {
+    if (!res1.ok) throw error(res1.status, 'An error occured while fetching matches data for this page.');
+    if (!res2.ok) throw error(res2.status, 'An error occured while fetching suggestions data for this page.');
+    if (!res3.ok) throw error(res3.status, 'An error occured while fetching candidates data for this page.');
+    if (!res5.ok) throw error(res5.status, 'An error occured while fetching manual assignment data for this page.');
   }
 };
 
