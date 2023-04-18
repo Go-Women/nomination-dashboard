@@ -3,7 +3,7 @@ import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({fetch, params}) => {
   console.log('settings page loading');
-  const res = await fetch('http://localhost:8000/settings');
+  const res = await fetch('https://nwhofapi.azurewebsites.net/api/settings');
   console.log('past settings fetch');
   if (res.ok) {
     const cohorts = await res.json();
@@ -24,7 +24,7 @@ export const actions: Actions = {
         
       }        
     }
-    const res = await fetch('http://localhost:8000/settings', {
+    const res = await fetch('https://nwhofapi.azurewebsites.net/api/settings', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {

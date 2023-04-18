@@ -1,5 +1,6 @@
-import type { Actions } from "@sveltejs/kit";
+import { error, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
+
 import { dev } from "$app/environment";
 
 let FUNCTIONS_KEY: string;
@@ -11,12 +12,14 @@ if (dev) {
 }
 
 export const load: PageServerLoad = async ({fetch}) => {
-  const res = await fetch('http://localhost:8000/judges');
+  const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   if (res.ok) {
     const judges = await res.json();
     return {
       props: {judges: judges}
     };
+  } else {
+    throw error(res.status, 'An error occured while fetching data for this page.')
   }
 }
 
@@ -30,16 +33,16 @@ export const actions: Actions = {
       data[key] = value;
     }
     data['action'] = 'ACCEPT';
-    // console.log(JSON.stringify(data));
-    const res = await fetch(`http://localhost:8000/judges/review`, {
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/review`, {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
-        'Content-type': 'application/json; charset=UTF-8'
+        'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
       }
-    })
-    .then(res => res.json());
+    });
   },
+  
   reject: async ({request, params}) => {
     const formData = await request.formData();
     const data: { [name: string]: any } = {};
@@ -50,13 +53,13 @@ export const actions: Actions = {
     }
     data['action'] = 'REJECT';
     // console.log(JSON.stringify(data));
-    const res = await fetch(`http://localhost:8000/judges/review`, {
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/review`, {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
-        'Content-type': 'application/json; charset=UTF-8'
+        'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
       }
-    })
-    .then(res => res.json());
+    });
   }
 };
