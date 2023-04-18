@@ -7,6 +7,7 @@
 
   export let data;
   export let { n, nominations, keys } = data.props;
+  export let review: boolean = false;
 
   let fullName = `${n.firstName} ${n.lastName}`;
 </script>
@@ -21,7 +22,7 @@
           <BreadcrumbItem href="/nominees">Nominees</BreadcrumbItem>
           <BreadcrumbItem>{fullName}</BreadcrumbItem>
         </Breadcrumb>
-        <NomineeInfo nominee={n} nominations={nominations} keys={keys}/>
+        <NomineeInfo nominee={n} {nominations} {keys} {review}/>
       </Column>
     </Content>
   </body>

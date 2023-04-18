@@ -12,24 +12,31 @@ module.exports = async function (context, req) {
     });
     
     try {
-        const nomID = req.body.nomineeID;
-        const verdict = req.body.data;
-        const matchID = req.body.matchID;
-        const nomStatus = req.body.nomStatus;
-
-        await db.query(sqlQuery1, [
-            verdict,
-            nomStatus,
-            nomID
-        ]);
-        await db.query(sqlQuery2, matchID);
+        // Create a Cohort
+		const cohort = new Cohort({
+	    	startDate: req.body.startDate || new Date(),
+	   	});
+		 
+		// end pervious cohort
+        await db.query(sqlQuery1, newCohort.startDate);
         context.res = {
             status: 200,
             body: "OK",
             headers: {
                 'Content-Type': 'application/json'
             }
-        }
+        };
+        
+        // save cohort in database   
+        await db.query("INSERT INTO Cohort SET ?", cohort);
+                context.res = {
+            status: 200,
+            body: "OK",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        
     } catch (err) {
         context.res = {
             status: 500,
@@ -43,29 +50,9 @@ module.exports = async function (context, req) {
 
 const sqlQuery1 = `
 UPDATE 
-  Nominees 
+	Cohort 
 SET 
-  verdict = IF(
-    verdict IS NULL 
-    OR JSON_TYPE(verdict) != 'ARRAY', 
-    JSON_ARRAY(), 
-    verdict
-  ), 
-  verdict = JSON_ARRAY_APPEND(
-    verdict, 
-    '$', 
-    CAST(? AS JSON)
-  ),
-  nomStatus = IF(JSON_LENGTH(verdict) = capacity, 'm500', ?)
+	endDate = ? 
 WHERE 
-  id = ?
-`;
-
-const sqlQuery2 = `
-UPDATE 
-  Matches 
-SET
-  matchStatus = 'm500'
-WHERE
-  ID = ?
+	id = (SELECT id FROM ( SELECT id FROM Cohort ORDER BY id DESC LIMIT 1) AS t)
 `;

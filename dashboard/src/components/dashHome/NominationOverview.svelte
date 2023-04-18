@@ -11,7 +11,7 @@
     <Grid>
       <Row>
         <Column><Row><h4>{totalNominations}</h4></Row></Column>
-        <Column><Row><h5>Submitted Nominations</h5></Row></Column>
+        <Column><Row><h4>Submitted Nominations</h4></Row></Column>
       </Row>
       <Row>
         <Column><Row><h4>{reviewCount}</h4></Row></Column>

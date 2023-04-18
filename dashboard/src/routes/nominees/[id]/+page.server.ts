@@ -1,5 +1,4 @@
-import type { PageServerLoad } from "./$types";
-
+import type { Actions, PageServerLoad } from "./$types";
 import { dev } from "$app/environment";
 import { error } from "@sveltejs/kit";
 
@@ -42,3 +41,22 @@ export const load: PageServerLoad = async ({fetch, params}) => {
     if (!res2.ok) throw error(res2.status, 'An error occured while fetching keys data for this page.');
   }
 };
+
+export const actions: Actions = {
+  default: async ({request, params}) => {
+    const formData = await request.formData();
+    const data: { [name: string]: any } = {};
+    for (let field of formData) {
+      const [key, value] = field;
+          if (i == cats.length - 1)
+      data[key] = value;
+    }
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/nominations/${params.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    });
+  }
+}
