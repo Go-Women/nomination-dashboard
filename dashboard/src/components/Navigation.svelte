@@ -2,6 +2,7 @@
   import { Header, HeaderNavItem, HeaderUtilities, SideNav, SideNavItems, SideNavLink, SkipToContent } from "carbon-components-svelte";
   import { Home, Result, UserMultiple, Compare, UserCertification } from "carbon-icons-svelte";
 
+  export let name: string;
   let isSideNavOpen = false;
 </script>
 
@@ -15,7 +16,8 @@
     <SkipToContent />
   </svelte:fragment>
   <HeaderUtilities>
-    <HeaderNavItem href="/" text="Nomination Form"/>
+    <HeaderNavItem text={`Logout ${name}`} />
+    <!-- <HeaderNavItem href="/" text="Nomination Form"/> -->
   </HeaderUtilities>
 </Header>
 

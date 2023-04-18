@@ -13,7 +13,6 @@
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
   import "../../css/index.css";
-  import Navigation from "../../components/Navigation.svelte";
   import Matches from "../../components/matches/Matches.svelte";
   import OverviewMatches from "../../components/matches/OverviewMatches.svelte";
   import ManualMatches from "../../components/matches/ManualMatches.svelte";
@@ -173,7 +172,6 @@
 </script>
 
 <main>
-  <header><Navigation /></header>
   <Content class="bx--content--main">
     <Grid>
       <Breadcrumb>

@@ -1,25 +1,36 @@
 <script lang="ts">
-  import { Button, Form, FormGroup, PasswordInput, TextInput } from "carbon-components-svelte";
-  import "carbon-components-svelte/css/all.css";
-  import Login from "carbon-icons-svelte/lib/Login.svelte";
-  import "../../css/index.css";
+  import { auth } from "$lib/firebase/clientApp";
+  import { goto } from "$app/navigation";
+  import LoginForm from "../../components/auth/LoginForm.svelte";
+  import {
+    browserLocalPersistence,
+    onAuthStateChanged,
+    setPersistence,
+    signInWithEmailAndPassword,
+  } from "firebase/auth";
 
+  let data: { authError: { code: string; message: string } | null } = {
+    authError: null,
+  };
 
+  const signIn = async (
+    event: CustomEvent<{ email: string; password: string }>
+  ) => {
+    signInWithEmailAndPassword(auth, event.detail.email, event.detail.password)
+      .then(async (userCredential) => {
+        await goto("/home");
+      })
+      .catch((error) => {
+        data.authError = {
+          code: error.code,
+          message: error.message,
+        };
+      });
+  };
 </script>
 
 <main>
-
-  <div id="login-form">
-    <div id="login-label">Portal Login</div>
-    <Form>
-      <FormGroup>
-        <TextInput name="username" labelText="Username" placeholder="Enter Username..." />
-        <PasswordInput name="password" labelText="Password" placeholder="Enter Password..." />
-      </FormGroup>
-      <Button type="submit" icon={Login} href="/home">Login</Button>
-    </Form>
-  </div>
-
+  <LoginForm on:login={signIn} {data} />
 </main>
 
 <style>
@@ -29,16 +40,4 @@
     grid-template-rows: 1fr 1fr 1fr;
     justify-items: center;
   }
-
-  #login-form {
-    width: 100%;
-    grid-column: 2;
-    grid-row: 2;
-  }
-
-  #login-label {
-    font-size: 2.5em;
-    margin-bottom: 1em;
-  }
-
 </style>

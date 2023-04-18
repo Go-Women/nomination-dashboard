@@ -1,7 +1,6 @@
 <script lang="ts">
   import "carbon-components-svelte/css/all.css";
   import "../../../css/index.css";
-  import Navigation from "../../../components/Navigation.svelte";
   import Judge from "../../../components/judges/Judge.svelte";
   import {
     Content,
@@ -16,7 +15,6 @@
 </script>
 
 <main>
-  <header><Navigation /></header>
   <body>
     <Content>
       <Column>

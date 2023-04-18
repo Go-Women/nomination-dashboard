@@ -1,6 +1,5 @@
 <script lang="ts">
   import NomineeInfo from "../../../../components/nominees/NomineeInfo.svelte";
-  import Navigation from "../../../../components/Navigation.svelte";
   import { Breadcrumb, BreadcrumbItem, Button, Checkbox, Column, Content, Form, FormGroup, RadioButton, RadioButtonGroup, TextArea } from "carbon-components-svelte";
   import "../../../../css/index.css";
   import { enhance } from "$app/forms";
@@ -14,7 +13,6 @@
 </script>
 
 <main>
-  <header><Navigation /></header>
   <body>
     <Content>
       <Column>

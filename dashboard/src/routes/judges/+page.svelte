@@ -1,7 +1,6 @@
 <script lang="ts">
   import "carbon-components-svelte/css/all.css";
   import "../../css/index.css";
-  import Navigation from "../../components/Navigation.svelte";
   import {
     Column,
     Breadcrumb,
@@ -69,8 +68,6 @@
 </script>
 
 <main>
-  <header><Navigation /></header>
-
   <div id="container">
     <Breadcrumb>
       <BreadcrumbItem href="/home">Home</BreadcrumbItem>

@@ -7,7 +7,6 @@
   import "carbon-components-svelte/css/all.css";
   import "../../css/index.css";
 
-  import Navigation from "../../components/Navigation.svelte";
   import AcceptReject from "../../components/nominations/AcceptReject.svelte";
   import NominationInformation from "../../components/nominations/NominationInformation.svelte";
   import NominationOverview from "../../components/nominations/NominationOverview.svelte";
@@ -116,7 +115,6 @@
 </script>
 
 <main>
-  <header><Navigation /></header>
   <div id="container">
     <Breadcrumb>
       <BreadcrumbItem href="/home">Home</BreadcrumbItem>

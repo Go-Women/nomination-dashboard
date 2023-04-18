@@ -83,7 +83,6 @@
 </script>
 
 <main>
-  <header><Navigation /></header> 
   <Row style="justify-content: center; background-color:#0068b3; padding-top: 2rem;">
     <ClickableTile href="/" style="background-color: #0068b3; width: 100%;">
       <ImageLoader style="height: 8rem; width: 20rem;" src={logo} class="logo-home" />
