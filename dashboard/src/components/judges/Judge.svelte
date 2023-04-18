@@ -145,7 +145,7 @@
   };
 
   // Form sections
-  let name = judge.fullName;
+  let name = `${judge.firstName} ${judge.lastName}`;
   let bio = judge.info.bio || "";
   let conflicts = judge.info.conflicts || "";
   let phoneNumber = judge.info.phoneNumber;

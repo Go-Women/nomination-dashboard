@@ -1,6 +1,7 @@
 import type { PageServerLoad } from "./$types";
 
 import { dev } from "$app/environment";
+import { error } from "@sveltejs/kit";
 
 let FUNCTIONS_KEY: string;
 if (dev) {
@@ -30,5 +31,7 @@ export const load: PageServerLoad = async ({fetch}) => {
         matches: matches
       }
     };
+  } else {
+    throw error(res.status, 'An error occured while fetching data for this page.')
   }
 }

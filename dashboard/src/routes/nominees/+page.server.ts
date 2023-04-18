@@ -19,6 +19,6 @@ export const load: PageServerLoad = async ({fetch, params}) => {
       props: {nominees: nominees}
     };
   } else {
-    throw error(res.status, 'An error occurred while fetching data for this page.');
+    throw error(res.status, 'An error occured while fetching data for this page.');
   }
 };
