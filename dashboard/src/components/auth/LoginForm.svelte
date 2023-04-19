@@ -21,7 +21,7 @@
   <div id="login-label">Portal Login</div>
   <Form>
     <FormGroup>
-      <TextInput name="email" bind:value={email} labelText="Email" placeholder="Enter Email..." />
+      <TextInput name="email" type="email" bind:value={email} labelText="Email" placeholder="Enter Email..." />
       <PasswordInput name="password" bind:value={password} labelText="Password" placeholder="Enter Password..." />
     </FormGroup>
     <Button type="submit" icon={Login} on:click={(e) => { e.preventDefault(); login(); }}>Login</Button>

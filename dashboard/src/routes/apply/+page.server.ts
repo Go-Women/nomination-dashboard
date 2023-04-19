@@ -34,6 +34,11 @@ export const actions: Actions = {
         case "lastName":
           data[key] = value;
           break;
+        case "firebaseID":
+          data[key] = value;
+          break;
+        case "password":
+            break;
         default:
           info[key] = value;
           data["info"] = info;

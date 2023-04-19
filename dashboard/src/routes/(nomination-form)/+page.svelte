@@ -6,6 +6,10 @@
   import "carbon-components-svelte/css/all.css";
   import Login from "carbon-icons-svelte/lib/Login.svelte";
   import "../../css/index.css";
+  import { auth } from "$lib/firebase/clientApp";
+  import { onMount } from "svelte";
+  import { onAuthStateChanged } from "firebase/auth";
+  import { loggedInUser } from "../../stores";
 
   // let theme = "g90";
 
@@ -39,6 +43,13 @@
     return item.text.toLowerCase().includes(value.toLowerCase());
   }
   let selectedYear = `${currentYear}`;
+
+  onMount(async () => {
+    onAuthStateChanged(auth, (user) => {
+      // essentially the end of the logout redirect to /
+      if (!user) $loggedInUser = null;
+    });
+  })
 </script>
 
 <main>

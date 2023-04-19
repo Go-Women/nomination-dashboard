@@ -1,6 +1,5 @@
 <script lang="ts">
   import "carbon-components-svelte/css/all.css";
-  import "../../../../../css/index.css";
   import {
     Content,
     Column,

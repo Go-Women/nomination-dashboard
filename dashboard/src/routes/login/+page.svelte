@@ -1,6 +1,7 @@
 <script lang="ts">
   import { auth } from "$lib/firebase/clientApp";
   import { goto } from "$app/navigation";
+  import { loggedInUser } from "../../stores";
   import LoginForm from "../../components/auth/LoginForm.svelte";
   import {
     browserLocalPersistence,
@@ -16,8 +17,10 @@
   const signIn = async (
     event: CustomEvent<{ email: string; password: string }>
   ) => {
+    setPersistence(auth, browserLocalPersistence);
     signInWithEmailAndPassword(auth, event.detail.email, event.detail.password)
       .then(async (userCredential) => {
+        $loggedInUser = userCredential.user;
         await goto("/home");
       })
       .catch((error) => {
