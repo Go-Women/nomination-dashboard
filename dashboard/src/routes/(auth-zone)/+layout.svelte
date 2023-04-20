@@ -31,7 +31,7 @@
   <div class="container">
     <div class="middle">
       <div class="errorCode">401</div>
-      <div class="errorText">Unauthorized.</div>
+      <div class="errorText">Unauthorized. <span class="allWeKnow">That's all we know.</span></div>
       <div class="errorImage"><img src={errorImg} alt="A sad girl" /></div>
       <div class="whatnext">Try using your browser's Back button, or <a href="/login">Login</a>.</div>
     </div>
@@ -58,6 +58,9 @@
   .errorText {
     font-size: 2em;
     padding: 1em;
+  }
+  .allWeKnow {
+    font-weight: 300;
   }
   .whatnext {
     padding-top: 1em;

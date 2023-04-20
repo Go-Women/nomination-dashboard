@@ -55,20 +55,19 @@
   };
 
   const register = async () => {
-    
     setPersistence(auth, browserLocalPersistence);
     await createUserWithEmailAndPassword(
       auth,
       email,
       password
     ).then(async (userCredential: UserCredential) => {
+      password = '';
       firebaseID = userCredential.user.uid;
       await updateProfile(
         userCredential.user,
         { displayName: `${firstName} ${lastName}` }
       ).then(() => {
-        password = '';
-        (document.getElementById('registerForm') as HTMLFormElement).submit()
+        (document.getElementById('registerForm') as HTMLFormElement).submit();
       });
     }).catch((error) => {
       data.authError = {
