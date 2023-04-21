@@ -4,22 +4,21 @@
   import Navigation from "../../components/Navigation.svelte";
   import { Content, Grid, Button, Breadcrumb, BreadcrumbItem, Form } from "carbon-components-svelte";
 
-  export let data;
-  export let { cohorts } = data.props;
 
-  let recentCohort = cohorts[cohorts.length - 1].startDate;
+  let tempStartDate = "2023-01-01";
+
 </script>
 
 <main>
   <header><Navigation /></header>
   <Content class="bx--content--main">
-    <Form method="POST">
-    <Grid>
-      <Button type="submit">Go Next</Button>
-      <Breadcrumb>
-        <BreadcrumbItem>{recentCohort}</BreadcrumbItem>
-      </Breadcrumb>
-    </Grid>
-  </Form>
+    <h1>Settings</h1>
+    <div class="cohorts">
+      <h3>Cohorts</h3>
+      The current cohort started on {tempStartDate}.
+      <form action="POST" method="?/cohort">
+        <Button type="submit" kind="danger">Start new cohort</Button>
+      </form>
+    </div>
   </Content>
 </main>
