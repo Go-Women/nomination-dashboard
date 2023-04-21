@@ -296,7 +296,7 @@
     margin-top: 1em;
   }
 
-  #col-3 {
+  /* #col-3 {
     grid-column: 3;
     align-content: right;
     width: 100%;
@@ -306,7 +306,7 @@
     position: absolute;
     right: 1em;
     top: 1em;
-  }
+  } */
 
   @media(max-width: 75em) {
     main {

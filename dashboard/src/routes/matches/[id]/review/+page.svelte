@@ -1,9 +1,8 @@
 <script lang="ts">
   import NomineeInfo from "../../../../components/nominees/NomineeInfo.svelte";
   import Navigation from "../../../../components/Navigation.svelte";
-  import { Breadcrumb, BreadcrumbItem, Button, Checkbox, Column, Content, Form, FormGroup, RadioButton, RadioButtonGroup, TextArea } from "carbon-components-svelte";
+  import { Button, Checkbox, Column, Content, Form, FormGroup, RadioButton, RadioButtonGroup, TextArea } from "carbon-components-svelte";
   import "../../../../css/index.css";
-  import { enhance } from "$app/forms";
 
   export let data;
   export let { ID, match, nominee, nominations, keys }: any = data.props;
@@ -28,7 +27,7 @@
             <h2>Evaluate</h2>
             <hr />
             <p class="head">Please evaluate the nominee to the left on the following criteria:</p>
-            <form method="POST">
+            <Form method="POST">
               <input type="hidden" name="nomineeID" value={nominee.ID} />
               <input type="hidden" name="judgeID" value={match.judgeID} />
               <input type="hidden" name="matchID" value={ID} />
@@ -65,7 +64,7 @@
               <div id="submit-button">
                 <Button type="submit">Submit</Button>
               </div>
-            </form>
+            </Form>
           </div>
         </div>
       </Column>
