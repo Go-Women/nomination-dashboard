@@ -14,7 +14,7 @@ module.exports = async function (context, req) {
     });
     
     try {
-        const rows = await db.query("SELECT * Cohort");
+        const rows = await db.query("SELECT * FROM Cohort");
         context.res = {
             status: 200,
             body: rows,
