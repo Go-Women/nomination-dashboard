@@ -14,12 +14,14 @@
   import JudgeProcess from "../../components/dashHome/JudgeProcess.svelte";
   import NominationsCategories from "../../components/dashHome/NominationsCategories.svelte";
   import Matches from "../../components/dashHome/Matches.svelte";
+  import JudgeHome from "../../components/dashHome/JudgeHome.svelte";
 
   let logo =
     "https://www.womenofthehall.org/wp-content/themes/NWHoF/assets/imgs/logo-nwhof.png";
 
   export let data;
-  export let { nominations, nominees, judges, matches } = data.props;
+  export let { nominations, nominees, judges, matches, judgeMatches } = data.props;
+  const type:string = 'judge'; // TODO: this will be implemented based on auth
 
   export let artCount: number = 0;
   export let athleticsCount: number = 0;
@@ -88,27 +90,35 @@
       <ImageLoader style="height: 8rem; width: 20rem;" src={logo} class="logo-home" />
     </ClickableTile>
   </Row>
-  <Content class="bx--content--main">
-    <Grid>
-      <Row>
-        <Column><NominationOverview {totalNominations} {reviewCount} {createdCount}/></Column>
-        <Column><JudgeProcess {judges}/></Column>
-      </Row>
-      <Row>
-        <Column>
-          <NominationsCategories 
-            {artCount} 
-            {athleticsCount} 
-            {businessCount}
-            {eduCount}
-            {humanitiesCount}
-            {govCount}
-            {stemCount}
-            {otherCount}
-          />
-        </Column>
-        <Column><Matches {nominees} {judges} {matches}/></Column>
-      </Row>
-    </Grid>
-  </Content>
+  {#if type === 'admin'}
+    <Content class="bx--content--main">
+      <Grid>
+        <Row>
+          <Column><NominationOverview {totalNominations} {reviewCount} {createdCount}/></Column>
+          <Column><JudgeProcess {judges}/></Column>
+        </Row>
+        <Row>
+          <Column>
+            <NominationsCategories 
+              {artCount} 
+              {athleticsCount} 
+              {businessCount}
+              {eduCount}
+              {humanitiesCount}
+              {govCount}
+              {stemCount}
+              {otherCount}
+            />
+          </Column>
+          <Column><Matches {nominees} {judges} {matches}/></Column>
+        </Row>
+      </Grid>
+    </Content>
+  {:else if type === 'judge'} <!-- judges Homepage View  -->
+    <Content class="bx--content--main">
+      <Grid>
+        <JudgeHome {judgeMatches} />
+      </Grid>
+    </Content>
+  {/if}
 </main>

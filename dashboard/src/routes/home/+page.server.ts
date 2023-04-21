@@ -16,19 +16,22 @@ export const load: PageServerLoad = async ({fetch}) => {
   const res2 = await fetch(`https://nwhofapi.azurewebsites.net/api/nominees`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   const res3 = await fetch(`https://nwhofapi.azurewebsites.net/api/judges`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   const res4 = await fetch(`https://nwhofapi.azurewebsites.net/api/matches`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+  const res5 = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/${10}/matches`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
 
-
-  if (res1.ok && res2.ok) {
+  if (res1.ok && res2.ok && res3.ok && res4.ok) {
     const nominations = await res1.json();
     const nominees = await res2.json();
     const judges = await res3.json();
     const matches = await res4.json();
+    const jMatches = await res5.json();
+
     return {
       props: {
         nominations: nominations,
         nominees: nominees,
         judges: judges,
-        matches: matches
+        matches: matches,
+        judgeMatches: jMatches
       }
     };
   } else {
