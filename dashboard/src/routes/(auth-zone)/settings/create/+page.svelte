@@ -4,6 +4,7 @@
     browserLocalPersistence,
     createUserWithEmailAndPassword,
     setPersistence,
+    signOut,
     updateProfile,
     type UserCredential,
   } from "firebase/auth";
@@ -53,7 +54,8 @@
       ).then(() => {
         (document.getElementById('registerForm') as HTMLFormElement).submit();
       });
-    }).catch((error) => {
+    }).then(() => signOut(auth))
+    .catch((error) => {
       data.authError = {
         code: error.code,
         message: error.message
@@ -86,7 +88,7 @@
           <input type="hidden" name="firebaseID" bind:value={firebaseID} />
         </FormGroup>
         <Button type="submit" icon={Login} on:click={(e) => { e.preventDefault(); register(); }}>Create Administrator</Button>
-        <br />You will be logged in as the created user.
+        <br />You will be logged out.
       </form>
       {#if data.authError}
         <InlineNotification
