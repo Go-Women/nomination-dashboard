@@ -41,13 +41,13 @@
 
       let data = {
         id: index + 1,
+        matchID: match.ID,
         matchStatus: match.matchStatus,
         nomineeID: match.nomID,
         judgeID: match.judgeID,
         nomineeName: match.nomFullName,
         nomineeCategory: match.category,
         nomineeSubcategory: subCat,
-        nomineeCapacity: match.matchesAssigned + "/" + match.capacity,
         judgeName: match.judgeFullName,
         judgeCategory: match.judgeCategory,
         judgeSubcategory: match.judgeSubcategory,
@@ -73,7 +73,7 @@
       }
 
       let data = {
-        id: match.ID,
+        id: index + 1,
         matchStatus: match.matchStatus,
         nomineeID: match.nomineeID,
         judgeID: match.judgeID,
@@ -85,6 +85,7 @@
         judgeCategory: match.judgeCategory,
         judgeSubcategory: match.judgeSubcategory,
         judgeCapacity: match.judgeMatchesAssigned + "/" + match.judgeCapacity,
+        action: [match.ID, match.nomineeID, match.judgeID, match.category]
       };
 
       rows.push(data);
@@ -186,7 +187,7 @@
         <Column>
           <!-- <form method="POST" action="?/generate"> -->
             <!-- <input name="judgeStatus" type="hidden" value='m100' /> -->
-            <Button iconDescription="View" on:click={() => (generateMatches())} type="submit">Generate New Matches</Button>
+            <Button iconDescription="View" on:click={() => (generateMatches())} type="submit" style="float: right">Generate New Matches</Button>
           <!-- </form> -->
         </Column>
       </Row>
@@ -211,7 +212,7 @@
                 <svelte:fragment slot="title">
                   <h4>Suggested Matches Review</h4>
                 </svelte:fragment>
-                <Matches rows={suggestedMatches} review={true}/>
+                  <Matches rows={suggestedMatches} review={true}/>
               </AccordionItem>
               </Accordion>
           </div>
@@ -253,6 +254,7 @@
     padding-top: 4rem;
     padding-left: 2rem;
   }
+  
   /* .half-container {
     width: 100%;
     display: grid;

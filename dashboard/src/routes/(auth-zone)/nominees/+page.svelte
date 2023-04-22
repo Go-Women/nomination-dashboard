@@ -30,8 +30,7 @@
         yob: nominee.yob,
         category: nominee.category,
         subcategory: subcategory,
-        subcategoryOther: nominee.subcategoryOther,
-        nominationIDs: nominee.nominations,
+        subcategoryOther: nominee.subcategoryOther
       };
       rows.push(data);
     });

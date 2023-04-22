@@ -11,8 +11,6 @@
   import { onAuthStateChanged } from "firebase/auth";
   import { loggedInUser } from "../../stores";
 
-  // let theme = "g90";
-
   let cohort = "2025";
   let deadline = "2023/12/31";
 
@@ -50,9 +48,15 @@
       if (!user) $loggedInUser = null;
     });
   })
+
+  const recap = `${"6LcWfZMlAAAAALLZClm5DBoA5mvNRGntmJs6FdCY"}`;
 </script>
 
 <main>
+  <!-- <head>
+    <title>reCAPTCHA: Nomination Submission</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  </head> -->
   <!-- <Theme bind:theme persist persistKey="__carbon-theme" />
 
   <RadioButtonGroup legendText="Color Theme" bind:selected={theme}>
@@ -251,17 +255,17 @@
       {/if}
       <TextArea name="nomAdditionalInfo" labelText="Please use this space to communicate any additional information about this nomination. (Optional)" placeholder="Type here..." />
       <div id="submit-button">
+        <!-- <div class="g-recaptcha" data-sitekey={recap}></div> -->
         <Button type="submit">Submit</Button>
       </div>
     </Form>
   </div>
 
-  <div id="col-3">
+  <!-- <div id="col-3">
     <div id="login-button">
       <Button kind="tertiary" size="small" icon={Login} href="/login">Portal Login</Button>
     </div>
-  </div>
-
+  </div> -->
 </main>
 
 <style>
@@ -304,7 +308,7 @@
     margin-top: 1em;
   }
 
-  #col-3 {
+  /* #col-3 {
     grid-column: 3;
     align-content: right;
     width: 100%;
@@ -314,7 +318,7 @@
     position: absolute;
     right: 1em;
     top: 1em;
-  }
+  } */
 
   @media(max-width: 75em) {
     main {

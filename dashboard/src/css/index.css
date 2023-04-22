@@ -25,3 +25,7 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.bx--accordion__content {
+  padding: 0;
+}

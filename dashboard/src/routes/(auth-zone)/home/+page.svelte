@@ -12,13 +12,13 @@
   import NominationOverview from "../../../components/dashHome/NominationOverview.svelte";
   import JudgeProcess from "../../../components/dashHome/JudgeProcess.svelte";
   import NominationsCategories from "../../../components/dashHome/NominationsCategories.svelte";
-  import Nominees from "../../../components/dashHome/Nominees.svelte";
+  import Matches from "../../../components/dashHome/Matches.svelte";
 
   let logo =
     "https://www.womenofthehall.org/wp-content/themes/NWHoF/assets/imgs/logo-nwhof.png";
 
   export let data;
-  export let { nominations } = data.props;
+  export let { nominations, nominees, judges, matches } = data.props;
 
   export let artCount: number = 0;
   export let athleticsCount: number = 0;
@@ -77,7 +77,6 @@
     return rows;
   }
   export const rows = populateRows(nominations);
-
   export const totalNominations: number = nominations.length;
 </script>
 
@@ -91,7 +90,7 @@
     <Grid>
       <Row>
         <Column><NominationOverview {totalNominations} {reviewCount} {createdCount}/></Column>
-        <Column><JudgeProcess /></Column>
+        <Column><JudgeProcess {judges}/></Column>
       </Row>
       <Row>
         <Column>
@@ -104,8 +103,9 @@
             {govCount}
             {stemCount}
             {otherCount}
-          /></Column>
-        <Column><Nominees /></Column>
+          />
+        </Column>
+        <Column><Matches {nominees} {judges} {matches}/></Column>
       </Row>
     </Grid>
   </Content>

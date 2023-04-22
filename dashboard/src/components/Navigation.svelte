@@ -3,7 +3,7 @@
   import { auth } from "$lib/firebase/clientApp";
   import { redirect } from "@sveltejs/kit";
   import { Header, HeaderNavItem, HeaderUtilities, SideNav, SideNavItems, SideNavLink, SkipToContent } from "carbon-components-svelte";
-  import { Home, Result, UserMultiple, Compare, UserCertification } from "carbon-icons-svelte";
+  import { Home, Result, UserMultiple, Compare, UserCertification, Save } from "carbon-icons-svelte";
   import { signOut } from "firebase/auth";
 
   export let name: string;
@@ -36,5 +36,6 @@
     <SideNavLink icon={UserCertification} text="Nominees" href="/nominees" />
     <SideNavLink icon={UserMultiple} text="Judges" href="/judges" />
     <SideNavLink icon={Compare} text="Matching" href="/matches" />
+    <SideNavLink icon={Save} text="Settings" href="/settings" />
   </SideNavItems>
 </SideNav>

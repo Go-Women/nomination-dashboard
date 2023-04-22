@@ -32,7 +32,7 @@ export const load: PageServerLoad = async ({fetch, params, cookies}) => {
   } else if (res.status == 404) {
     throw error(404, `The requested page does not exist on this server.`);
   } else {
-    throw error(res.status, 'An error occured while fetching data for this page.');
+    throw error(res.status, 'An error occurred while fetching data for this page.');
   }
 };
 
@@ -62,7 +62,6 @@ function getCategoryValues(categories: {value: string, label: string}[]) {
 
 function getTrueFalseValues(value: boolean) {
   if (value) {
-    return '1';
   } else {
     return '0';
   }
@@ -111,6 +110,43 @@ export const actions: Actions = {
     data["info"] = JSON.stringify(info);
     console.log(JSON.stringify(data));
     const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/${params.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
+      }
+    });
+  },
+  accept: async ({request, params}) => {
+    const formData = await request.formData();
+    const data: { [name: string]: any } = {};
+
+    for (let field of formData) {
+      const [key, value] = field;
+      data[key] = value;
+    }
+    data['action'] = 'ACCEPT';
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/review`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
+      }
+    });
+  },
+  
+  reject: async ({request, params}) => {
+    const formData = await request.formData();
+    const data: { [name: string]: any } = {};
+
+    for (let field of formData) {
+      const [key, value] = field;
+      data[key] = value;
+    }
+    data['action'] = 'REJECT';
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/review`, {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
