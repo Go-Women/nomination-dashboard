@@ -1,3 +1,15 @@
+import type { PageServerLoad } from "./$types";
+
+import { dev } from "$app/environment";
+import { error } from "@sveltejs/kit";
+
+let FUNCTIONS_KEY: string;
+if (dev) {
+  const { DEFAULT_KEY } = await import("$env/static/private");
+  FUNCTIONS_KEY = DEFAULT_KEY;
+} else {
+  FUNCTIONS_KEY = `${process.env.DEFAULTKEY}`;
+}
 
 export const load: PageServerLoad = async ({fetch, cookies}) => {
   const user = cookies.get('user');
@@ -31,6 +43,6 @@ export const load: PageServerLoad = async ({fetch, cookies}) => {
       }
     };
   } else {
-    throw error(res.status, 'An error occured while fetching data for this page.')
+    throw error(res.status, 'An error occurred while fetching data for this page.')
   }
 }
