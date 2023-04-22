@@ -15,158 +15,37 @@
     NumberInput,
     Grid,
     Checkbox,
+    TextArea,
   } from "carbon-components-svelte";
-  import MultiSelect from "svelte-multiselect";
   import Edit from "carbon-icons-svelte/lib/Edit.svelte";
   import Save from "carbon-icons-svelte/lib/Save.svelte";
   import Cancel from "carbon-icons-svelte/lib/Close.svelte";
+  // import { browserLocalPersistence, updateEmail, setPersistence, updateProfile, type UserCredential } from "firebase/auth";
+  // import { auth } from "$lib/firebase/clientApp";
   export let judge: any;
-
-  const categories = [
-    { value: "c100", label: "Art" },
-    { value: "c200", label: "Athletics" },
-    { value: "c300", label: "Business" },
-    { value: "c400", label: "Education" },
-    { value: "c500", label: "Humanities" },
-    { value: "c600", label: "Public Service / Government" },
-    { value: "c700", label: "STEM" },
-    { value: "c800", label: "Other" },
-  ];
-
-
-  const subcategories = [
-    { value: "s100", label: "General" },
-    { value: "s101", label: "Architecture" },
-    { value: "s102", label: "Art History" },
-    { value: "s103", label: "Cinema" },
-    { value: "s104", label: "Design" },
-    { value: "s105", label: "Literature" },
-    { value: "s106", label: "Music" },
-    { value: "s107", label: "Painting / Drawing" },
-    { value: "s108", label: "Sculpting" },
-    { value: "s109", label: "Theater / Dance" },
-
-    { value: "s201", label: "Competition Sports" },
-    { value: "s202", label: "Individual Sports" },
-    { value: "s203", label: "Team Sports" },
-    { value: "s204", label: "Sports / Team Management" },
-
-    { value: "s301", label: "CEO / Corporate Leadership" },
-    { value: "s302", label: "Entrepreneurship" },
-    { value: "s303", label: "Inventing / Patent Holding" },
-
-    { value: "s401", label: "Early Education" },
-    { value: "s402", label: "Higher Education" },
-    { value: "s403", label: "Research" },
-
-    { value: "s501", label: "Ancient / Modern Languages" },
-    { value: "s502", label: "Literature" },
-    { value: "s503", label: "Philosophy / Religion" },
-    { value: "s504", label: "Social Reformation" },
-
-    { value: "s601", label: "Activism" },
-    { value: "s602", label: "Legal / Judicial" },
-    { value: "s603", label: "Military" },
-    { value: "s604", label: "Politics" },
-
-    { value: "s701", label: "Astronomy" },
-    { value: "s702", label: "Architecture" },
-    { value: "s703", label: "Biology" },
-    { value: "s704", label: "Chemistry" },
-    { value: "s705", label: "Climate / Earth Sciences" },
-    { value: "s706", label: "Computer Science" },
-    { value: "s707", label: "Mathematics" },
-    { value: "s708", label: "Medicine" },
-    { value: "s709", label: "Engineering" },
-    { value: "s710", label: "Physics" },
-    { value: "s711", label: "Technology" },
-  ];
-
-  const selectedCategories: {
-    value: string;
-    label: string;
-  }[] = [];
-  setCategory();
-
-  const selectedSubcategories: {
-    value: string;
-    label: string;
-  }[] = [];
-  setSubcategory();
   
-  function setCategory() {
-    let cat = judge.info.category;
-    if (cat.includes(",")) {
-        Object.entries(categories).forEach((data, value) => {
-          let items = data[1];
-          let split = cat.split(',');
-          for (const i in split) {
-              if (items.label == split[i]) {
-                let item = { value: items.value, label: items.label };
-                selectedCategories.push(item);
-              }    
-          }
-          return selectedCategories;   
-        });
-    } else {
-        Object.entries(categories).forEach((data, value) => {
-          if (data[1].label == judge.info.category) {
-            let item = { value: data[1].value, label: data[1].label };
-            selectedCategories.push(item);
-          }
-        });
-    }
-    return selectedCategories;
-  };
+  var user = 'admin'; // TODO: replace this when auth is implemented
 
-  function setSubcategory() {
-    let cat = judge.info.subcategory;
-    if (cat.length > 4) {
-        Object.entries(subcategories).forEach((data, value) => {
-          let items = data[1];
-          let split = cat.split(',');
-          for (const i in split) {
-              if (items.label == split[i]) {
-                let item = { value: items.value, label: items.label };
-                selectedSubcategories.push(item);
-              }    
-          }
-          return selectedSubcategories;   
-        });
-    } else {
-        Object.entries(subcategories).forEach((data, value) => {
-          if (data[1].label == judge.info.subcategory) {
-            let item = { value: data[1].value, label: data[1].label };
-            selectedSubcategories.push(item);
-          }
-        });
-    }
-    return selectedSubcategories;
-  };
-
-  // Form sections
   let name = `${judge.firstName} ${judge.lastName}`;
-  let bio = judge.info.bio || "";
-  let conflicts = judge.info.conflicts || "";
-  let phoneNumber = judge.info.phoneNumber;
-  let pronoun = judge.info.pronouns;
-  let email = judge.email;
-  let capacity = judge.info.matchesAssigned + "/" + judge.info.capacity;
-  let previousJudge = (judge.info.previousJudge == true || judge.info.previousJudge == "1");
-  let deadline = (judge.info.deadline == true || judge.info.deadline == "1");
+  let firstName = `${judge.firstName}`; // only judges can edit this
+  let lastName = `${judge.lastName}`; // only judges can edit this
+  let email = `${judge.email}`;
   let active = (judge.active == true || judge.info.active == "1");
-  let linkedin = judge.info.linkedin || "";
-  let addInfo = judge.info.addInfo || "";
-
+  let bio = (`${judge.info.bio}` != "null") ? `${judge.info.bio}` : "";
+  let capacity = judge.info.capacity;
+  let matchesAssigned = judge.info.matchesAssigned; // only admins see this
+  let conflicts = (`${judge.info.conflicts}` != "null") ? `${judge.info.conflicts}`: "";
+  let phoneNumber = `${judge.info.phoneNumber}`;
+  let previousJudge = (`${judge.info.previousJudge}` == 'true' || `${judge.info.previousJudge}` == '1');  // only admins can edit this
+  let pronoun = `${judge.info.pronouns}`;
+  let category = `${judge.info.category}`;  // can't edit this at the moment
+  let subcategory = `${judge.info.subcategory}`;  // can't edit this at the moment
+  let deadline = (judge.info.deadline == true || judge.info.deadline == "1");
+  let linkedin = (`${judge.info.linkedin}` != "null") ? judge.info.linkedin: "";
+  let addInfo = (`${judge.info.additionalInfo}` != "null") ? judge.info.additionalInfo : "";
+  let judgeRecs = (`${judge.info.potentialJudges}` != "null") ? judge.info.potentialJudges : "";
   let pronouns = ["She/Her", "He/Him", "They/Them", "Other"];
-
-  const categoryValues = function (categories: string[]): string {
-    let vals = "";
-    categories.forEach((cat, index) => {
-      vals.concat(cat.toString());
-    });
-    return vals;
-  };
+  let judgeStatus = `${judge.info.judgeStatus}`;
 
   function setPronoun(id: string) {
     pronoun = pronouns[parseInt(id)];
@@ -186,6 +65,28 @@
   function handleEdit() {
     judgeEdit = !judgeEdit;
   }
+
+  // const update = async () => {
+  //   setPersistence(auth, browserLocalPersistence);
+  //   await updateEmail(
+  //     auth.currentUser,
+  //     `${email}`
+  //   ).then(async (userCredential: UserCredential) => {
+  //     password = '';
+  //     firebaseID = userCredential.user.uid;
+  //     await updateProfile(
+  //       userCredential.user,
+  //       { displayName: `${firstName} ${lastName}` }
+  //     ).then(() => {
+  //       (document.getElementById('registerForm') as HTMLFormElement).submit();
+  //     });
+  //   }).catch((error) => {
+  //     data.authError = {
+  //       code: error.code,
+  //       message: error.message
+  //     };
+  //   });
+  // }
 </script>
 
 <div class="bx--content--overview">
@@ -194,33 +95,66 @@
     <Row><h3>Information</h3></Row>
     <Tile>
       {#if judgeEdit === true}
-        <Form method="POST">
+        <StructuredListRow>
+          <StructuredListCell 
+            ><strong><h4>Categories</h4></strong></StructuredListCell
+          >
+          <StructuredListCell>{category}</StructuredListCell>
+          <StructuredListCell 
+            ><strong><h4>Subcategories</h4></strong></StructuredListCell
+          >
+          <StructuredListCell>{subcategory}</StructuredListCell>
+        </StructuredListRow>
+        <Form method="POST" action="?/edit">
+          <input type="hidden" name="category" value={category} />
+          <input type="hidden" name="subcategory" value={subcategory} />
+          <input type="hidden" name="judgeStatus" value={judgeStatus} />
           <FormGroup>
-            <Grid>
-              <Row>
-                <Checkbox
-                  name="previousJudge"
-                  bind:checked={previousJudge}
-                  value={previousJudge}
-                  labelText="Previous Judge"
-                />
-                <Checkbox
-                  name="deadline"
-                  bind:checked={deadline}
-                  value={deadline}
-                  labelText="Can Meet Deadline?"
-                />
-                <Checkbox
-                  name="active"
-                  bind:checked={active}
-                  value={active}
-                  labelText="Active"
-                />
-              </Row>
-            </Grid>
+            {#if user === 'judge'}
+              <br /><strong>First Name</strong>
+              <TextInput type="text" name="firstName" bind:value={firstName} />
+              <br /><strong>Last Name</strong>
+              <TextInput type="text" name="lastName" bind:value={lastName} />
+              <br /><strong>Email</strong>
+              <TextInput type="email" name="email" bind:value={email} />
+            {:else if user === 'admin'}
+              <input type="hidden" name="firstName" value={firstName} />
+              <input type="hidden" name="lastName" value={lastName} />
+              <input type="hidden" name="email" value={email} />
+            {/if}
           </FormGroup>
           <FormGroup>
-            <br /><strong>Pronouns</strong>
+            {#if user === 'admin'}
+              <Grid>
+                <Row>
+                  <Checkbox
+                    name="deadline"
+                    bind:checked={deadline}
+                    value={deadline}
+                    labelText="Can Meet Deadline?"
+                  />
+                  <Checkbox
+                    name="active"
+                    bind:checked={active}
+                    value={active}
+                    labelText="Active"
+                  />
+                  <Checkbox
+                      name="previousJudge"
+                      bind:checked={previousJudge}
+                      value={previousJudge}
+                      labelText="Previous Judge"
+                    /> 
+                </Row>
+              </Grid>
+            {:else if user === 'judge'}
+              <input type="hidden" name="deadline" value={deadline} />
+              <input type="hidden" name="active" value={active} />
+              <input type="hidden" name="previousJudge" value={previousJudge} />
+            {/if}
+          </FormGroup>
+          <FormGroup>
+            <strong>Pronouns</strong>
             <Select
               name="pronouns"
               bind:value={pronouns[pronoun]}
@@ -233,36 +167,10 @@
             </Select>
 
             <br /><strong>Bio</strong>
-            <TextInput type="text" name="bio" bind:value={bio} />
+            <TextArea type="text" name="bio" bind:value={bio} />
 
             <br /><strong>Phone Number</strong>
             <TextInput type="tel" name="phoneNumber" bind:value={phoneNumber} />
-
-            <br /><strong>Email</strong>
-            <TextInput type="email" name="email" bind:value={email} />
-          </FormGroup>
-          <FormGroup>
-            <br /><strong>Categories</strong>
-            <Grid style="padding-top: 1rem">
-              <MultiSelect
-                name="category"
-                options={categories}
-                selected={selectedCategories}
-                label="label"
-                value="value"
-              />
-            </Grid>
-
-            <br /><strong>Subcategories</strong>
-            <Grid style="padding-top: 1rem">
-              <MultiSelect
-                name="subcategory"
-                options={subcategories}
-                selected={selectedSubcategories}
-                label="label"
-                value="value"
-              />
-            </Grid>
           </FormGroup>
           <FormGroup>
             <br /><strong>Capacity</strong>
@@ -273,14 +181,18 @@
               invalidText="Number must be greater than 4."
               label="minimum of 4"
             />
+            <input type="hidden" name="matchesAssigned" value={matchesAssigned}/>
+
             <br /><strong>Conflicts</strong>
-            <TextInput type="text" name="conflicts" bind:value={conflicts} />
+            <TextArea type="text" name="conflicts" bind:value={conflicts} />
 
             <br /><strong>LinkedIn</strong>
-            <TextInput type="test" name="linkedin" bind:value={linkedin} />
+            <TextInput type="url" name="linkedin" bind:value={linkedin} />
 
             <br /><strong>Additional Information</strong>
-            <TextInput type="text" name="additionalInfo" bind:value={addInfo} />
+            <TextArea type="text" name="additionalInfo" bind:value={addInfo} />
+            <br /><strong>Recommendations</strong>
+            <TextArea type="text" name="potentialJudges" bind:value={judgeRecs} />
           </FormGroup>
           <Button
             kind="danger"
@@ -288,112 +200,113 @@
             icon={Cancel}
             on:click|once={handleEdit}>Cancel</Button
           >
-          <!-- <Button type="submit">Save</Button> -->
-          <Button iconDescription="Save" type="submit" icon={Save}>Save</Button>
+          {#if user === 'admin'}
+            <Button iconDescription="Save" type="submit" icon={Save}>Save</Button>
+          {:else if user === 'judge'}
+            <!-- TODO: implement this with auth -->
+            <Button iconDescription="Save" type="submit" icon={Save}>Save</Button>
+            <!-- <Button iconDescription="Save" type="submit" icon={Save} on:click={(e) => { e.preventDefault(); update(); }}>Save</Button> -->
+          {/if}
         </Form>
       {:else}
+        <StructuredListRow>
+          <StructuredListCell 
+            ><strong><h4>Category</h4></strong></StructuredListCell
+          >
+          <StructuredListCell>{category}</StructuredListCell>
+          <StructuredListCell 
+            ><strong><h4>Subcategory</h4></strong></StructuredListCell
+          >
+          <StructuredListCell>{subcategory}</StructuredListCell>
+        </StructuredListRow>
         <StructuredList flush>
           <StructuredListBody>
             <StructuredListRow>
-              <Grid>
-                <Row>
-                  <Checkbox
-                    name="previousJudge"
-                    bind:checked={previousJudge}
-                    value={previousJudge}
-                    labelText="Previous Judge"
-                    disabled
-                  />
-                  <Checkbox
-                    name="deadline"
-                    bind:checked={deadline}
-                    value={deadline}
-                    labelText="Can Meet Deadline?"
-                    disabled
-                  />
-                  <Checkbox
-                    name="active"
-                    bind:checked={active}
-                    value={active}
-                    labelText="Active"
-                    disabled
-                  />
-                </Row>
-              </Grid>
+              {#if user === 'admin'}
+                <Grid>
+                  <Row>
+                    <Checkbox
+                      name="deadline"
+                      bind:checked={deadline}
+                      value={deadline}
+                      labelText="Can Meet Review Deadline?"
+                      disabled
+                    />
+                    <Checkbox
+                      name="active"
+                      bind:checked={active}
+                      value={active}
+                      labelText="Active"
+                      disabled
+                    /> 
+                    <Checkbox
+                      name="previousJudge"
+                      bind:checked={previousJudge}
+                      value={previousJudge}
+                      labelText="Previous Judge"
+                      disabled
+                    />                                   
+                  </Row>
+                </Grid>
+              {/if} 
             </StructuredListRow>
             <StructuredListRow>
-              <StructuredListCell noWrap
-                ><strong>Pronouns</strong></StructuredListCell
-              >
-              <StructuredListCell>{pronoun}</StructuredListCell>
-            </StructuredListRow>
-            <StructuredListRow>
-              <StructuredListCell noWrap
-                ><strong>Phone Number</strong></StructuredListCell
-              >
-              <StructuredListCell>{phoneNumber}</StructuredListCell>
-            </StructuredListRow>
-            <StructuredListRow>
-              <StructuredListCell noWrap
-                ><strong>Bio</strong></StructuredListCell
-              >
-              <StructuredListCell>{bio}</StructuredListCell>
-            </StructuredListRow>
-            <StructuredListRow>
-              <StructuredListCell noWrap
+              <StructuredListCell 
                 ><strong>Email</strong></StructuredListCell
               >
               <StructuredListCell>{email}</StructuredListCell>
             </StructuredListRow>
             <StructuredListRow>
-              <StructuredListCell noWrap
-                ><strong>Category</strong></StructuredListCell
+              <StructuredListCell
+                ><strong>Pronouns</strong></StructuredListCell
               >
-              <MultiSelect
-                name="category"
-                options={categories}
-                selected={selectedCategories}
-                label="label"
-                value="value"
-                disabled
-              />
+              <StructuredListCell>{pronoun}</StructuredListCell>
             </StructuredListRow>
             <StructuredListRow>
-              <StructuredListCell noWrap
-                ><strong>Subcategory</strong></StructuredListCell
+              <StructuredListCell 
+                ><strong>Phone Number</strong></StructuredListCell
               >
-              <MultiSelect
-                name="subcategory"
-                options={subcategories}
-                selected={selectedSubcategories}
-                label="label"
-                value="value"
-                disabled
-              />
+              <StructuredListCell>{phoneNumber}</StructuredListCell>
             </StructuredListRow>
             <StructuredListRow>
-              <StructuredListCell noWrap
+              <StructuredListCell 
+                ><strong>Bio</strong></StructuredListCell
+              >
+              <StructuredListCell>{bio}</StructuredListCell>
+            </StructuredListRow>
+            <StructuredListRow>
+              <StructuredListCell 
                 ><strong>Capacity</strong></StructuredListCell
               >
-              <StructuredListCell>{capacity}</StructuredListCell>
-            </StructuredListRow>
+              {#if user === 'admin'}
+                <StructuredListCell>{matchesAssigned + '/' + capacity}</StructuredListCell>
+              {:else if user === 'judge'}
+                <StructuredListCell>{capacity}</StructuredListCell>
+              {/if}
+              </StructuredListRow>
             <StructuredListRow>
-              <StructuredListCell noWrap
+              <StructuredListCell 
                 ><strong>Conflicts</strong></StructuredListCell
               >
               <StructuredListCell>{conflicts}</StructuredListCell>
             </StructuredListRow>
             <StructuredListRow>
-              <StructuredListCell noWrap
+              <StructuredListCell 
                 ><strong>LinkedIn</strong></StructuredListCell
               >
-              <StructuredListCell>{linkedin}</StructuredListCell>
+              <StructuredListCell><a href={linkedin} target="_blank">{linkedin}</a></StructuredListCell>
             </StructuredListRow>
             <StructuredListRow>
-              <StructuredListCell noWrap
+              <StructuredListCell 
                 ><strong>Additional Information</strong></StructuredListCell
               >
               <StructuredListCell>{addInfo}</StructuredListCell>
+            </StructuredListRow>
+            <StructuredListRow>
+              <StructuredListCell 
+                ><strong>Recommendations</strong></StructuredListCell
+              >
+              <StructuredListCell>{judgeRecs}</StructuredListCell>
             </StructuredListRow>
             <div id="edit-button">
               <Button iconDescription="Edit" icon={Edit} on:click|once={handleEdit}

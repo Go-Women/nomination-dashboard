@@ -25,39 +25,14 @@ export const load: PageServerLoad = async ({fetch, params}) => {
   }
 };
 
-const codes = [
-  {value: "c100", label: "Art"},
-  {value: "c200", label: "Athletics"},
-  {value: "c300", label: "Business"},
-  {value: "c400", label: "Education"},
-  {value: "c500", label: "Humanities"},
-  {value: "c600", label: "Public Service/Government"},
-  {value: "c700", label: "STEM"},
-  {value: "c800", label: "Other"}
-];
-
 let pronouns = ["She/Her", "He/Him", "They/Them", "Other"];
 
-function getCategoryValues(categories: {value: string, label: string}[]) {
-  let cleaned = [];
-  for (const code in codes) {
-    for (const category in categories) {
-      if (categories[category].value == codes[code].value)
-        cleaned.push(codes[code].value);
-    }
-  }
-  return cleaned.join(",");
-}
-
 function getTrueFalseValues(value: boolean) {
-  if (value) {
-  } else {
-    return '0';
-  }
+  return (value ? 1 : 0)
 }
 
 export const actions: Actions = {
-  default: async ({request, params}) => {
+  edit: async ({request, params}) => {
     const formData = await request.formData();
     const data: { [name: string]: any } = {};
     const info: { [name: string]: any } = {};
@@ -68,36 +43,36 @@ export const actions: Actions = {
       switch (key) {
         case "pronouns":
           info[key] = pronouns[value];
-          data["info"] = info;
           break;
-        case "category":
-          info[key] = getCategoryValues(JSON.parse(value));
-          data["info"] = info;
+        case "previousJudge":
+          info[key] = getTrueFalseValues(value);
+          break;
+        case "interested":
+          info[key] = getTrueFalseValues(value);
+          break;
+        case "deadline":
+          info[key] = getTrueFalseValues(value);
+          break;
+        case "active":
+          data[key] = getTrueFalseValues(value);
+          break;
+        case "firstName":
+          data[key] = value;
+          break;
+        case "lastName":
+          data[key] = value;
           break;
         case "email":
           data[key] = value;
           break;
-        case "previousJudge":
-          info[key] = getTrueFalseValues(value);
-          data["info"] = info;
-          break;
-        case "interested":
-          info[key] = getTrueFalseValues(value);
-          data["info"] = info;
-          break;
-        case "active":
-          const val = getTrueFalseValues(value);
-          data[key] = val;
-          break;
         default:
           info[key] = value;
-          data["info"] = info;
           break;
       }        
     }
-
+    data["info"] = info;
     data["info"] = JSON.stringify(info);
-    console.log(JSON.stringify(data));
+    // console.log(data);
     const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/${params.id}`, {
       method: 'PATCH',
       body: JSON.stringify(data),

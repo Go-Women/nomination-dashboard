@@ -34,6 +34,7 @@ module.exports = async function (context, req) {
             switch (judge.action) {
                 case 'ACCEPT':
                     info['judgeStatus'] = 'j300';
+                    info['previousJudge'] = true;
                     active = true;
                     break;
                 case 'REJECT':

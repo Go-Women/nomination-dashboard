@@ -49,5 +49,11 @@ FROM
             ON 
                 n.ID = m.nomineeID
 WHERE 
-    m.judgeID = ?
+    m.judgeID = ? AND
+    n.cohort = (
+        SELECT 
+          MAX(id) 
+        FROM 
+          Cohort
+      )
 `;

@@ -24,28 +24,6 @@ exports.setJSON = (res, name) => {
   return res;
 };
 
-// exports.getCodes = (res) => {
-//   // TODO: this will turn a category or subcategory when submitted into a their corresponding code
-//   let resultCat = [];
-//   let resultsubCat = [];
-  
-//   Object.entries(codes).forEach((code, value) => {
-//     // check if the category is other
-//     if (res.category.includes('Other')) {
-//         //  TODO: handle this case
-//     } else {
-//       if (res.category == code[1])
-//         res.category = code[0];
-
-//       if (res.subcategory == code[1])
-//         res.subcategory = code[0];
-//     }
-//     // TODO: implement this for status codes
-//   });
-
-//   return res;
-// };
-
 exports.clean = (jsonData) => {
   // TODO: figure out how to handle if BOTH category is chosen without a subcategory and the Other category
   // sets subcategory default to General is if other is not chosen
@@ -195,7 +173,6 @@ exports.getCodes = (res, type) => {
       if (res.subcategory == code[1])
         res.subcategory = code[0];
     }
-    // TODO: implement this for status codes
   });
 
   return res;
