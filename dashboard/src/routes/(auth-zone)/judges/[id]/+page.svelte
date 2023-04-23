@@ -20,7 +20,9 @@
       <Column>
         <Breadcrumb>
           <BreadcrumbItem href="/home">Home</BreadcrumbItem>
-          <BreadcrumbItem href="/judges">Judges</BreadcrumbItem>
+          {#if user === 'admin'}
+            <BreadcrumbItem href="/judges">Judges</BreadcrumbItem>
+          {/if}
           <BreadcrumbItem>{j.firstName} {j.lastName}</BreadcrumbItem>
         </Breadcrumb>
 

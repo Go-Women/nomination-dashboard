@@ -1,19 +1,13 @@
 <script lang="ts">
-    import {
-      Content,
-      Grid,
-      Row,
-      Column,
-      ClickableTile,
-      DataTable,
-      Button,
-    } from "carbon-components-svelte";
-    import View from "carbon-icons-svelte/lib/Launch.svelte";
-  
-    export let judgeMatches: any;
-    console.log(judgeMatches);
+  import {
+    DataTable,
+    Button,
+  } from "carbon-components-svelte";
+  import View from "carbon-icons-svelte/lib/Launch.svelte";
 
-    var getInformation = (matches: JSON) => {
+  export let judgeMatches: any;
+
+  var getInformation = (matches: JSON) => {
     let rows = new Array();
     Object.entries(matches).forEach(([key, match], index) => {
       let data = {
@@ -38,6 +32,7 @@
     { key: "status", value: "Status"}
   ];
 
+  const profileLink = `judges/${judgeMatches[0].judgeID}`;
 </script>
   
 <main class="bx--content-main">
@@ -62,4 +57,5 @@
         {/if}
         </svelte:fragment>
     </DataTable>
+    <br/><Button href={profileLink}>Profile</Button>
 </main>

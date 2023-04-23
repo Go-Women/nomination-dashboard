@@ -18,13 +18,18 @@ module.exports = async function (context, req) {
         const rows = await db.query(sqlQuery, judgeId);
         utils.formatAllData(rows, 'nominee');
         utils.setMatchingStatus(rows);
+        if (rows.length == 0)
+            rows = [{
+                judgeID: judgeId
+            }];
+            
         context.res = {
             status: 200,
             body: rows,
             headers: {
                 'Content-Type': 'application/json'
             }
-        };
+        };        
     } catch (err) {
         context.res = {
             status: 500,
@@ -41,7 +46,8 @@ SELECT
     n.category, 
     IFNULL(n.subcategory,n.subcategoryOther) AS subcategory,
     m.matchStatus,
-    m.ID
+    m.ID,
+    m.judgeID
 FROM 
     Nominees as n
     INNER JOIN 

@@ -21,11 +21,10 @@
       name = currentUser.displayName || 'User';
     }
   }
-
 </script>
 
 {#if $loggedInUser}
-  <header><Navigation name={name} /></header>
+  <header><Navigation name={name}/></header>
   <slot />
 {:else}
   <div class="container">
