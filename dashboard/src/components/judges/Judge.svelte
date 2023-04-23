@@ -16,6 +16,7 @@
     Grid,
     Checkbox,
     TextArea,
+    InlineNotification
   } from "carbon-components-svelte";
   import Edit from "carbon-icons-svelte/lib/Edit.svelte";
   import Save from "carbon-icons-svelte/lib/Save.svelte";
@@ -61,8 +62,15 @@
   };
 
   let judgeEdit = false;
+  let submitted = false;
   function handleEdit() {
     judgeEdit = !judgeEdit;
+    submitted = false;
+  }
+
+  function handleSubmit() {
+    judgeEdit = !judgeEdit;
+    submitted = true;
   }
 
   let data: { authError: { code: string; message: string } | null } = {
@@ -208,20 +216,17 @@
           {#if user === 'admin'}
             <Button iconDescription="Save" type="submit" icon={Save}>Save</Button>
           {:else if user === 'judge'}
-            <Button iconDescription="Save" type="submit" icon={Save} on:click={(e) => { e.preventDefault(); update(); }}>Save</Button>
+            <Button iconDescription="Save" type="submit" icon={Save} on:click|once={(e) => { e.preventDefault(); update(); handleSubmit();}}>Save</Button>
           {/if}
         </Form>
       {:else}
-        <StructuredListRow>
-          <StructuredListCell 
-            ><strong><h4>Category</h4></strong></StructuredListCell
-          >
-          <StructuredListCell>{category}</StructuredListCell>
-          <StructuredListCell 
-            ><strong><h4>Subcategory</h4></strong></StructuredListCell
-          >
-          <StructuredListCell>{subcategory}</StructuredListCell>
-        </StructuredListRow>
+        {#if submitted}
+          <InlineNotification
+            lowContrast
+            kind="success"
+            subtitle="Successfully edited Judge"
+          />
+        {/if}
         <StructuredList flush>
           <StructuredListBody>
             <StructuredListRow>
