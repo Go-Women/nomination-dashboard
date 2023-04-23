@@ -7,6 +7,10 @@
   import "carbon-components-svelte/css/all.css";
   import Login from "carbon-icons-svelte/lib/Login.svelte";
   import "../../css/index.css";
+  import { auth } from "$lib/firebase/clientApp";
+  import { onMount } from "svelte";
+  import { onAuthStateChanged } from "firebase/auth";
+  import { loggedInUser } from "../../stores";
 
   let cohort = "2025";
   let deadline = "2023/12/31";
@@ -38,6 +42,14 @@
     return item.text.toLowerCase().includes(value.toLowerCase());
   }
   let selectedYear = `${currentYear}`;
+
+  onMount(async () => {
+    onAuthStateChanged(auth, (user) => {
+      // essentially the end of the logout redirect to /
+      if (!user) $loggedInUser = null;
+    });
+  })
+
   const recap = `${"6LcWfZMlAAAAALLZClm5DBoA5mvNRGntmJs6FdCY"}`;
 
   export let form;

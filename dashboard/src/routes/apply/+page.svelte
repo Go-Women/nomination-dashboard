@@ -1,14 +1,19 @@
 <script lang="ts">
   import {
       Button, Checkbox, ComboBox, Dropdown, Form,
-      FormGroup, NumberInput, RadioButton, RadioButtonGroup, Select, SelectItem, SideNavItems, Slider, TextArea, TextInput,
-      InlineNotification
+      FormGroup, InlineNotification, NumberInput, PasswordInput, RadioButton, RadioButtonGroup, Select, SelectItem, SideNavItems, Slider, TextArea, TextInput
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
   import Login from "carbon-icons-svelte/lib/Login.svelte";
   import "../../css/index.css";
+  import { browserLocalPersistence, createUserWithEmailAndPassword, setPersistence, updateProfile, type UserCredential } from "firebase/auth";
+  import { auth } from "$lib/firebase/clientApp";
 
-  // let theme = "g90";
+  let firstName = '';
+  let lastName = '';
+  let email = '';
+  let password = '';
+  let firebaseID = '';
 
   let cohort = 2025;
   let age = 53;
@@ -28,7 +33,11 @@
   
   let pronoun = "She/Her";
   let pronouns = ["She/Her", "He/Him", "They/Them", "Other"];
- 
+
+  let data: { authError: { code: string; message: string } | null } = {
+    authError: null,
+  };
+
   function setPronoun(id: string) {
     pronoun = pronouns[parseInt(id)];
   }
@@ -43,7 +52,31 @@
     return pn;
   };
 
+
   export let form;
+
+  const register = async () => {
+    setPersistence(auth, browserLocalPersistence);
+    await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    ).then(async (userCredential: UserCredential) => {
+      password = '';
+      firebaseID = userCredential.user.uid;
+      await updateProfile(
+        userCredential.user,
+        { displayName: `${firstName} ${lastName}` }
+      ).then(() => {
+        (document.getElementById('registerForm') as HTMLFormElement).submit();
+      });
+    }).catch((error) => {
+      data.authError = {
+        code: error.code,
+        message: error.message
+      };
+    });
+  }
 </script>
 
 <main>
@@ -52,7 +85,7 @@
   </div>
 
   <div id="form-container">
-    <Form method="POST">
+    <form method="POST" id="registerForm">
       <div id="form-blurb">
         <p>
           <strong>
@@ -84,10 +117,17 @@
       </div>
       <h3>About You</h3>
       <FormGroup>
-        <TextInput name="firstName" labelText="First Name" required />
-        <TextInput name="lastName" labelText="Last Name" required />
-        <TextInput name="email" type="email" labelText="Your Email" placeholder="example@example.com" required />
+        <TextInput name="firstName" labelText="First Name" bind:value={firstName} required />
+        <TextInput name="lastName" labelText="Last Name" bind:value={lastName} required />
+        <TextInput name="email" type="email" labelText="Your Email" bind:value={email} placeholder="example@example.com" required />
         <TextInput name="phoneNumber" type="tel" labelText="Your Phone Number" placeholder="(555) - 555 - 5555" required />
+        <PasswordInput name="password" labelText="Please set a password for your account." bind:value={password} placeholder="Password" required />
+        {#if data.authError}
+          <InlineNotification
+            title={data.authError.code}      
+          />
+        {/if}
+        <input type="hidden" name="firebaseID" bind:value={firebaseID} />
         <br />
         <Select
           labelText="Pronouns"
@@ -117,7 +157,7 @@
       </FormGroup>
       <FormGroup>
         <h4>How many nominations would you be comfortable reviewing?</h4>
-        <p>Previous judges have resported spending 20-60 minutes reviewing each nomination.</p>
+        <p>Previous judges have reported spending 20-60 minutes reviewing each nomination.</p>
         <Slider
           name="capacity"
           min={1}
@@ -125,7 +165,7 @@
           value={5}
         />
       </FormGroup>
-      <TextArea name="recommendations" labelText="Please provide names and email addresses for other individuals you know who should be considered for the Panel of Judges. (Optional)" placeholder="Type here..." />
+      <TextArea name="potentialJudges" labelText="Please provide names and email addresses for other individuals you know who should be considered for the Panel of Judges. (Optional)" placeholder="Type here..." />
       <hr />
       <!-- TODO: make questions be values from database that way when they update database the form would also update the questions? -->
       <h4>I have the expertise/experience needed to be considered as a judge for the following areas:</h4>
@@ -219,9 +259,14 @@
       <TextArea name="conflicts" labelText="Conflicts (optional)" placeholder="Type here..." />
       <TextArea name="additionalInfo" labelText="Is there anything else you'd like to share with Hall staff? (optional)" placeholder="Type here..." />
       <div id="submit-button">
-        <Button type="submit">Submit</Button>
+        <Button type="submit" on:click={(e) => { e.preventDefault(); register(); }}>Submit</Button>
       </div>
-    </Form>
+      {#if data.authError}
+        <InlineNotification
+          title={data.authError.code}      
+        />
+      {/if}
+    </form>
   </div>
 
   <div id="col-3">

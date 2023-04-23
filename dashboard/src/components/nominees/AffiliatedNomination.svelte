@@ -37,7 +37,7 @@
 <main>
   <div id="grid-body">
     {#if nominationEdit === true}
-    <Form method = "POST">
+    <Form method = "POST" action="?updateNomination">
       <FormGroup>
       <Grid>
         {#if !review}
@@ -153,7 +153,6 @@
             icon={Cancel}
             on:click|once={handleEdit}>Cancel</Button
           >
-          <!-- <Button type="submit">Save</Button> -->
           <Button iconDescription="Save" type="submit" icon={Save}>Save</Button>
   </Form>
   {:else}

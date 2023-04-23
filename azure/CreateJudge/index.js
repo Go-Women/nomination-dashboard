@@ -16,7 +16,8 @@ module.exports = async function (context, req) {
         const judge = req.body;
         judge['type'] = judge['type'] || 'judge';
         judge['active'] = judge['active'] || false;
-        judge['info'] = JSON.stringify(utils.clean(judge['info']));
+        utils.getCodes(judge['info'], 'judge')
+        judge['info'] = JSON.stringify(judge['info']);
 
         const rows = await db.query("INSERT INTO Users SET ?", judge);
         context.res = {

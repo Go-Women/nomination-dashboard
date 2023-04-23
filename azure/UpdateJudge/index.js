@@ -24,8 +24,11 @@ module.exports = async function (context, req) {
             for (const property in infoIn) {
                 info[property] = infoIn[property];
             }
+            utils.getCodes(info, 'judge');
             judge['info'] = JSON.stringify(info);
-            const rows = await db.query("UPDATE Users SET active = ?, email = ?, info = ? WHERE id = ? AND type ='judge'", [
+            const rows = await db.query("UPDATE Users SET firstName = ?, lastName = ?, active = ?, email = ?, info = ? WHERE id = ? AND type ='judge'", [
+                judge['firstName'],
+                judge['lastName'],
                 (judge['active'] ? judge['active'] : '0'),
                 judge['email'],
                 JSON.stringify(info),
