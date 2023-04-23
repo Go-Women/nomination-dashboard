@@ -6,6 +6,7 @@
     Column,
     ImageLoader,
     ClickableTile,
+    InlineNotification,
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
   import "../../../css/index.css";
@@ -115,7 +116,15 @@
   {:else if type === 'judge'} <!-- judges Homepage View  -->
     <Content class="bx--content--main">
       <Grid>
-        <JudgeHome {judgeMatches} />
+        {#if judgeMatches[0].judgeStatus != "Active"}
+          <h3>Welcome to the Nomination Selection Process!</h3>
+          <JudgeHome {judgeMatches} />
+        {:else}
+          <h3>Welcome to the Nomination Selection Process!</h3>
+          <InlineNotification kind="info-square" hideCloseButton>
+            You have no Nominees to review at the moment.
+          </InlineNotification>
+        {/if}
       </Grid>
     </Content>
   {/if}

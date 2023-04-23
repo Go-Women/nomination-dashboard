@@ -15,12 +15,13 @@ module.exports = async function (context, req) {
     });
     
     try {
-        const rows = await db.query(sqlQuery, judgeId);
+        var rows = await db.query(sqlQuery, judgeId);
         utils.formatAllData(rows, 'nominee');
         utils.setMatchingStatus(rows);
         if (rows.length == 0)
             rows = [{
-                judgeID: judgeId
+                judgeID: judgeId,
+                judgeStatus: 'Active'
             }];
             
         context.res = {

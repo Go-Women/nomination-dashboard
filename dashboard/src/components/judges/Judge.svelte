@@ -68,11 +68,6 @@
     submitted = false;
   }
 
-  function handleSubmit() {
-    judgeEdit = !judgeEdit;
-    submitted = true;
-  }
-
   let data: { authError: { code: string; message: string } | null } = {
     authError: null,
   };
@@ -88,10 +83,13 @@
           message: error.message
         };
       }); 
-      updateProfile(auth.currentUser, {
+
+      await updateProfile(auth.currentUser, {
         displayName: `${firstName} + ${lastName}`
       }).then(() => {
         console.log("Profile updated!");
+      }).then(() => {
+        (document.getElementById('editJudge') as HTMLFormElement).submit();
       }).catch((error) => {
         data.authError = {
           code: error.code,
@@ -118,7 +116,7 @@
           >
           <StructuredListCell>{subcategory}</StructuredListCell>
         </StructuredListRow>
-        <Form method="POST" action="?/edit">
+        <Form method="POST" action="?/edit" id="editJudge">
           <input type="hidden" name="category" value={category} />
           <input type="hidden" name="subcategory" value={subcategory} />
           <input type="hidden" name="judgeStatus" value={judgeStatus} />
@@ -216,7 +214,7 @@
           {#if user === 'admin'}
             <Button iconDescription="Save" type="submit" icon={Save}>Save</Button>
           {:else if user === 'judge'}
-            <Button iconDescription="Save" type="submit" icon={Save} on:click|once={(e) => { e.preventDefault(); update(); handleSubmit();}}>Save</Button>
+            <Button iconDescription="Save" type="submit" icon={Save} on:click={(e) => { e.preventDefault(); update();}}>Save</Button>
           {/if}
         </Form>
       {:else}
