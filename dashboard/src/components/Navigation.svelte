@@ -1,10 +1,12 @@
 <script lang="ts">
+  import { goto } from "$app/navigation";
+  import { auth } from "$lib/firebase/clientApp";
+  import { redirect } from "@sveltejs/kit";
   import { Header, HeaderNavItem, HeaderUtilities, SideNav, SideNavItems, SideNavLink, SkipToContent } from "carbon-components-svelte";
-  import { Home, Result, UserMultiple, Compare } from "carbon-icons-svelte";
-  // import Home from "carbon-icons-svelte/lib/Home.svelte";
-  // import Result from "carbon-icons-svelte/lib/Result.svelte";
-  // import UserMultiple from "carbon-icons-svelte/lib/UserMultiple.svelte";
+  import { Home, Result, UserMultiple, Compare, UserCertification, Save } from "carbon-icons-svelte";
+  import { signOut } from "firebase/auth";
 
+  export let name: string;
   let isSideNavOpen = false;
 </script>
 
@@ -18,7 +20,12 @@
     <SkipToContent />
   </svelte:fragment>
   <HeaderUtilities>
-    <HeaderNavItem href="/" text="Nomination Form"/>
+    <HeaderNavItem
+      text={`Logout ${name}`}
+      on:click={() => signOut(auth)}
+      href="/"
+    />
+    <!-- <HeaderNavItem href="/" text="Nomination Form"/> -->
   </HeaderUtilities>
 </Header>
 
@@ -26,7 +33,9 @@
   <SideNavItems>
     <SideNavLink icon={Home} text="Dashboard" href="/home" isSelected />
     <SideNavLink icon={Result} text="Nominations" href="/nominations" />
+    <SideNavLink icon={UserCertification} text="Nominees" href="/nominees" />
     <SideNavLink icon={UserMultiple} text="Judges" href="/judges" />
     <SideNavLink icon={Compare} text="Matching" href="/matches" />
+    <SideNavLink icon={Save} text="Settings" href="/settings" />
   </SideNavItems>
 </SideNav>

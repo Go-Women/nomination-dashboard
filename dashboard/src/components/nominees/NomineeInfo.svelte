@@ -1,46 +1,28 @@
 <script lang="ts">
-  import { Column, Grid, Row } from "carbon-components-svelte";
-    import AffiliatedNomination from "./AffiliatedNomination.svelte";
+  import { Button, Column, Grid, Row } from "carbon-components-svelte";
+  import AffiliatedNomination from "./AffiliatedNomination.svelte";
+  import {Edit, Group, Save} from "carbon-icons-svelte";
+  import Cancel from "carbon-icons-svelte/lib/Close.svelte";
+  import Nominee from "./Nominee.svelte";
 
   export let nominee: any;
   export let keys: any;
   export let nominations: any[];
-  let fullName = `${nominee.firstName} ${nominee.lastName}`;
+  export let review: boolean;
+
+  const fullName = `${nominee.firstName} ${nominee.lastName}`;
 </script>
 
 <main>
   <div class="bx--content--overview nom-body">
     <h2>{`#${nominee.ID} - ${fullName}`}</h2>
-    <Grid>
-      <Row>
-        <Column>Full Name</Column>
-        <Column>{fullName}</Column>
-      </Row>
-      <Row>
-        <Column>Year of Birth</Column>
-        <Column>{nominee.yob}</Column>
-      </Row>
-      <Row>
-        <Column>Contribution Areas</Column>
-        <Column>{nominee.category}</Column>
-      </Row>
-      {#if nominee.subcategoryOther}
-      <Row>
-        <Column>User-Submitted Area</Column>
-        <Column>{nominee.subcategoryOther}</Column>
-      </Row>
-      {/if}
-      {#if nominee.subcategory}
-      <Row>
-        <Column>Contribution Subcategories</Column>
-        <Column>{nominee.subcategory}</Column>
-      </Row>
-      {/if}
-    </Grid>
-    <h3>Submitted Nominations</h3>
-    {#each nominations as nomination}
-      <AffiliatedNomination nomination={nomination} keys={keys} />
-    {/each}
+    <Nominee {nominee} {review}/>
+    <div class="submissions">
+      <h3>Submitted Nominations</h3>
+      {#each nominations as nomination}
+        <AffiliatedNomination {nomination} {keys} {review}/>
+      {/each}
+    </div>
   </div>
 </main>
 
@@ -52,6 +34,10 @@
     font-size: 12pt;
   }
 
+  .submissions {
+    margin-top: 4rem;
+  }
+  
   .nom-body {
     grid-column: 2;
     grid-row: 1;

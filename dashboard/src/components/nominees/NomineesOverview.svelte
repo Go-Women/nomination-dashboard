@@ -8,7 +8,6 @@
     Button,
     Row,
   } from "carbon-components-svelte";
-  import { LogicalPartition } from "carbon-icons-svelte";
   import View from "carbon-icons-svelte/lib/Launch.svelte";
 
   export let rows: any;
@@ -65,8 +64,6 @@
           icon={View}
           href={"nominees/" + cell.value}
         />
-      {:else if cell.key === "category"}
-        {formatCategories(cell.value)}
       {:else}
         {cell.value}
       {/if}
