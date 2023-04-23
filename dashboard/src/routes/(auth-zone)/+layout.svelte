@@ -1,9 +1,9 @@
 <script lang="ts">  
-    import { onMount } from "svelte";
+  import { onMount } from "svelte";
   import Navigation from "../../components/Navigation.svelte";
   import { loggedInUser } from "../../stores";
   import { onAuthStateChanged, type User } from "firebase/auth";
-    import { auth } from "$lib/firebase/clientApp";
+  import { auth } from "$lib/firebase/clientApp";
   let errorImg = '/error.jpg';
 
   let name: string;

@@ -12,27 +12,31 @@ if (dev) {
 }
 
 export const load: PageServerLoad = async ({fetch, params, cookies}) => {
-  const user = cookies.get('user');
-  if (!user) throw error(401, "Unauthorized.");
-  const authRes = await fetch(
-    `https://nwhofapi.azurewebsites.net/api/getuserbyfirebaseid/${user}`,{headers:{'x-functions-key':FUNCTIONS_KEY}}
-  );
-  if (authRes.ok) {
-    let authInfo = (await authRes.json())[0];
-    if (authInfo['type'] === 'judge') throw error(401, "Unauthorized.");
-  } else {
-    throw error(authRes.status, 'An error occured while fetching data for this page.');
-  }
-  const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/${params.id}`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
-  if (res.ok) {
-    const judge = await res.json();
-    return {
-      props: {j: judge}
-    };
-  } else if (res.status == 404) {
+  const resJudge = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/${params.id}`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+  if (resJudge.ok) {
+    const judge = await resJudge.json();
+
+    const user = cookies.get('user');
+    if (!user) throw error(401, "Unauthorized.");
+    const authRes = await fetch(
+      `https://nwhofapi.azurewebsites.net/api/getuserbyfirebaseid/${user}`,{headers:{'x-functions-key':FUNCTIONS_KEY}}
+    );
+    if (authRes.ok) {
+      let authInfo = (await authRes.json())[0];
+      if (authInfo['type'] === 'judge' && authInfo['ID'] != judge.ID) throw error(401, "Unauthorized.");
+      return {
+        props: {
+          j: judge,
+          user: authInfo['type']
+        }
+      };
+    } else {
+      throw error(authRes.status, 'An error occurred while fetching data for this page.');
+    } 
+  } else if (resJudge.status == 404) {
     throw error(404, `The requested page does not exist on this server.`);
   } else {
-    throw error(res.status, 'An error occurred while fetching data for this page.');
+    throw error(resJudge.status, 'An error occurred while fetching data for this page.');
   }
 };
 

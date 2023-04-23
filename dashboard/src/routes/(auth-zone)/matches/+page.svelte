@@ -101,7 +101,6 @@
       if (subCat == "" || subCat == null) {
         subCat = nominee.subcategoryOther;
       }
-
       let data = {
         id: nominee.nomineeID,
         nomineeID: nominee.nomineeID,
@@ -109,7 +108,8 @@
         nomineeCategory: nominee.category,
         nomineeSubcategory: subCat,
         nomineeStatus: nominee.nomStatus,
-        nomineeCapacity: nominee.matchesAssigned + "/" + nominee.capacity
+        nomineeCapacity: nominee.matchesAssigned + "/" + nominee.capacity,
+        action: parseInt(nominee.capacity) - parseInt(nominee.matchesAssigned)
       };
 
       if (nominee.nomStatus != "None")

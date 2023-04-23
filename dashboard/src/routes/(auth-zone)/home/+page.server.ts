@@ -13,10 +13,11 @@ if (dev) {
 
 export const load: PageServerLoad = async ({fetch, cookies}) => {
   const user = cookies.get('user');
+  let authInfo;
   if (!user) throw error(401, "Unauthorized.");
   const authRes = await fetch(`https://nwhofapi.azurewebsites.net/api/getuserbyfirebaseid/${user}`,{headers:{'x-functions-key':FUNCTIONS_KEY}});
   if (authRes.ok) {
-    let authInfo = (await authRes.json())[0];
+    authInfo = (await authRes.json())[0];
     if (authInfo['type'] === 'judge' && JSON.parse(authInfo['info'])['judgeStatus'] !== 'j300') throw error(401, "Unauthorized.");
   } else {
     throw error(authRes.status, 'An error occured while fetching data for this page.');
@@ -26,7 +27,7 @@ export const load: PageServerLoad = async ({fetch, cookies}) => {
   const res2 = await fetch(`https://nwhofapi.azurewebsites.net/api/nominees`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   const res3 = await fetch(`https://nwhofapi.azurewebsites.net/api/judges`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   const res4 = await fetch(`https://nwhofapi.azurewebsites.net/api/matches`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
-  const res5 = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/${10}/matches`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+  const res5 = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/${authInfo["ID"]}/matches`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
 
   if (res1.ok && res2.ok && res3.ok && res4.ok) {
     const nominations = await res1.json();
@@ -41,7 +42,8 @@ export const load: PageServerLoad = async ({fetch, cookies}) => {
         nominees: nominees,
         judges: judges,
         matches: matches,
-        judgeMatches: jMatches
+        judgeMatches: jMatches,
+        user: authInfo['type']
       }
     };
   } else {

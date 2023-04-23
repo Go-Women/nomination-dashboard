@@ -35,6 +35,7 @@ module.exports = async function (context, req) {
                 case 'ACCEPT':
                     info['judgeStatus'] = 'j300';
                     info['previousJudge'] = true;
+                    utils.getCodes(info, 'judge');
                     active = true;
                     break;
                 case 'REJECT':

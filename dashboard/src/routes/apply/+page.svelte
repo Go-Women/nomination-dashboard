@@ -6,8 +6,8 @@
   import "carbon-components-svelte/css/all.css";
   import Login from "carbon-icons-svelte/lib/Login.svelte";
   import "../../css/index.css";
-    import { browserLocalPersistence, createUserWithEmailAndPassword, setPersistence, updateProfile, type UserCredential } from "firebase/auth";
-    import { auth } from "$lib/firebase/clientApp";
+  import { browserLocalPersistence, createUserWithEmailAndPassword, setPersistence, updateProfile, type UserCredential } from "firebase/auth";
+  import { auth } from "$lib/firebase/clientApp";
 
   // let theme = "g90";
 
@@ -148,7 +148,7 @@
       </FormGroup>
       <FormGroup>
         <h4>How many nominations would you be comfortable reviewing?</h4>
-        <p>Previous judges have resported spending 20-60 minutes reviewing each nomination.</p>
+        <p>Previous judges have reported spending 20-60 minutes reviewing each nomination.</p>
         <Slider
           name="capacity"
           min={1}
@@ -156,7 +156,7 @@
           value={5}
         />
       </FormGroup>
-      <TextArea name="recommendations" labelText="Please provide names and email addresses for other individuals you know who should be considered for the Panel of Judges. (Optional)" placeholder="Type here..." />
+      <TextArea name="potentialJudges" labelText="Please provide names and email addresses for other individuals you know who should be considered for the Panel of Judges. (Optional)" placeholder="Type here..." />
       <hr />
       <!-- TODO: make questions be values from database that way when they update database the form would also update the questions? -->
       <h4>I have the expertise/experience needed to be considered as a judge for the following areas:</h4>

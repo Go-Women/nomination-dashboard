@@ -11,7 +11,7 @@
     Grid,
   } from "carbon-components-svelte";
   export let data;
-  export let { j } = data.props;
+  export let { j, user } = data.props;
 </script>
 
 <main>
@@ -27,7 +27,7 @@
         <Grid>
           <Column>
             <Row><h1>Judge</h1></Row>
-            <Judge judge={j} />
+            <Judge judge={j} {user}/>
           </Column>
         </Grid>
       </Column>

@@ -20,11 +20,10 @@
   import Edit from "carbon-icons-svelte/lib/Edit.svelte";
   import Save from "carbon-icons-svelte/lib/Save.svelte";
   import Cancel from "carbon-icons-svelte/lib/Close.svelte";
-  // import { browserLocalPersistence, updateEmail, setPersistence, updateProfile, type UserCredential } from "firebase/auth";
-  // import { auth } from "$lib/firebase/clientApp";
+  import { browserLocalPersistence, updateEmail, setPersistence, updateProfile, type UserCredential } from "firebase/auth";
+  import { auth } from "$lib/firebase/clientApp";
   export let judge: any;
-  
-  var user = 'admin'; // TODO: replace this when auth is implemented
+  export let user: string;
 
   let name = `${judge.firstName} ${judge.lastName}`;
   let firstName = `${judge.firstName}`; // only judges can edit this
@@ -66,27 +65,33 @@
     judgeEdit = !judgeEdit;
   }
 
-  // const update = async () => {
-  //   setPersistence(auth, browserLocalPersistence);
-  //   await updateEmail(
-  //     auth.currentUser,
-  //     `${email}`
-  //   ).then(async (userCredential: UserCredential) => {
-  //     password = '';
-  //     firebaseID = userCredential.user.uid;
-  //     await updateProfile(
-  //       userCredential.user,
-  //       { displayName: `${firstName} ${lastName}` }
-  //     ).then(() => {
-  //       (document.getElementById('registerForm') as HTMLFormElement).submit();
-  //     });
-  //   }).catch((error) => {
-  //     data.authError = {
-  //       code: error.code,
-  //       message: error.message
-  //     };
-  //   });
-  // }
+  let data: { authError: { code: string; message: string } | null } = {
+    authError: null,
+  };
+
+  const update = async () => {
+    setPersistence(auth, browserLocalPersistence);
+    if (auth.currentUser) {
+      await updateEmail(auth.currentUser,`${email}`).then(() => {
+        console.log("Email updated!")
+      }).catch((error) => {
+        data.authError = {
+          code: error.code,
+          message: error.message
+        };
+      }); 
+      updateProfile(auth.currentUser, {
+        displayName: `${firstName} + ${lastName}`
+      }).then(() => {
+        console.log("Profile updated!");
+      }).catch((error) => {
+        data.authError = {
+          code: error.code,
+          message: error.message
+        };
+      });
+    }
+  }
 </script>
 
 <div class="bx--content--overview">
@@ -175,11 +180,11 @@
           <FormGroup>
             <br /><strong>Capacity</strong>
             <NumberInput
-              min={4}
+              min={1}
               name="capacity"
               bind:value={capacity}
-              invalidText="Number must be greater than 4."
-              label="minimum of 4"
+              invalidText="Number must be greater than 1."
+              label="minimum of 1"
             />
             <input type="hidden" name="matchesAssigned" value={matchesAssigned}/>
 
@@ -203,9 +208,7 @@
           {#if user === 'admin'}
             <Button iconDescription="Save" type="submit" icon={Save}>Save</Button>
           {:else if user === 'judge'}
-            <!-- TODO: implement this with auth -->
-            <Button iconDescription="Save" type="submit" icon={Save}>Save</Button>
-            <!-- <Button iconDescription="Save" type="submit" icon={Save} on:click={(e) => { e.preventDefault(); update(); }}>Save</Button> -->
+            <Button iconDescription="Save" type="submit" icon={Save} on:click={(e) => { e.preventDefault(); update(); }}>Save</Button>
           {/if}
         </Form>
       {:else}

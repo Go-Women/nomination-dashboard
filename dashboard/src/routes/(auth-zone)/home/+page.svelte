@@ -19,8 +19,8 @@
     "https://www.womenofthehall.org/wp-content/themes/NWHoF/assets/imgs/logo-nwhof.png";
 
   export let data;
-  export let { nominations, nominees, judges, matches, judgeMatches } = data.props;
-  const type:string = 'judge'; // TODO: this will be implemented based on auth
+  export let { nominations, nominees, judges, matches, judgeMatches, user, id } = data.props;
+  const type:string = user;
 
   export let artCount: number = 0;
   export let athleticsCount: number = 0;

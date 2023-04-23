@@ -1,5 +1,4 @@
 import type { Actions } from "./$types";
-
 import { dev } from "$app/environment";
 
 let FUNCTIONS_KEY: string;
@@ -45,6 +44,7 @@ export const actions: Actions = {
           break;
       }        
     }
+    info["matchesAssigned"] = 0;
     info["judgeStatus"] = "j100";
     data["info"] = info;
     const res = await fetch('https://nwhofapi.azurewebsites.net/api/judges', {
