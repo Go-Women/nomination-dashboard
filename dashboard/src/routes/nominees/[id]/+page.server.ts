@@ -43,7 +43,7 @@ export const load: PageServerLoad = async ({fetch, params}) => {
 };
 
 export const actions: Actions = {
-  default: async ({request, params}) => {
+  updateNomination: async ({request, params}) => {
     const formData = await request.formData();
     const data: { [name: string]: any } = {};
     for (let field of formData) {
@@ -56,6 +56,23 @@ export const actions: Actions = {
       body: JSON.stringify(data),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
+      }
+    });
+  },
+  updateNominee: async ({request, params}) => {
+    const formData = await request.formData();
+    const data: { [name: string]: any } = {};
+    for (let field of formData) {
+      const [key, value] = field;
+      data[key] = value;
+    }
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/nominees/${params.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
       }
     });
   }
