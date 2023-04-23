@@ -20,8 +20,8 @@ module.exports = async function (context, req) {
 
         const rows = await db.query("INSERT INTO Users SET ?", judge);
         context.res = {
-            status: judge,
-            body: nomination,
+            status: 200,
+            body: judge,
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -29,7 +29,7 @@ module.exports = async function (context, req) {
     } catch (err) {
         context.res = {
             status: 500,
-            body: "A database error occured."
+            body: "A database error occurred."
         };
     } finally {
         await db.close();
