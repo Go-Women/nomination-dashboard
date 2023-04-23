@@ -26,7 +26,7 @@
       let data = {
         id: nominee.ID,
         name: nominee.firstName + " " + nominee.lastName,
-        status: nominee.status,
+        status: nominee.nomStatus,
         yob: nominee.yob,
         category: nominee.category,
         subcategory: subcategory,

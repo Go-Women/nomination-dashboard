@@ -25,7 +25,7 @@ module.exports = async function (context, req) {
     } catch (err) {
         context.res = {
             status: 500,
-            body: "A database error occured."
+            body: "A database error occurred."
         };
     } finally {
         await db.close();
