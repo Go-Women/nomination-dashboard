@@ -6,7 +6,7 @@
 
   export let data;
   export let { ID, match, nominee, nominations, keys }: any = data.props;
-  export let review = true;
+  export let review:boolean = true;
 
   let q1ck: string[] = [];
   let q2ck: string[] = [];

@@ -116,7 +116,7 @@
         <Column>{nominee.subcategory}</Column>
       </Row>
     {/if}
-    {#if !nomineeEdit}
+    {#if !nomineeEdit && !review}
       <div class="btn-right">
         <Row>
           <Button iconDescription="Edit" icon={Edit} on:click|once={handleEdit}>Edit</Button>
