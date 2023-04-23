@@ -1,7 +1,8 @@
 <script lang="ts">
   import {
       Button, Checkbox, ComboBox, Dropdown, Form,
-      FormGroup, NumberInput, RadioButton, RadioButtonGroup, Select, SelectItem, SideNavItems, Slider, TextArea, TextInput
+      FormGroup, NumberInput, RadioButton, RadioButtonGroup, Select, SelectItem, SideNavItems, Slider, TextArea, TextInput,
+      InlineNotification
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
   import Login from "carbon-icons-svelte/lib/Login.svelte";
@@ -42,7 +43,7 @@
     return pn;
   };
 
-  
+  export let form;
 </script>
 
 <main>
@@ -72,6 +73,14 @@
           <br />All nominations for the {cohort} Induction class will be judged between May 1 and June 15, {cohort-1}.</strong>
         </p>
         <hr />
+        {#if form?.success} 
+          <InlineNotification
+            lowContrast
+            kind="success"
+            title="Success:"
+            subtitle="Your application has been submitted successfully."
+          />
+        {/if}
       </div>
       <h3>About You</h3>
       <FormGroup>
