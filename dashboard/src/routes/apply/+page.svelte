@@ -85,7 +85,7 @@
   </div>
 
   <div id="form-container">
-    <form method="POST" id="registerForm">
+    <Form method="POST" id="registerForm">
       <div id="form-blurb">
         <p>
           <strong>
@@ -266,7 +266,7 @@
           title={data.authError.code}      
         />
       {/if}
-    </form>
+    </Form>
   </div>
 
   <div id="col-3">
