@@ -94,7 +94,7 @@ export const actions: Actions = {
     }
 
     data["data"] = JSON.stringify(verdict);
-    console.log(data);
+    // console.log(data);
     const res = await fetch('https://nwhofapi.azurewebsites.net/api/nominees/verdict', {
       method: 'PATCH',
       body: JSON.stringify(data),

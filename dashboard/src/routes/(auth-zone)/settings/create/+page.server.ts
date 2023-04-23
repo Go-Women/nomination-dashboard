@@ -63,7 +63,7 @@ export const actions: Actions = {
     data["info"] = info;
     data['type'] = 'admin';
     data['active'] = 1;
-    console.log(JSON.stringify(data));
+    // console.log(JSON.stringify(data));
     const res = await fetch('https://nwhofapi.azurewebsites.net/api/judges', {
       method: 'POST',
       body: JSON.stringify(data),

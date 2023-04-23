@@ -87,7 +87,7 @@ export const actions: Actions = {
     }
     data["info"] = info;
     data["info"] = JSON.stringify(info);
-    console.log(data);
+    // console.log(data);
     const res = await fetch(`https://nwhofapi.azurewebsites.net/api/judges/${params.id}`, {
       method: 'PATCH',
       body: JSON.stringify(data),

@@ -31,8 +31,6 @@
     { key: "subcategory", value: "Subcategory"},
     { key: "status", value: "Status"}
   ];
-
-  const profileLink = `judges/${judgeMatches[0].judgeID}`;
 </script>
   
 <main class="bx--content-main">
@@ -57,5 +55,4 @@
         {/if}
         </svelte:fragment>
     </DataTable>
-    <br/><Button href={profileLink}>Profile</Button>
 </main>
