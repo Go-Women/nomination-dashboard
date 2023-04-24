@@ -14,7 +14,7 @@ if (dev) {
 export const load: PageServerLoad = async ({fetch, cookies}) => {
   const user = cookies.get('user');
   let authInfo;
-  let jMatches;
+  let jMatches = false;
   if (!user) throw error(401, "Unauthorized.");
   const authRes = await fetch(`https://nwhofapi.azurewebsites.net/api/getuserbyfirebaseid/${user}`,{headers:{'x-functions-key':FUNCTIONS_KEY}});
   if (authRes.ok) {

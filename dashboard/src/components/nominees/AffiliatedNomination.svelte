@@ -257,10 +257,12 @@
         </Column>
       </Row>
     {/if}
-  <div id="edit-button">
-    <Button iconDescription="Edit" icon={Edit} on:click|once={handleEdit}
-    >Edit</Button>
+  {#if !review}
+    <div id="edit-button">
+      <Button iconDescription="Edit" icon={Edit} on:click|once={handleEdit}
+      >Edit</Button>
     </div>
+  {/if}
 </Grid>
   {/if}
   </div>
