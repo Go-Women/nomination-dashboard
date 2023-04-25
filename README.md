@@ -8,9 +8,6 @@ The following commands are to be run in the `/backend` directory.
 ### Setup
 1. Follow [Backend Setup README file](./backend/README.md)
 
-### Run for development
-Run `npm run dev`
-
 <hr>
 
 ## Frontend
