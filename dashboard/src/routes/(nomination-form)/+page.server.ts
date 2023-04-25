@@ -27,5 +27,6 @@ export const actions: Actions = {
         'x-functions-key': FUNCTIONS_KEY
       }
     });
+    return { success: res.ok };
   } 
 };

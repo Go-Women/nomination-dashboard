@@ -4,9 +4,6 @@
   export let activeCount: number;
   export let reviewCount: number;
   export let rejectedCount: number;
-  export let matchedCount = 0;
-  export let inProgressCount = 0;
-  export let completedCount = 0;
 </script>
 
 <main class="bx--content--overview">

@@ -24,7 +24,8 @@
     { key: "id", empty: true },
     { key: "name", value: "Name" },
     { key: "category", value: "Category" },
-    { key: "subcategory", value: "Subcategory"}
+    { key: "subcategory", value: "Subcategory"},
+    { key: "status", value: "Status"}
   ];
   let categories = [
     { id: 0, text: "Art" },
@@ -64,8 +65,6 @@
           icon={View}
           href={"nominees/" + cell.value}
         />
-      {:else if cell.key === "category"}
-        {formatCategories(cell.value)}
       {:else}
         {cell.value}
       {/if}

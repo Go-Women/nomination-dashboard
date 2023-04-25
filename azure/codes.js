@@ -70,29 +70,20 @@ module.exports = {
     // nominee/nomination status
     "n100": "Created",
     "n200": "Reviewed", // Ready to be matched/unmatched nominees
-    // "n300": "Review Match", // suggested matches generated
-    // "n400": "Matched", //  matched confirmed
     "n300": "Selected", // nominated into the hall
-    "n400": "Rejected", // rejected from the hall
+    "n400": "Rejected", // rejected from the hall (initial nomination; nominee when a not all 3 judges say yes)
+    "n500": "Capacity", // nominee at capacity
 
     // matching status
     "m100": "Review",   // when match suggestion is created
     "m200": "Manual Review",  // when a nominee category is other
     "m300": "Matched",  // match confirmed
-    "m400": "Unmatched",    // manual review
-    "m500": "Judge Reviewed",
+    "m400": "Unmatched",    // archive of matches that were undone
+    "m500": "Judge Reviewed",   // when a candidate is reviewed by a judge
 
     // judge status
     "j100": "Applied",
-    "j200": "Previous Judge",
     "j300": "Active", // any judge that is accepted and has no assigned matched
     "j400": "Rejected",
-    // "j500": "Review Match", // suggested matches generated
-    // "j600": "Matched",   // when a judge has a match
-    // "j700": "Manual Review", // when a judge has been selected for manual review for matching
-    
-    // (These are going to have to me stored multiple times based on the number of nominees assigned)
-    "js100": "Opened",   // when an assigned judge opens a nominee
-    "js200": "In-Progress",  // when an assigned judge saves a nominee but does submit the review
-    "js300": "Completed", // when an assigned judge completes
+    "j500": "Capacity", // when a judge is at capacity
 };
