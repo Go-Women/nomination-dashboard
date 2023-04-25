@@ -107,14 +107,17 @@
     <Tile>
       {#if judgeEdit === true}
         <StructuredListRow>
-          <StructuredListCell 
-            ><strong><h4>Categories</h4></strong></StructuredListCell
-          >
+          <StructuredListCell><strong>Categories</strong></StructuredListCell>
           <StructuredListCell>{category}</StructuredListCell>
-          <StructuredListCell 
-            ><strong><h4>Subcategories</h4></strong></StructuredListCell
-          >
+          <StructuredListCell><strong>Subcategories</strong></StructuredListCell>
           <StructuredListCell>{subcategory}</StructuredListCell>
+          {#if user === 'admin'}
+            <StructuredListCell><strong>Email</strong></StructuredListCell>
+            <StructuredListCell>{email}</StructuredListCell>
+            <input type="hidden" name="firstName" value={firstName} />
+            <input type="hidden" name="lastName" value={lastName} />
+            <input type="hidden" name="email" value={email} />
+          {/if}
         </StructuredListRow>
         <Form method="POST" action="?/edit" id="editJudge">
           <input type="hidden" name="category" value={category} />
@@ -128,14 +131,10 @@
               <TextInput type="text" name="lastName" bind:value={lastName} />
               <br /><strong>Email</strong>
               <TextInput type="email" name="email" bind:value={email} />
+              <input type="hidden" name="deadline" value={deadline} />
+              <input type="hidden" name="active" value={active} />
+              <input type="hidden" name="previousJudge" value={previousJudge} />
             {:else if user === 'admin'}
-              <input type="hidden" name="firstName" value={firstName} />
-              <input type="hidden" name="lastName" value={lastName} />
-              <input type="hidden" name="email" value={email} />
-            {/if}
-          </FormGroup>
-          <FormGroup>
-            {#if user === 'admin'}
               <Grid>
                 <Row>
                   <Checkbox
@@ -158,10 +157,6 @@
                     /> 
                 </Row>
               </Grid>
-            {:else if user === 'judge'}
-              <input type="hidden" name="deadline" value={deadline} />
-              <input type="hidden" name="active" value={active} />
-              <input type="hidden" name="previousJudge" value={previousJudge} />
             {/if}
           </FormGroup>
           <FormGroup>
