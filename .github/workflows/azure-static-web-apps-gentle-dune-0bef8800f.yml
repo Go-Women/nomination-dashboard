@@ -31,6 +31,13 @@ jobs:
           api_location: "./dashboard/build/server" # Api source code path - optional
           output_location: "build/static" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
+        env:
+          APIKEY: ${{ secrets.PUBLIC_FB_API_KEY }}
+          AUTHDOMAIN: ${{ secrets.PUBLIC_FB_AUTH_DOMAIN }}
+          PROJECTID: ${{ secrets.PUBLIC_FB_PROJECT_ID }}
+          STORAGEBUCKET: ${{ secrets.PUBLIC_FB_STORAGE_BUCKET }}
+          MESSAGINGSENDERID: ${{ secrets.PUBLIC_FB_MESSAGING_SENDER_ID }}
+          APPID: ${{ secrets.PUBLIC_FB_APP_ID }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
