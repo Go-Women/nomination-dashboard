@@ -1,0 +1,19 @@
+{
+    "bindings": [
+      {
+        "name": "req",
+        "route": "judges/{id}/matches",
+        "authLevel": "function",
+        "methods": [
+          "get"
+        ],
+        "direction": "in",
+        "type": "httpTrigger"
+      },
+      {
+        "type": "http",
+        "direction": "out",
+        "name": "res"
+      }
+    ]
+  }

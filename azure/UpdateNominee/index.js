@@ -1,8 +1,7 @@
-const utils = require('../utils.js');
 const { makeDb } = require('../asyncdb.js');
 
 module.exports = async function (context, req) {
-    const judgeId = context.bindingData.id;
+    const nomID = context.bindingData.id;
 
     // Set up a connection to the MySQL database
     const db = makeDb({
@@ -15,53 +14,29 @@ module.exports = async function (context, req) {
     });
     
     try {
+        const firstName = `${req.body.firstName}`;
+        const lastName = `${req.body.lastName}`;
+        const nomStatus = `${req.body.nomStatus}`;
 
-        // nomination constructor
-        const Nomination = function(nomination) {
-            this.date = nomination.date;
-            this.authorFirst = nomination.authorFirst;
-            this.authorLast = nomination.authorLast;
-            this.authorEmail = nomination.authorEmail;
-            this.nomFirst = nomination.nomFirst;
-            this.nomLast = nomination.nomLast;
-            this.nomYOB = nomination.nomYOB;
-            this.cohort = nomination.cohort;
-            this.category = nomination.category;
-            this.subcategory = nomination.subcategory;
-            this.subcategoryOther = nomination.subcategoryOther;
-            this.nomQ1 = nomination.nomQ1;
-            this.nomQ2 = nomination.nomQ2;
-            this.nomQ3 = nomination.nomQ3;
-            this.subcategoryOther = nomination.subcategoryOther;
-            this.nomQ1Description = nomination.nomQ1Description;
-            this.nomQ2Description = nomination.nomQ2Description;
-            this.nomQ3Description = nomination.nomQ3Description;
-            this.nomDeceased = nomination.nomDeceased;
-            this.nomAchieved = nomination.nomAchieved;
-            this.nomAdditionalInfo = nomination.nomAdditionalInfo;
-        };
-        
-        const nomID = req.body.nomID;
-        const nomination = new Nomination(req.body);
-
-        await db.query(sqlQuery, [
-            nomination.nomQ1Description, 
-            nomination.nomQ2Description, 
-            nomination.nomQ3Description, 
-            nomID
-        ]);
-
-        context.res = {
-            status: 200,
-            body: "OK",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
+        const rows = await db.query(sqlQuery, [firstName, lastName, nomStatus, nomID]);
+        if (rows.length != 0) {
+            context.res = {
+                status: 200,
+                body: "OK",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+        } else {
+            context.res = {
+                status: 404,
+                body: "Not Found"
+            };
+        }        
     } catch (err) {
         context.res = {
             status: 500,
-            body: "A database error occured."
+            body: "A database error occurred."
         };
     } finally {
         await db.close();
@@ -71,11 +46,11 @@ module.exports = async function (context, req) {
 
 const sqlQuery = `
 UPDATE 
-    Nominations 
-SET 
-    nomQ1Description = ?,
-    nomQ2Description = ?,
-    nomQ3Description = ? 
-WHERE 
-    id = ?
+    Nominees
+SET
+    firstName = ?,
+    lastName = ?,
+    nomStatus = ?
+WHERE
+    ID = ?
 `;

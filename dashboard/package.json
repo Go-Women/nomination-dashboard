@@ -27,7 +27,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		
+		"firebase": "^9.20.0",
 		"fuzzysort": "^2.0.4"
 	}
 }

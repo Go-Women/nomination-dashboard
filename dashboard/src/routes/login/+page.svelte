@@ -1,25 +1,63 @@
 <script lang="ts">
-  import { Button, Form, FormGroup, PasswordInput, TextInput } from "carbon-components-svelte";
-  import "carbon-components-svelte/css/all.css";
-  import Login from "carbon-icons-svelte/lib/Login.svelte";
-  import "../../css/index.css";
+  import { auth } from "$lib/firebase/clientApp";
+  import { goto } from "$app/navigation";
+  import { loggedInUser } from "../../stores";
+  import {
+    browserLocalPersistence,
+    onAuthStateChanged,
+    setPersistence,
+    signInWithEmailAndPassword,
+    type UserCredential,
+  } from "firebase/auth";
+    import { Button, Form, FormGroup, InlineNotification, PasswordInput, TextInput } from "carbon-components-svelte";
+    import { Login } from "carbon-icons-svelte";
 
+  let data: { authError: { code: string; message: string } | null } = {
+    authError: null,
+  };
 
+  let email = '';
+  let password = '';
+  let firebaseID = '';
+
+  const signIn = async () => {
+    setPersistence(auth, browserLocalPersistence);
+    signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    ).then(async (userCredential: UserCredential) => {
+      $loggedInUser = userCredential.user;
+      firebaseID = userCredential.user.uid;
+      password = '';
+    }).then(() => {
+      (document.getElementById('loginForm') as HTMLFormElement).submit();
+    }).catch((error) => {
+      data.authError = {
+        code: error.code,
+        message: error.message,
+      };
+    });
+  };
 </script>
 
 <main>
-
   <div id="login-form">
     <div id="login-label">Portal Login</div>
-    <Form>
+    <form method="POST" id="loginForm">
       <FormGroup>
-        <TextInput name="username" labelText="Username" placeholder="Enter Username..." />
-        <PasswordInput name="password" labelText="Password" placeholder="Enter Password..." />
+        <TextInput name="email" type="email" bind:value={email} labelText="Email" placeholder="Enter Email..." />
+        <PasswordInput name="password" bind:value={password} labelText="Password" placeholder="Enter Password..." />
+        <input type="hidden" name="firebaseID" bind:value={firebaseID} />
       </FormGroup>
-      <Button type="submit" icon={Login} href="/home">Login</Button>
-    </Form>
+      <Button type="submit" icon={Login} on:click={(e) => { e.preventDefault(); signIn(); }}>Login</Button>
+    </form>
+    {#if data.authError}
+      <InlineNotification
+        title={data.authError.code}      
+      />
+    {/if}
   </div>
-
 </main>
 
 <style>
@@ -40,5 +78,4 @@
     font-size: 2.5em;
     margin-bottom: 1em;
   }
-
 </style>

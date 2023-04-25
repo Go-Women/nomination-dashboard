@@ -1,11 +1,16 @@
 <script lang="ts">
   import {
       Button, Checkbox, ComboBox, Form,
-      FormGroup, NumberInput, RadioButton, RadioButtonGroup, TextArea, TextInput
+      FormGroup, NumberInput, RadioButton, RadioButtonGroup, TextArea, TextInput,
+      InlineNotification
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
   import Login from "carbon-icons-svelte/lib/Login.svelte";
   import "../../css/index.css";
+  import { auth } from "$lib/firebase/clientApp";
+  import { onMount } from "svelte";
+  import { onAuthStateChanged } from "firebase/auth";
+  import { loggedInUser } from "../../stores";
 
   let cohort = "2025";
   let deadline = "2023/12/31";
@@ -37,7 +42,18 @@
     return item.text.toLowerCase().includes(value.toLowerCase());
   }
   let selectedYear = `${currentYear}`;
+
+  onMount(async () => {
+    onAuthStateChanged(auth, (user) => {
+      // essentially the end of the logout redirect to /
+      if (!user) $loggedInUser = null;
+    });
+  })
+
   const recap = `${"6LcWfZMlAAAAALLZClm5DBoA5mvNRGntmJs6FdCY"}`;
+
+  export let form;
+  
 </script>
 
 <main>
@@ -67,6 +83,14 @@
       about nominations, please email us at <a href="mailto:admin@womenofthehall.org">admin@womenofthehall.org</a>.
     </p>
     <p><em>All submitted materials become property of the National Women's Hall of Fame.</em></p>
+    {#if form?.success} 
+      <InlineNotification
+        lowContrast
+        kind="success"
+        title="Success:"
+        subtitle="Your nomination has been submitted."
+      />
+    {/if}
   </div>
 
   <div id="form-container">
@@ -244,7 +268,7 @@
       <TextArea name="nomAdditionalInfo" labelText="Please use this space to communicate any additional information about this nomination. (Optional)" placeholder="Type here..." />
       <div id="submit-button">
         <!-- <div class="g-recaptcha" data-sitekey={recap}></div> -->
-        <Button type="submit">Submit</Button>
+        <Button type="submit" on:click={() => (submitted = !submitted)}>Submit</Button>
       </div>
     </Form>
   </div>

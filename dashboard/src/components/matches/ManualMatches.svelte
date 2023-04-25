@@ -66,16 +66,30 @@
     open = true;
     judge = judges[id];
   };
+  
+  function getCapacity(id: any) {
+    for (const key in rows) {
+      if (rows[key].id == id)
+        return rows[key].action;
+    }
+    return -1;
+  }
+  
 </script>
 
 <main class="bx--content-main">
-  <br/>
-  <!-- TODO: base this on current matchesAssigned value for checking not above 3 assigned -->
-  {#if selectedNomineeId.length == 0 || selectedJudgeIds.length == 0 || selectedJudgeIds.length > 3}
+  <br/>  
+  {#if selectedNomineeId.length == 0}
+      <InlineNotification
+      lowContrast
+      kind="warning"
+      title="Please select a Nominee."
+    />
+  {:else if selectedNomineeId.length == 0 || selectedJudgeIds.length == 0 || (selectedJudgeIds.length > getCapacity(selectedNomineeId) && getCapacity(selectedNomineeId) != -1)}
     <InlineNotification
       lowContrast
       kind="warning"
-      title="Please select a Nominee and up to THREE Judges to Match with."
+      title="Please select up to {getCapacity(selectedNomineeId)} Judges to Match with the Nominee selected."
     />
   {/if}
   <DataTable
@@ -101,7 +115,7 @@
           href={"nominees/" + cell.value}
         />
       {:else if cell.key === "action"}
-        {#if selectedNomineeId.length !== 0 && selectedJudgeIds.length !== 0 && selectedJudgeIds.length < 4}
+        {#if selectedNomineeId.length !== 0 && selectedJudgeIds.length !== 0 && selectedJudgeIds.length < cell.value.length}
           <div class="action-zone">
               <form method="POST" action="?/match">
                 <input type="hidden" name="nominee" value={selectedNomineeId}>

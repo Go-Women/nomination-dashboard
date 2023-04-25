@@ -1,5 +1,4 @@
 import type { Actions } from "./$types";
-
 import { dev } from "$app/environment";
 
 let FUNCTIONS_KEY: string;
@@ -34,12 +33,18 @@ export const actions: Actions = {
         case "lastName":
           data[key] = value;
           break;
+        case "firebaseID":
+          data[key] = value;
+          break;
+        case "password":
+            break;
         default:
           info[key] = value;
           data["info"] = info;
           break;
       }        
     }
+    info["matchesAssigned"] = 0;
     info["judgeStatus"] = "j100";
     data["info"] = info;
     const res = await fetch('https://nwhofapi.azurewebsites.net/api/judges', {
@@ -50,5 +55,6 @@ export const actions: Actions = {
         'x-functions-key': FUNCTIONS_KEY
       }
     });
+    return { success: res.ok };
   } 
 };
