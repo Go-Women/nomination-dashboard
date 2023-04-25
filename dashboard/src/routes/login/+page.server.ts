@@ -10,7 +10,8 @@ export const actions: Actions = {
       const [key, value] = field;
       data[key] = value;
     }
-    cookies.set('user', data['firebaseID'], { path: '/'});
+    cookies.set('user', data['firebaseID'], { path: '/', secure: false });
+    await new Promise((n) => setTimeout(n, 250)); // ensure cookie has time to save(?)
     throw redirect(301, '/home');
   }
 };
