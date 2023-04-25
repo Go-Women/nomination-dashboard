@@ -201,8 +201,8 @@
           <Checkbox name="subcategory" bind:group={contribsSub} value="s701" labelText="Astronomy" />
           <Checkbox name="subcategory" bind:group={contribsSub} value="s702" labelText="Architecture" />
           <Checkbox name="subcategory" bind:group={contribsSub} value="s703" labelText="Biology" />
-          <Checkbox name="subcategory" bind:group={contribsSub} value="s704" labelText="Chemestry" />
-          <Checkbox name="subcategory" bind:group={contribsSub} value="s705" labelText="Climate / Earch Science" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s704" labelText="Chemistry" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s705" labelText="Climate / Earth Science" />
           <Checkbox name="subcategory" bind:group={contribsSub} value="s706" labelText="Computer Science" />
           <Checkbox name="subcategory" bind:group={contribsSub} value="s707" labelText="Mathematics" />
           <Checkbox name="subcategory" bind:group={contribsSub} value="s708" labelText="Medicine" />
@@ -227,7 +227,7 @@
         <TextArea name="nomQ1Description" labelText="Please briefly explain how your nominee meets this requirement" placeholder="Type here..." required />
         <input type="hidden" name="nomQ1" bind:value={q1ck}>
       </FormGroup>
-      <h4>Question 2: Has the nominee's achievements had significicant national and/or global impact? (Local/Regional achievements do not qualify)</h4>
+      <h4>Question 2: Has the nominee's achievements had significant national and/or global impact? (Local/Regional achievements do not qualify)</h4>
       <FormGroup legendText="Check the boxes if you agree with the statements.">
         <Checkbox name="nomQ2" bind:group={q2ck} value="q201" labelText="The nominee had a significant impact on their field of accomplishment" />
         <Checkbox name="nomQ2" bind:group={q2ck} value="q202" labelText="The nominee's contributions inspired change, either within their field or for society as a whole" />
