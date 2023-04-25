@@ -268,7 +268,7 @@
       <TextArea name="nomAdditionalInfo" labelText="Please use this space to communicate any additional information about this nomination. (Optional)" placeholder="Type here..." />
       <div id="submit-button">
         <!-- <div class="g-recaptcha" data-sitekey={recap}></div> -->
-        <Button type="submit" on:click={() => (submitted = !submitted)}>Submit</Button>
+        <Button type="submit">Submit</Button>
       </div>
     </Form>
   </div>
