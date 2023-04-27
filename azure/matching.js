@@ -1,4 +1,3 @@
-const Match = require("./matches.model");
 var judges = []; // original list of judges needing matches (used to store judge info for match)
 var nominees = []; // original list of nominees needing matching (used to store nominee info for match)
 var nomineesReview = new Set(); // a set of nominee IDs
@@ -37,10 +36,10 @@ function nomineeManualReview(id, noMatch) {
  */
 function isMatched(currentJudge, currentNominee, judges) {
   // checks the already approved judges
-  if (currentMatches[currentNominee] != undefined) {
+  if (currentMatches[currentNominee] !== undefined) {
     for (const i in currentMatches[currentNominee]) {
       if (currentMatches[currentNominee].includes(currentJudge.toString())) return true;
-    };
+    }
   }
 
   if (judges) {
@@ -77,7 +76,7 @@ function updateCapacity(judge, nominee) {
 function tryMatch(nominee, nomCatSub, judges, checkCat) {
   for (let y in judges) {
     const judge = judges[y];
-      if (nomCatSub != null) {
+      if (nomCatSub !== null) {
         if (judge.judgeMatchesAssigned < judge.judgeCapacity) {
           // then check might not be necessary but we could do some error handling instead
           for (const nomCat of nomCatSub) {
@@ -155,7 +154,7 @@ function generateMatches() {
       }
     }
   }
-};
+}
 
 /**
  * creates a match object that will be sent for the front end display for a suggested match
@@ -189,13 +188,13 @@ function getMatchDetails(matches) {
   }
 
   return matchDetails;
-};
+}
 
 function populateCurrentMatches(currMatches) {
   for (var match of currMatches) {
     currentMatches[match.nomineeID] = match.judgeIDs.split(',')
-  };
-};
+  }
+}
 
 // Dataset from GET /matches/data:
 exports.mainMatching = (matches, currMatches) => {
@@ -226,7 +225,7 @@ exports.mainMatching = (matches, currMatches) => {
     for (const judge in nomMatch) {
       match.push([parseInt(nominee), nomMatch[judge], "m100"]);
     }
-  };
+  }
 
   const matchDetails = getMatchDetails(match);
   return matchDetails;

@@ -1,7 +1,7 @@
+const utils = require('../utils.js');
 const { makeDb } = require('../asyncdb.js');
 
 module.exports = async function (context, req) {
-    const cohortID = context.bindingData.id;
 
     // Set up a connection to the MySQL database
     const db = makeDb({
@@ -14,26 +14,19 @@ module.exports = async function (context, req) {
     });
     
     try {
-        const rows = await db.query("SELECT * FROM Cohort WHERE ID = ?", cohortID);
-        if (rows.length > 0) {
-            const cohort = rows[0];
-            context.res = {
-                status: 200,
-                body: cohort,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-        } else {
-            context.res = {
-                status: 404,
-                body: "Cohort not found."
-            };
-        }
+        const userId = context.bindingData.id;
+        const rows = await db.query("SELECT * FROM Users WHERE firebaseID = ?", userId);
+        context.res = {
+            status: 200,
+            body: rows,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
     } catch (err) {
         context.res = {
             status: 500,
-            body: "A database error occured."
+            body: err.message
         };
     } finally {
         await db.close();

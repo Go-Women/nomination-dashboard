@@ -1,8 +1,7 @@
+const utils = require('../utils.js');
 const { makeDb } = require('../asyncdb.js');
 
 module.exports = async function (context, req) {
-    const cohortID = context.bindingData.id;
-
     // Set up a connection to the MySQL database
     const db = makeDb({
         host: process.env.MYSQL_CONNECTION_URL,
@@ -14,7 +13,7 @@ module.exports = async function (context, req) {
     });
     
     try {
-        const rows = await db.query("SELECT * FROM Cohort WHERE ID = ?", cohortID);
+        const rows = await db.query(sqlQuery);
         if (rows.length > 0) {
             const cohort = rows[0];
             context.res = {
@@ -40,3 +39,17 @@ module.exports = async function (context, req) {
         context.done();
     }
 }
+
+const sqlQuery = `
+SELECT *
+from cohort
+WHERE id = (
+        SELECT id
+        FROM (
+                SELECT id
+                FROM Cohort
+                ORDER BY id DESC
+                LIMIT 1
+            ) AS t
+    )
+`;

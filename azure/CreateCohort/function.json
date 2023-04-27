@@ -1,19 +1,19 @@
-{
-    "bindings": [
-      {
-        "name": "req",
-        "route": "settings",
-        "authLevel": "function",
-        "methods": [
-          "post"
-        ],
-        "direction": "in",
-        "type": "httpTrigger"
-      },
-      {
-        "type": "http",
-        "direction": "out",
-        "name": "res"
-      }
-    ]
-  }
+﻿{
+  "bindings": [
+    {
+      "name": "req",
+      "route": "settings/cohorts",
+      "authLevel": "function",
+      "methods": [
+        "post"
+      ],
+      "direction": "in",
+      "type": "httpTrigger"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    }
+  ]
+}

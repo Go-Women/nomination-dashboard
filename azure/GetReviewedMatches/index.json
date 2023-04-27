@@ -1,4 +1,5 @@
 const utils = require('../utils.js');
+const matching = require('../matching.js');
 const { makeDb } = require('../asyncdb.js');
 
 module.exports = async function (context, req) {
@@ -13,17 +14,16 @@ module.exports = async function (context, req) {
     });
     
     try {
-        const nomination = req.body;
-        const currentCohort = (await db.query(cohortQuery))[0].ID;
+        let matches = await db.query(sqlQuery1);
+        if (result.length === 0) {
+            result = [{
+                matchStatus: 'Unmatched'
+            }];
+        }
 
-        nomination['cohort'] = nomination['cohort'] || currentCohort;
-        nomination['subcategory'] = nomination['subcategory'] || null;
-        nomination['subcategoryOther'] = nomination['subcategoryOther'] || null;
-        
-        const rows = await db.query("INSERT INTO Nominations SET ?", nomination);
         context.res = {
             status: 200,
-            body: nomination,
+            body: result,
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -31,7 +31,7 @@ module.exports = async function (context, req) {
     } catch (err) {
         context.res = {
             status: 500,
-            body: "A database error occured."
+            body: err.message
         };
     } finally {
         await db.close();
@@ -39,16 +39,17 @@ module.exports = async function (context, req) {
     }
 }
 
-const cohortQuery = `
-SELECT *
-from cohort
-WHERE id = (
-        SELECT id
-        FROM (
-                SELECT id
-                FROM Cohort
-                ORDER BY id DESC
-                LIMIT 1
-            ) AS t
-    )
+const sqlQuery1 = `
+SELECT 
+	*
+FROM
+	Matches AS m
+	INNER JOIN 
+		Nominees AS n
+			ON m.nomineeID = n.ID
+	INNER JOIN 
+		Users AS j
+			ON m.judgeID = j.ID
+WHERE
+	m.matchStatus = 'm500' 
 `;

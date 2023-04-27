@@ -63,6 +63,7 @@ FROM
 WHERE 
   nomStatus = 'n200' 
   AND subcategoryOther IS NULL
+  AND matchesAssigned < capacity
 `;
 
 const sqlQuery2 = `
