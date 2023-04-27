@@ -47,6 +47,8 @@
   })
 
   export let form;
+  export let data;
+  export let { currentCohort } = data.props;
 </script>
 
 <main>
@@ -57,7 +59,7 @@
         Thank you for your interest in nominating a great American woman to be considered for induction
         into the National Women's Hall of Fame!
       </strong>
-      Nominations are usually considered for the Induction ceremony three years after submission.
+      Nominees are currently being accepted for Induction Year {currentCohort.inductionYear}.
     </p>
     <p>
       Below is additional information about our eligibility and judging process. If you have any questions

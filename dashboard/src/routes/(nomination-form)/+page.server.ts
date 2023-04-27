@@ -1,6 +1,7 @@
-import type { Actions } from "./$types";
+import type { Actions, PageServerLoad } from "./$types";
 
 import { dev } from "$app/environment";
+import { error } from "@sveltejs/kit";
 
 let FUNCTIONS_KEY: string;
 if (dev) {
@@ -8,6 +9,21 @@ if (dev) {
   FUNCTIONS_KEY = DEFAULT_KEY;
 } else {
   FUNCTIONS_KEY = `${process.env.DEFAULTKEY}`;
+}
+
+export const load: PageServerLoad = async ({fetch, params}) => {
+  // Get the current cohort
+  const currentCohortRes = await fetch(
+    `https://nwhofapi.azurewebsites.net/api/settings/cohorts/current`,{headers:{'x-functions-key':FUNCTIONS_KEY}}
+  );
+  if (currentCohortRes.ok) {
+    let cohort = (await currentCohortRes.json());
+    return {
+      props: { currentCohort: cohort }
+    };
+  } else {
+    throw error(currentCohortRes.status, 'An error occured while fetching data for this page.');
+  }
 }
 
 export const actions: Actions = {

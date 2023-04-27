@@ -37,7 +37,7 @@
   let selectedCohort: string = $selectedLocalCohort || `${currentCohort.ID}`;
   let cohortList: any[] = [];
   for (let i = 0; i < cohorts.length; i++) {
-    cohortList.push({ id: `${cohorts[i].ID}`, text: cohorts[i].startDate.split('T')[0] });
+    cohortList.push({ id: `${cohorts[i].ID}`, text: cohorts[i].inductionYear });
   }
   $:{
     selectedLocalCohort.set(selectedCohort);
@@ -153,7 +153,7 @@
   <div class="half-container">
     <div id="half-left">
       <h3>Submitted Nominations</h3>
-      <Dropdown type="inline" titleText="Selected cohort starting" bind:selectedId={selectedCohort} items={cohortList} />
+      <Dropdown type="inline" titleText="Selected cohort for Induction Year" bind:selectedId={selectedCohort} items={cohortList} />
       <Accordion size="sm">
         <AccordionItem>
           <svelte:fragment slot="title">

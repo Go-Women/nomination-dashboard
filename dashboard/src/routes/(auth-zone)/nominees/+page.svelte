@@ -24,7 +24,7 @@
   let selectedCohort: string = $selectedLocalCohort || `${currentCohort.ID}`;
   let cohortList: any[] = [];
   for (let i = 0; i < cohorts.length; i++) {
-    cohortList.push({ id: `${cohorts[i].ID}`, text: cohorts[i].startDate.split('T')[0] });
+    cohortList.push({ id: `${cohorts[i].ID}`, text: cohorts[i].inductionYear });
   }
   $: selectedLocalCohort.set(selectedCohort);
 
@@ -64,7 +64,7 @@
 
       <Column>
         <Row><h1>Nominees</h1></Row>
-        <Dropdown type="inline" titleText="Selected cohort starting" bind:selectedId={selectedCohort} items={cohortList} />
+        <Dropdown type="inline" titleText="Selected cohort for Induction Year" bind:selectedId={selectedCohort} items={cohortList} />
         <NomineesOverview rows={rowsData} />
       </Column>
     </Grid>

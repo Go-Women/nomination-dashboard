@@ -13,12 +13,13 @@ module.exports = async function (context, req) {
     
     try {
         const startDate = req.body.startDate ? new Date(req.body.startDate) : new Date();
+        const inductionYear = req.body.inductionYear ? req.body.inductionYear : "Unknown";
 
         // End previous cohort
         await db.query(endQuery, startDate);
 
         // Start new cohort
-        const newCohort = { startDate: startDate, endDate: startDate };
+        const newCohort = { startDate: startDate, endDate: startDate, inductionYear: inductionYear };
         await db.query("INSERT INTO Cohort SET ?", newCohort);
         context.res = {
             status: 200,

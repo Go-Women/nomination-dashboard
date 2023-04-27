@@ -39,9 +39,15 @@ export const load: PageServerLoad = async ({fetch, params, cookies}) => {
 
 export const actions: Actions = {
   cohorts: async ({request, params}) => {
+    const formData = await request.formData();
+    const data: { [name: string]: any } = {};
+    for (let field of formData) {
+      const [key, value] = field;
+      data[key] = value;
+    }
     const res = await fetch(`https://nwhofapi.azurewebsites.net/api/settings/cohorts`, {
       method: 'POST',
-      body: JSON.stringify({ startDate: new Date() }),
+      body: JSON.stringify({ startDate: new Date(), inductionYear: data['inductionYear'] }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
         'x-functions-key': FUNCTIONS_KEY
