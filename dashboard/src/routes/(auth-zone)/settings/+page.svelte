@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { Button } from "carbon-components-svelte";
+  import { Button } from "carbon-components-svelte";
 
-
-  let tempStartDate = "2023-01-01";
-
+  export let data;
+  export let { currentCohort } = data.props;
+  let currentStartDate = new Date(currentCohort.startDate).toISOString().split('T')[0];
 </script>
 
 <main>
@@ -11,8 +11,8 @@
     <h1>Settings</h1>
     <div class="cohorts">
       <h3>Cohorts</h3>
-      The current cohort started on {tempStartDate}.
-      <form action="POST" method="cohorts">
+      The current cohort started on {currentStartDate}.
+      <form method="POST" action="?/cohorts">
         <Button type="submit" kind="danger">Start new cohort</Button>
       </form>
     </div>
