@@ -24,12 +24,22 @@ export const load: PageServerLoad = async ({fetch, params, cookies}) => {
     throw error(authRes.status, 'An error occured while fetching data for this page.');
   }
   const res = await fetch(`https://nwhofapi.azurewebsites.net/api/nominees`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
-  if (res.ok) {
+  const res2 = await fetch(`https://nwhofapi.azurewebsites.net/api/settings/cohorts`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+  const res3 = await fetch(`https://nwhofapi.azurewebsites.net/api/settings/cohorts/current`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+  if (res.ok && res2.ok && res3.ok) {
     const nominees = await res.json();
+    const cohorts = await res2.json();
+    const currentCohort = await res3.json();
     return {
-      props: {nominees: nominees}
+      props: {
+        nominees: nominees,
+        cohorts: cohorts,
+        currentCohort: currentCohort
+      }
     };
   } else {
-    throw error(res.status, 'An error occured while fetching data for this page.');
+    if (!res.ok) throw error(res.status, 'An error occured while fetching data for this page.');
+    if (!res2.ok) throw error(res2.status, 'An error occured while fetching cohort data for this page.');
+    if (!res3.ok) throw error(res3.status, 'An error occured while fetching cohort data for this page.');
   }
 };

@@ -47,7 +47,6 @@ export const actions: Actions = {
         'x-functions-key': FUNCTIONS_KEY
       }
     });
-    console.log(JSON.stringify({ startDate: new Date() }));
     throw redirect(302, '/settings');
   }
 };
