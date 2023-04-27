@@ -39,16 +39,20 @@
   for (let i = 0; i < cohorts.length; i++) {
     cohortList.push({ id: `${cohorts[i].ID}`, text: cohorts[i].startDate.split('T')[0] });
   }
-  $: selectedLocalCohort.set(selectedCohort);
+  $:{
+    selectedLocalCohort.set(selectedCohort);
+    selectedRowIds = [];
+  }
 
-  $: mergeCandidates = generateMergeCandidates(selectedRowIds);
+  $: mergeCandidates = generateMergeCandidates(selectedRowIds, selectedCohort);
 
-  const generateMergeCandidates = (selectedIds: string[]) => {
+  const generateMergeCandidates = (selectedIds: string[], cohortID: string) => {
     if (selectedIds.length === 0) return [];
     const selectedNomination = nominations.find(n => n.ID == selectedRowIds[0].substring(2))
     if (!selectedNomination) return [];
     let fullName: string = `${selectedNomination.nomFirst} ${selectedNomination.nomLast}`;
-    const sorted = fuzzysort.go(fullName, nominees, {
+    let filteredNominees = nominees.filter((n: any) => n.cohort == cohortID);
+    const sorted = fuzzysort.go(fullName, filteredNominees, {
         all: false,
         key: 'fullName',
         threshold: -Infinity
