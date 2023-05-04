@@ -53,6 +53,6 @@ export const actions: Actions = {
         'x-functions-key': FUNCTIONS_KEY
       }
     });
-    throw redirect(302, '/settings');
+    throw redirect(303, '/settings');
   }
 };

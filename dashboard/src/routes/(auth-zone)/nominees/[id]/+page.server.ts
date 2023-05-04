@@ -1,6 +1,6 @@
 import type { Actions, PageServerLoad } from "./$types";
 import { dev } from "$app/environment";
-import { error } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
 
 let FUNCTIONS_KEY: string;
 if (dev) {
@@ -70,6 +70,9 @@ export const actions: Actions = {
         'x-functions-key': FUNCTIONS_KEY
       }
     });
+    if (res.ok) {
+      throw redirect(303, `/nominees/${params.id}`);
+    }
   },
   updateNominee: async ({request, params}) => {
     const formData = await request.formData();
@@ -86,5 +89,8 @@ export const actions: Actions = {
         'x-functions-key': FUNCTIONS_KEY
       }
     });
+    if (res.ok) {
+      throw redirect(303, `/nominees/${params.id}`);
+    }
   }
 }

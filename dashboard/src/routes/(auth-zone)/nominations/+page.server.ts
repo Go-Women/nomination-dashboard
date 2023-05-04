@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from "./$types";
 
 import { dev } from "$app/environment";
-import { error } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
 
 let FUNCTIONS_KEY: string;
 if (dev) {
@@ -107,6 +107,9 @@ export const actions: Actions = {
           'x-functions-key': FUNCTIONS_KEY
         }
       });
+      if (res.ok) {
+        throw redirect(303, '/nominations');
+      }
     } else {
       const res = await fetch(`https://nwhofapi.azurewebsites.net/api/nominations/review`, {
         method: 'PATCH',
@@ -116,6 +119,9 @@ export const actions: Actions = {
           'x-functions-key': FUNCTIONS_KEY
         }
       });
+      if (res.ok) {
+        throw redirect(303, '/nominations');
+      }
     }
   },
   reject: async ({request, params}) => {
@@ -135,5 +141,8 @@ export const actions: Actions = {
         'x-functions-key': FUNCTIONS_KEY
       }
     });
+    if (res.ok) {
+      throw redirect(303, '/nominations');
+    }
   }
 };

@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from "./$types";
 
 import { dev } from "$app/environment";
-import { error } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
 
 let FUNCTIONS_KEY: string;
 if (dev) {
@@ -114,6 +114,9 @@ export const actions: Actions = {
         'x-functions-key': FUNCTIONS_KEY
       }
     });
+    if (res.ok) {
+      throw redirect(303, `/judges/${params.id}`);
+    }
   },
   
   reject: async ({request, params}) => {
@@ -133,5 +136,8 @@ export const actions: Actions = {
         'x-functions-key': FUNCTIONS_KEY
       }
     });
+    if (res.ok) {
+      throw redirect(303, `/judges/${params.id}`);
+    }
   }
 };
