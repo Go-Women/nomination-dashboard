@@ -2,8 +2,6 @@ import { error, type Actions, redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 import { dev } from "$app/environment";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { app, auth } from "$lib/firebase/clientApp";
 
 let FUNCTIONS_KEY: string;
 if (dev) {

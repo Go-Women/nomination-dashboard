@@ -4,7 +4,9 @@
   import { loggedInUser } from "../../stores";
   import { onAuthStateChanged, type User } from "firebase/auth";
   import { auth } from "$lib/firebase/clientApp";
-  let errorImg = '/error.jpg';
+
+  export let data;
+  export let { userType } = data.props;
 
   let name: string;
   let currentUser: User|null;
@@ -24,7 +26,7 @@
 </script>
 
 {#if $loggedInUser}
-  <header><Navigation name={name}/></header>
+  <header><Navigation name={name} userType={userType}/></header>
   <slot />
 {:else}
   <div>Unauthorized.</div>
