@@ -1,0 +1,19 @@
+{
+  "bindings": [
+    {
+      "name": "req",
+      "route": "matches/undo",
+      "authLevel": "function",
+      "methods": [
+        "patch"
+      ],
+      "direction": "in",
+      "type": "httpTrigger"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    }
+  ]
+}

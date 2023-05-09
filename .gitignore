@@ -1,3 +1,4 @@
 .DS_Store
 .vscode
 packade-lock.json
+./node_modules

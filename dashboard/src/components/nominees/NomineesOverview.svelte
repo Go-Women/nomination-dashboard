@@ -24,7 +24,8 @@
     { key: "id", empty: true },
     { key: "name", value: "Name" },
     { key: "category", value: "Category" },
-    { key: "subcategory", value: "Subcategory"}
+    { key: "subcategory", value: "Subcategory"},
+    { key: "status", value: "Status"}
   ];
   let categories = [
     { id: 0, text: "Art" },
@@ -50,7 +51,6 @@
 </script>
 
 <main class="bx--content-main">
-  <Row><h3>Information</h3></Row>
   <DataTable style="justify-text: center;" {headers} {rows} {pageSize} {page} sortable>
     <Toolbar>
       <ToolbarContent>
@@ -64,8 +64,6 @@
           icon={View}
           href={"nominees/" + cell.value}
         />
-      {:else if cell.key === "category"}
-        {formatCategories(cell.value)}
       {:else}
         {cell.value}
       {/if}

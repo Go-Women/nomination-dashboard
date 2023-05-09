@@ -52,14 +52,17 @@
       value: { otherCount },
     },
   ];
-  data[0].value = artCount;
-  data[1].value = athleticsCount;
-  data[2].value = businessCount;
-  data[3].value = eduCount;
-  data[4].value = humanitiesCount;
-  data[5].value = govCount;
-  data[6].value = stemCount;
-  data[7].value = otherCount;
+  $:{
+    data[0].value = artCount;
+    data[1].value = athleticsCount;
+    data[2].value = businessCount;
+    data[3].value = eduCount;
+    data[4].value = humanitiesCount;
+    data[5].value = govCount;
+    data[6].value = stemCount;
+    data[7].value = otherCount;
+  }
+  
 
   let options = {
     title: "Categories",

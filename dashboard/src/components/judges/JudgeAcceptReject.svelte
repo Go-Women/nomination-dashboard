@@ -57,8 +57,8 @@
       {#if judge.info.conflicts && judge.info.conflicts.length > 0}
       <TextArea labelText="Conflicts" rows={2} value={judge.info.conflicts} readonly />
       {/if}
-      {#if judge.info.additionalInfo && judge.info.additionalInfo.length > 0}
-      <TextArea labelText="Additional Information" rows={5} value={judge.info.additionalInfo} readonly />
+      {#if judge.info.addInfo && judge.info.addInfo.length > 0}
+      <TextArea labelText="Additional Information" rows={5} value={judge.info.addInfo} readonly />
       {/if}
       <div class="action-zone">
         <div class="button-area">

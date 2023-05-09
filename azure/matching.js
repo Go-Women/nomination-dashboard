@@ -9,6 +9,7 @@ var nomineesReview = new Set(); // a set of nominee IDs
  * }
  */
 var matched = {}; // object of matched candidates
+var currentMatches = {}; // current matches in the DB
 /**
  * checks whether the nominee needs to be manually reviewed;
  * if so adds them a separate list
@@ -27,14 +28,24 @@ function nomineeManualReview(id, noMatch) {
 
 /**
  * used to check if the current nominee judge match exists
- * @param {Array<Int>} judges an array of judge IDs [judgeID, judgeID, ...]
  * @param {Int} currentJudge the current judge ID that needs to be checked
+ * @param {Int} currentNominee the current nominee ID that needs to be checked
+ * @param {Array<Int>} judges an array of judge IDs [judgeID, judgeID, ...] that has already been assigned for that nominee
  * @returns true if the currentMatch is already matched
- * @returns false if the currentMatch does not exist
+ * @returns false if the currentMatch does not exist already
  */
-function isMatched(judges, currentJudge) {
-  for (let i in judges) {
-    if (judges[i] == currentJudge) return true;
+function isMatched(currentJudge, currentNominee, judges) {
+  // checks the already approved judges
+  if (currentMatches[currentNominee] !== undefined) {
+    for (const i in currentMatches[currentNominee]) {
+      if (currentMatches[currentNominee].includes(currentJudge.toString())) return true;
+    }
+  }
+
+  if (judges) {
+    for (const i in judges) {
+      if (judges[i] == currentJudge) return true;
+    }
   }
 
   return false;
@@ -65,7 +76,7 @@ function updateCapacity(judge, nominee) {
 function tryMatch(nominee, nomCatSub, judges, checkCat) {
   for (let y in judges) {
     const judge = judges[y];
-      if (nomCatSub != null) {
+      if (nomCatSub !== null) {
         if (judge.judgeMatchesAssigned < judge.judgeCapacity) {
           // then check might not be necessary but we could do some error handling instead
           for (const nomCat of nomCatSub) {
@@ -101,14 +112,13 @@ function tryMatch(nominee, nomCatSub, judges, checkCat) {
 function createMatch(judge, nominee) {
   let nomID = nominee.nomineeID;
   let judgeID = judge.judgeID;
-
   // check if the current nominee match has already been created and its capacity isn't full
-  if (matched[nomID] && !isMatched(matched[nomID], judgeID) && nominee.matchesAssigned < 3 && judge.judgeMatchesAssigned < judge.judgeCapacity) {
+  if (matched[nomID] && !isMatched(judgeID, nomID, matched[nomID]) && nominee.matchesAssigned < 3 && judge.judgeMatchesAssigned < judge.judgeCapacity) {
     // add the current match to the existing nominee matches
     matched[nomID].push(judgeID);
     updateCapacity(judge, nominee);
     return true;
-  } else if (matched[nomID] === undefined) {
+  } else if (matched[nomID] === undefined && !isMatched(judgeID, nomID)) {
     // create initial match
     matched[nomID] = [judgeID];
     updateCapacity(judge, nominee);
@@ -129,9 +139,8 @@ function createMatch(judge, nominee) {
 function generateMatches() {
   for (let i = 0; i < 3; i++) {
     // each nominee should get assigned 3 judges
-    for (let x = 0; x < nominees.length; x++) {
+    for (const nominee of nominees) {
       // loop through all nominees
-      const nominee = nominees[x];
       if (nominee) {
         if (nominee.matchesAssigned < 3) {
           const nomSubCatList = nominee.subcategory.split(",");
@@ -145,7 +154,7 @@ function generateMatches() {
       }
     }
   }
-};
+}
 
 /**
  * creates a match object that will be sent for the front end display for a suggested match
@@ -179,10 +188,16 @@ function getMatchDetails(matches) {
   }
 
   return matchDetails;
-};
+}
+
+function populateCurrentMatches(currMatches) {
+  for (var match of currMatches) {
+    currentMatches[match.nomineeID] = match.judgeIDs.split(',')
+  }
+}
 
 // Dataset from GET /matches/data:
-exports.mainMatching = (matches) => {
+exports.mainMatching = (matches, currMatches) => {
   // RESET existing values
   judges = []; // original list of judges needing matches (used to store judge info for match)
   nominees = []; // original list of nominees needing matching (used to store nominee info for match)
@@ -197,6 +212,8 @@ exports.mainMatching = (matches) => {
   matched = {}; // object of matched candidates 
   nominees = matches[0];
   judges = matches[1];
+  
+  populateCurrentMatches(currMatches);
   generateMatches();
 
   // console.log("\n-----------------------------");
@@ -208,7 +225,7 @@ exports.mainMatching = (matches) => {
     for (const judge in nomMatch) {
       match.push([parseInt(nominee), nomMatch[judge], "m100"]);
     }
-  };
+  }
 
   const matchDetails = getMatchDetails(match);
   return matchDetails;

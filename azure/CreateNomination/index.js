@@ -14,7 +14,9 @@ module.exports = async function (context, req) {
     
     try {
         const nomination = req.body;
-        nomination['cohort'] = nomination['cohort'] || 4;
+        const currentCohort = (await db.query(cohortQuery))[0].ID;
+
+        nomination['cohort'] = nomination['cohort'] || currentCohort;
         nomination['subcategory'] = nomination['subcategory'] || null;
         nomination['subcategoryOther'] = nomination['subcategoryOther'] || null;
         
@@ -36,3 +38,17 @@ module.exports = async function (context, req) {
         context.done();
     }
 }
+
+const cohortQuery = `
+SELECT *
+from cohort
+WHERE id = (
+        SELECT id
+        FROM (
+                SELECT id
+                FROM Cohort
+                ORDER BY id DESC
+                LIMIT 1
+            ) AS t
+    )
+`;

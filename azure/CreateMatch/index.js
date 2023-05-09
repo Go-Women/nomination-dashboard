@@ -54,19 +54,8 @@ UPDATE
 SET 
   Nominees.nomStatus = IF(
     (Nominees.matchesAssigned + 1) = 3, 
-    'm300', 
+    'n500', 
     'n200'
-  ), 
-  Users.info = IF(
-    (
-      JSON_EXTRACT(Users.info, '$.matchesAssigned') + 1
-    ) = JSON_EXTRACT(Users.info, '$.judgeCapacity'), 
-    JSON_SET(
-      Users.info, '$.judgeStatus', 'm300'
-    ), 
-    JSON_SET(
-      Users.info, '$.judgeStatus', 'j300'
-    )
   ), 
   Nominees.matchesAssigned = Nominees.matchesAssigned + 1, 
   Users.info = JSON_SET(
@@ -88,7 +77,7 @@ SET
       JSON_EXTRACT(Users.info, '$.matchesAssigned') + 1
     ) = JSON_EXTRACT(Users.info, '$.judgeCapacity'), 
     JSON_SET(
-      Users.info, '$.judgeStatus', 'm300'
+      Users.info, '$.judgeStatus', 'n500'
     ), 
     JSON_SET(
       Users.info, '$.judgeStatus', 'j300'

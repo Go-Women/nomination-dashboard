@@ -1,16 +1,15 @@
 <script lang="ts">
   import {
       Button, Checkbox, ComboBox, Form,
-      FormGroup, NumberInput, RadioButton, RadioButtonGroup, TextArea, TextInput
+      FormGroup, NumberInput, RadioButton, RadioButtonGroup, TextArea, TextInput,
+      InlineNotification
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
-  import Login from "carbon-icons-svelte/lib/Login.svelte";
   import "../../css/index.css";
-
-  // let theme = "g90";
-
-  let cohort = "2025";
-  let deadline = "2023/12/31";
+  import { auth } from "$lib/firebase/clientApp";
+  import { onMount } from "svelte";
+  import { onAuthStateChanged } from "firebase/auth";
+  import { loggedInUser } from "../../stores";
 
   // Form sections
   let sec_art = false;
@@ -39,16 +38,20 @@
     return item.text.toLowerCase().includes(value.toLowerCase());
   }
   let selectedYear = `${currentYear}`;
+
+  onMount(async () => {
+    onAuthStateChanged(auth, (user) => {
+      // essentially the end of the logout redirect to /
+      if (!user) $loggedInUser = null;
+    });
+  })
+
+  export let form;
+  export let data;
+  export let { currentCohort } = data.props;
 </script>
 
 <main>
-  <!-- <Theme bind:theme persist persistKey="__carbon-theme" />
-
-  <RadioButtonGroup legendText="Color Theme" bind:selected={theme}>
-    <RadioButton labelText="White" value="white" />
-    <RadioButton labelText="Dark" value="g90" />
-  </RadioButtonGroup> -->
-
   <div id="header-box">
     <h1>Nominate a Woman</h1>
     <p>
@@ -56,14 +59,21 @@
         Thank you for your interest in nominating a great American woman to be considered for induction
         into the National Women's Hall of Fame!
       </strong>
-      We are currently collecting nominations in anticipation of an Induction Ceremony in {cohort}.
-      Nominations submitted on or before {deadline} will be considered for Induction {cohort}. 
+      Nominees are currently being accepted for Induction Year {currentCohort.inductionYear}.
     </p>
     <p>
       Below is additional information about our eligibility and judging process. If you have any questions
       about nominations, please email us at <a href="mailto:admin@womenofthehall.org">admin@womenofthehall.org</a>.
     </p>
     <p><em>All submitted materials become property of the National Women's Hall of Fame.</em></p>
+    {#if form?.success} 
+      <InlineNotification
+        lowContrast
+        kind="success"
+        title="Success:"
+        subtitle="Your nomination has been submitted."
+      />
+    {/if}
   </div>
 
   <div id="form-container">
@@ -174,8 +184,8 @@
           <Checkbox name="subcategory" bind:group={contribsSub} value="s701" labelText="Astronomy" />
           <Checkbox name="subcategory" bind:group={contribsSub} value="s702" labelText="Architecture" />
           <Checkbox name="subcategory" bind:group={contribsSub} value="s703" labelText="Biology" />
-          <Checkbox name="subcategory" bind:group={contribsSub} value="s704" labelText="Chemestry" />
-          <Checkbox name="subcategory" bind:group={contribsSub} value="s705" labelText="Climate / Earch Science" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s704" labelText="Chemistry" />
+          <Checkbox name="subcategory" bind:group={contribsSub} value="s705" labelText="Climate / Earth Science" />
           <Checkbox name="subcategory" bind:group={contribsSub} value="s706" labelText="Computer Science" />
           <Checkbox name="subcategory" bind:group={contribsSub} value="s707" labelText="Mathematics" />
           <Checkbox name="subcategory" bind:group={contribsSub} value="s708" labelText="Medicine" />
@@ -200,7 +210,7 @@
         <TextArea name="nomQ1Description" labelText="Please briefly explain how your nominee meets this requirement" placeholder="Type here..." required />
         <input type="hidden" name="nomQ1" bind:value={q1ck}>
       </FormGroup>
-      <h4>Question 2: Has the nominee's achievements had significicant national and/or global impact? (Local/Regional achievements do not qualify)</h4>
+      <h4>Question 2: Has the nominee's achievements had significant national and/or global impact? (Local/Regional achievements do not qualify)</h4>
       <FormGroup legendText="Check the boxes if you agree with the statements.">
         <Checkbox name="nomQ2" bind:group={q2ck} value="q201" labelText="The nominee had a significant impact on their field of accomplishment" />
         <Checkbox name="nomQ2" bind:group={q2ck} value="q202" labelText="The nominee's contributions inspired change, either within their field or for society as a whole" />
@@ -240,17 +250,17 @@
       {/if}
       <TextArea name="nomAdditionalInfo" labelText="Please use this space to communicate any additional information about this nomination. (Optional)" placeholder="Type here..." />
       <div id="submit-button">
+        <!-- <div class="g-recaptcha" data-sitekey={recap}></div> -->
         <Button type="submit">Submit</Button>
       </div>
     </Form>
   </div>
 
-  <div id="col-3">
+  <!-- <div id="col-3">
     <div id="login-button">
       <Button kind="tertiary" size="small" icon={Login} href="/login">Portal Login</Button>
     </div>
-  </div>
-
+  </div> -->
 </main>
 
 <style>
@@ -293,7 +303,7 @@
     margin-top: 1em;
   }
 
-  #col-3 {
+  /* #col-3 {
     grid-column: 3;
     align-content: right;
     width: 100%;
@@ -303,7 +313,7 @@
     position: absolute;
     right: 1em;
     top: 1em;
-  }
+  } */
 
   @media(max-width: 75em) {
     main {

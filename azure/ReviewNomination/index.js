@@ -14,6 +14,7 @@ module.exports = async function (context, req) {
     
     try {
         const data = req.body;
+        const currentCohort = (await db.query(cohortQuery))[0].ID;
         // context.res = {
         //     status: 200,
         //     body: data
@@ -49,7 +50,7 @@ module.exports = async function (context, req) {
                 };
                 break;
             case 'CREATE': 
-                data['cohort'] = data['cohort'] || 4;
+                data['cohort'] = data['cohort'] || currentCohort;
                 data['subcategory'] = data['subcategory'] || null;
                 data['subcategoryOther'] = data['subcategoryother'] || null;
                 data['nomStatus'] = "n200";
@@ -98,3 +99,17 @@ async function createNominee(newNominee, db, r) {
     utils.clean(newNominee);
     await db.query("INSERT INTO Nominees SET ?", newNominee);
 }
+
+const cohortQuery = `
+SELECT *
+from cohort
+WHERE id = (
+        SELECT id
+        FROM (
+                SELECT id
+                FROM Cohort
+                ORDER BY id DESC
+                LIMIT 1
+            ) AS t
+    )
+`;

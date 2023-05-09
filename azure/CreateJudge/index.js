@@ -16,12 +16,13 @@ module.exports = async function (context, req) {
         const judge = req.body;
         judge['type'] = judge['type'] || 'judge';
         judge['active'] = judge['active'] || false;
-        judge['info'] = JSON.stringify(utils.clean(judge['info']));
+        utils.getCodes(judge['info'], 'judge')
+        judge['info'] = JSON.stringify(judge['info']);
 
         const rows = await db.query("INSERT INTO Users SET ?", judge);
         context.res = {
-            status: judge,
-            body: nomination,
+            status: 200,
+            body: judge,
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -29,7 +30,7 @@ module.exports = async function (context, req) {
     } catch (err) {
         context.res = {
             status: 500,
-            body: "A database error occured."
+            body: "A database error occurred."
         };
     } finally {
         await db.close();

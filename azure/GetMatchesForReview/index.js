@@ -20,8 +20,8 @@ module.exports = async function (context, req) {
         let judges = await db.query(sqlQuery2);
         utils.getAllJudgesMatchingData(judges, "data");
 
-        let currentMatches = await db.query("SELECT nomineeID, judgeID FROM Matches WHERE matchStatus = 'm300'");
-        let result = matching.mainMatching([nominees, judges, currentMatches]);
+        let currentMatches = await db.query(sqlQuery3);
+        let result = matching.mainMatching([nominees, judges], currentMatches);
         if (result.length != 0) {
             utils.formatAllData(result, "nominee");
             utils.formatAllData(result, "judgeMatch");
@@ -63,6 +63,7 @@ FROM
 WHERE 
   nomStatus = 'n200' 
   AND subcategoryOther IS NULL
+  AND matchesAssigned < capacity
 `;
 
 const sqlQuery2 = `
@@ -93,3 +94,20 @@ WHERE
   AND JSON_EXTRACT(info, "$.matchesAssigned") < JSON_EXTRACT(info, "$.capacity")
 `;
 
+const sqlQuery3 = `
+SELECT 
+  m.nomineeID, 
+  GROUP_CONCAT(m.judgeID) AS judgeIDs
+FROM 
+  Matches AS m
+INNER JOIN 
+    Nominees AS n 
+    ON 
+      m.nomineeID = n.ID
+WHERE 
+  n.Cohort = (SELECT MAX(id) FROM Cohort) 
+  AND 
+  m.matchStatus = 'm300'
+GROUP BY 
+  m.nomineeID;
+`;
