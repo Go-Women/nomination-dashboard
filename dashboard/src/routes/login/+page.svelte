@@ -9,7 +9,7 @@
     signInWithEmailAndPassword,
     type UserCredential,
   } from "firebase/auth";
-    import { Button, Form, FormGroup, InlineNotification, PasswordInput, TextInput } from "carbon-components-svelte";
+    import { Button, Form, FormGroup, InlineNotification, Link, PasswordInput, TextInput } from "carbon-components-svelte";
     import { Login } from "carbon-icons-svelte";
 
   let data: { authError: { code: string; message: string } | null } = {
@@ -57,6 +57,7 @@
         title={data.authError.code}      
       />
     {/if}
+    <a id="forgor" href="/login/reset">Forgot Password?</a>
   </div>
 </main>
 
@@ -77,5 +78,15 @@
   #login-label {
     font-size: 2.5em;
     margin-bottom: 1em;
+  }
+
+  #forgor {
+    text-align: right;
+    float: right;
+    color: blue;
+  }
+
+  #forgor:visited {
+    color: blue;
   }
 </style>
