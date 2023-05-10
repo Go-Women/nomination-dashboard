@@ -47,7 +47,8 @@ SELECT
   subcategoryOther, 
   nomStatus, 
   matchesAssigned, 
-  capacity 
+  capacity,
+  cohort 
 FROM 
   Nominees 
 WHERE 
