@@ -39,7 +39,7 @@
   }
   $: selectedLocalCohort.set(selectedCohort);
 
-  var getMatches = (matches: JSON, cohortID) => {
+  var getMatches = (matches: JSON, cohortID: string) => {
     let rows = new Array();
     Object.entries(matches).forEach(([key, match], index) => {
       if (match.cohort == cohortID) {
@@ -73,7 +73,7 @@
   $: confirmedMatches = getMatches(matches, selectedCohort);
 
   export let reviewCount: number = 0;
-  export let manualCount: number = Object.keys(manual).length;
+  export let manualCount: number = 0;
   export let matchedCount: number = 0;
   // export let unmatchedCount: number = 0;
 
@@ -111,63 +111,36 @@
   };
   export const suggestedMatches = getMatchesSuggestions(suggestions);
 
-  // var getMatches = (matches: JSON) => {
-  //   let rows = new Array();
-  //   Object.entries(matches).forEach(([key, match], index) => {
-  //     let subCat = match.subcategory;
-  //     if (subCat == "" || subCat == null) {
-  //       subCat = match.subcategoryOther;
-  //     }
-
-  //     let data = {
-  //       id: index + 1,
-  //       matchStatus: match.matchStatus,
-  //       nomineeID: match.nomineeID,
-  //       judgeID: match.judgeID,
-  //       nomineeName: match.nomFullName,
-  //       nomineeCategory: match.category,
-  //       nomineeSubcategory: subCat,
-  //       nomineeCapacity: match.matchesAssigned + "/" + match.capacity,
-  //       judgeName: match.judgeFullName,
-  //       judgeCategory: match.judgeCategory,
-  //       judgeSubcategory: match.judgeSubcategory,
-  //       judgeCapacity: match.judgeMatchesAssigned + "/" + match.judgeCapacity,
-  //       action: [match.ID, match.nomineeID, match.judgeID, match.category]
-  //     };
-
-  //     rows.push(data);
-  //   });
-  //   return rows;
-  // };
-  // export const confirmedMatches = getMatches(matches);
-
-  var getManualInformation = (manual: JSON) => {
+  var getManualInformation = (manual: JSON, cohortID:string) => {
     let rows = new Array();
     Object.entries(manual).forEach(([key, nominee], index) => {
-      let subCat = nominee.subcategory;
-      if (subCat == "" || subCat == null) {
-        subCat = nominee.subcategoryOther;
-      }
-      let data = {
-        id: nominee.nomineeID,
-        nomineeID: nominee.nomineeID,
-        nomineeName: nominee.fullName,
-        nomineeCategory: nominee.category,
-        nomineeSubcategory: subCat,
-        nomineeStatus: nominee.nomStatus,
-        nomineeCapacity: nominee.matchesAssigned + "/" + nominee.capacity,
-        action: parseInt(nominee.capacity) - parseInt(nominee.matchesAssigned)
-      };
+      if (nominee.cohort == cohortID) {
+        let subCat = nominee.subcategory;
+        if (subCat == "" || subCat == null) {
+          subCat = nominee.subcategoryOther;
+        }
+        let data = {
+          id: nominee.nomineeID,
+          nomineeID: nominee.nomineeID,
+          nomineeName: nominee.fullName,
+          nomineeCategory: nominee.category,
+          nomineeSubcategory: subCat,
+          nomineeStatus: nominee.nomStatus,
+          nomineeCapacity: nominee.matchesAssigned + "/" + nominee.capacity,
+          action: parseInt(nominee.capacity) - parseInt(nominee.matchesAssigned)
+        };
 
-      if (nominee.nomStatus != "None")
-        if (nominee.nomStatus == "m200")
-          manualCount += 1;
-      
-      rows.push(data);
+        if (nominee.nomStatus != "None")
+          if (nominee.nomStatus == "m200")
+            manualCount += 1;
+        
+        rows.push(data);
+      }
+      manualCount = rows.length;
     });
     return rows;
   }
-  export const manualMatches = getManualInformation(manual);
+  $: manualMatches = getManualInformation(manual, selectedCohort);
 
   var getJudgesAvailable = (judges: JSON) => {
     let rows = new Array();
@@ -201,7 +174,7 @@
   };
 
   const reviewStatus = suggestions[0].matchStatus;  // default 'Unmatched' otherwise 'Review'
-  const manualStatus = manual[0].nomStatus; // this is automatically updated when a nominee has a subcategory of other default 'None' otherwise 'Manual Review'
+  $: manualStatus = (manualCount > 0) ? "Manual Review" : "Unmatched"; // this is automatically updated when a nominee has a subcategory of other default 'None' otherwise 'Manual Review'
   $: matchStatus = (matchedCount > 0) ? "Matched" : "Unmatched";
 </script>
 
