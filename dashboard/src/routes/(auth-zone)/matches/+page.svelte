@@ -39,7 +39,7 @@
   }
   $: selectedLocalCohort.set(selectedCohort);
 
-  var getInformation = (matches: JSON, cohortID) => {
+  var getMatches = (matches: JSON, cohortID) => {
     let rows = new Array();
     Object.entries(matches).forEach(([key, match], index) => {
       if (match.cohort == cohortID) {
@@ -70,7 +70,7 @@
 
     return rows;
   };
-  $: confirmedMatches = getInformation(matches, selectedCohort);
+  $: confirmedMatches = getMatches(matches, selectedCohort);
 
   export let reviewCount: number = 0;
   export let manualCount: number = Object.keys(manual).length;
@@ -111,34 +111,34 @@
   };
   export const suggestedMatches = getMatchesSuggestions(suggestions);
 
-  var getMatches = (matches: JSON) => {
-    let rows = new Array();
-    Object.entries(matches).forEach(([key, match], index) => {
-      let subCat = match.subcategory;
-      if (subCat == "" || subCat == null) {
-        subCat = match.subcategoryOther;
-      }
+  // var getMatches = (matches: JSON) => {
+  //   let rows = new Array();
+  //   Object.entries(matches).forEach(([key, match], index) => {
+  //     let subCat = match.subcategory;
+  //     if (subCat == "" || subCat == null) {
+  //       subCat = match.subcategoryOther;
+  //     }
 
-      let data = {
-        id: index + 1,
-        matchStatus: match.matchStatus,
-        nomineeID: match.nomineeID,
-        judgeID: match.judgeID,
-        nomineeName: match.nomFullName,
-        nomineeCategory: match.category,
-        nomineeSubcategory: subCat,
-        nomineeCapacity: match.matchesAssigned + "/" + match.capacity,
-        judgeName: match.judgeFullName,
-        judgeCategory: match.judgeCategory,
-        judgeSubcategory: match.judgeSubcategory,
-        judgeCapacity: match.judgeMatchesAssigned + "/" + match.judgeCapacity,
-        action: [match.ID, match.nomineeID, match.judgeID, match.category]
-      };
+  //     let data = {
+  //       id: index + 1,
+  //       matchStatus: match.matchStatus,
+  //       nomineeID: match.nomineeID,
+  //       judgeID: match.judgeID,
+  //       nomineeName: match.nomFullName,
+  //       nomineeCategory: match.category,
+  //       nomineeSubcategory: subCat,
+  //       nomineeCapacity: match.matchesAssigned + "/" + match.capacity,
+  //       judgeName: match.judgeFullName,
+  //       judgeCategory: match.judgeCategory,
+  //       judgeSubcategory: match.judgeSubcategory,
+  //       judgeCapacity: match.judgeMatchesAssigned + "/" + match.judgeCapacity,
+  //       action: [match.ID, match.nomineeID, match.judgeID, match.category]
+  //     };
 
-      rows.push(data);
-    });
-    return rows;
-  };
+  //     rows.push(data);
+  //   });
+  //   return rows;
+  // };
   // export const confirmedMatches = getMatches(matches);
 
   var getManualInformation = (manual: JSON) => {
@@ -193,15 +193,6 @@
   }
 
   export const judgesAvailable = getJudgesAvailable(judges);
-  // console.log(judgesAvailable);
-
-  let pageSize = 25;
-  let page = 1;
-  var getPageSizes = (totalItems: number) => {
-    let pages = Math.ceil(totalItems / 25);
-    let pageArray = Array.from({ length: pages }).map((_, i) => (i + 1) * 25);
-    return pageArray;
-  };
 
   var generatedMatches = false;   // todo how to make this not reset on refresh maybe using local storage
   function generateMatches() {
