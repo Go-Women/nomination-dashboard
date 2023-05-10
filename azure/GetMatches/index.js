@@ -53,7 +53,8 @@ SELECT
   n.subcategory, 
   n.subcategoryOther, 
   n.matchesAssigned, 
-  n.capacity, 
+  n.capacity,
+  n.cohort,
   concat(n.firstName, ' ', n.lastName) as nomFullName, 
   concat(j.firstName, ' ', j.lastName) as judgeFullName, 
   JSON_UNQUOTE(JSON_EXTRACT(j.info, '$.category')) AS judgeCategory, 
@@ -66,12 +67,6 @@ FROM
   INNER JOIN Users AS j ON m.judgeID = j.ID 
 WHERE 
   j.type = 'judge' 
-  AND j.active = true 
-  AND n.Cohort = (
-    SELECT 
-      MAX(id) 
-    FROM 
-      Cohort
-  ) 
+  AND j.active = true
   AND m.matchStatus = 'm300'
 `;
