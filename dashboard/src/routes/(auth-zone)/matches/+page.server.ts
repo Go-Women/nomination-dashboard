@@ -26,14 +26,19 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
   const res2 = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/review`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   const res3 = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/candidates`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   const res4 = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/manual`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+  const res5 = await fetch(`https://nwhofapi.azurewebsites.net/api/settings/cohorts`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+  const res6 = await fetch(`https://nwhofapi.azurewebsites.net/api/settings/cohorts/current`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
 
-  if (res1.ok && res2.ok && res3.ok && res4.ok) {
+
+  if (res1.ok && res2.ok && res3.ok && res4.ok &&res5.ok && res6.ok) {
     const matches = await res1.json();
     const review = await res2.json();
     const candidates = await res3.json();
     const judges = candidates['judges'];
     const nominees = candidates['nominees'];
     const manualReview = await res4.json();
+    const cohorts = await res5.json();
+    const currentCohort = await res6.json();
 
     return {
       props: { 
@@ -41,14 +46,18 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
         judges: judges,
         nominees: nominees,
         manual: manualReview,
-        suggestions: review
+        suggestions: review,
+        cohorts: cohorts,
+        currentCohort: currentCohort
       }
     };
   } else {
-    if (!res1.ok) throw error(res1.status, 'An error occured while fetching matches data for this page.');
-    if (!res2.ok) throw error(res2.status, 'An error occured while fetching suggestions data for this page.');
-    if (!res3.ok) throw error(res3.status, 'An error occured while fetching candidates data for this page.');
-    if (!res4.ok) throw error(res4.status, 'An error occured while fetching manual assignment data for this page.');
+    if (!res1.ok) throw error(res1.status, 'An error occurred while fetching matches data for this page.');
+    if (!res2.ok) throw error(res2.status, 'An error occurred while fetching suggestions data for this page.');
+    if (!res3.ok) throw error(res3.status, 'An error occurred while fetching candidates data for this page.');
+    if (!res4.ok) throw error(res4.status, 'An error occurred while fetching manual assignment data for this page.');
+    if (!res5.ok) throw error(res5.status, 'An error occurred while fetching cohort data for this page.');
+    if (!res6.ok) throw error(res6.status, 'An error occurred while fetching cohort data for this page.');
   }
 };
 

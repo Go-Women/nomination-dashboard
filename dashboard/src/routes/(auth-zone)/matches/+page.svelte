@@ -10,12 +10,15 @@
     AccordionItem,
     Row,
     Column,
+    Dropdown,
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
   import "../../../css/index.css";
   import Matches from "../../../components/matches/Matches.svelte";
   import OverviewMatches from "../../../components/matches/OverviewMatches.svelte";
   import ManualMatches from "../../../components/matches/ManualMatches.svelte";
+  import { writable } from "svelte/store";
+  import { onDestroy } from "svelte";
 
   export let data;
   // matches --> confirmed matches
@@ -23,7 +26,51 @@
   // judges --> any judges that can be selected to match
   // nominees --> that can be selected to match
   // manual --> any nominees with an other category or ones marked for manual review/unmatched
-  export let { matches, suggestions, judges, nominees, manual } = data.props;
+  export let { matches, suggestions, judges, nominees, manual, cohorts, currentCohort } = data.props;
+
+  const selectedLocalCohort = writable(localStorage.getItem("localCohort") || null);
+  const unsubscribe = selectedLocalCohort.subscribe(val => localStorage.setItem("localCohort", val || ''));
+  onDestroy(unsubscribe);
+
+  let selectedCohort: string = $selectedLocalCohort || `${currentCohort.ID}`;
+  let cohortList: any[] = [];
+  for (let i = 0; i < cohorts.length; i++) {
+    cohortList.push({ id: `${cohorts[i].ID}`, text: cohorts[i].inductionYear });
+  }
+  $: selectedLocalCohort.set(selectedCohort);
+
+  var getInformation = (matches: JSON, cohortID) => {
+    let rows = new Array();
+    Object.entries(matches).forEach(([key, match], index) => {
+      if (match.cohort == cohortID) {
+        let subCat = match.subcategory;
+        if (subCat == "" || subCat == null) {
+          subCat = match.subcategoryOther;
+        }
+
+        let data = {
+          id: index + 1,
+          matchStatus: match.matchStatus,
+          nomineeID: match.nomineeID,
+          judgeID: match.judgeID,
+          nomineeName: match.nomFullName,
+          nomineeCategory: match.category,
+          nomineeSubcategory: subCat,
+          nomineeCapacity: match.matchesAssigned + "/" + match.capacity,
+          judgeName: match.judgeFullName,
+          judgeCategory: match.judgeCategory,
+          judgeSubcategory: match.judgeSubcategory,
+          judgeCapacity: match.judgeMatchesAssigned + "/" + match.judgeCapacity,
+          action: [match.ID, match.nomineeID, match.judgeID, match.category]
+        };
+        rows.push(data);
+      }
+      matchedCount = rows.length;
+    });
+
+    return rows;
+  };
+  $: confirmedMatches = getInformation(matches, selectedCohort);
 
   export let reviewCount: number = 0;
   export let manualCount: number = Object.keys(manual).length;
@@ -92,7 +139,7 @@
     });
     return rows;
   };
-  export const confirmedMatches = getMatches(matches);
+  // export const confirmedMatches = getMatches(matches);
 
   var getManualInformation = (manual: JSON) => {
     let rows = new Array();
@@ -162,14 +209,9 @@
     getMatchesSuggestions(suggestions);
   };
 
-  function setMatchedCount() {
-    matchedCount = Object.keys(matches).length;
-    return matchedCount;
-  };
-
   const reviewStatus = suggestions[0].matchStatus;  // default 'Unmatched' otherwise 'Review'
   const manualStatus = manual[0].nomStatus; // this is automatically updated when a nominee has a subcategory of other default 'None' otherwise 'Manual Review'
-  const matchStatus = matches[0].matchStatus; // default 'Unmatched' once a match is created 'Matched'
+  $: matchStatus = (matchedCount > 0) ? "Matched" : "Unmatched";
 </script>
 
 <main>
@@ -179,27 +221,27 @@
         <BreadcrumbItem href="/home">Home</BreadcrumbItem>
         <BreadcrumbItem>Matching</BreadcrumbItem>
       </Breadcrumb>
-
       <Row>
         <Column>
           <h1>Matches</h1>
+          <Dropdown type="inline" titleText="Selected cohort for Induction Year" bind:selectedId={selectedCohort} items={cohortList} />
         </Column>
-        <Column>
+        {#if matchStatus === "Unmatched"}
+          <InlineNotification
+            lowContrast
+            kind="warning"
+            subtitle="Click match button to generate matches."
+          />
+        {/if}
+        <Column style="margin: auto">
           <!-- <form method="POST" action="?/generate"> -->
             <!-- <input name="judgeStatus" type="hidden" value='m100' /> -->
-            <Button iconDescription="View" on:click={() => (generateMatches())} type="submit" style="float: right">Generate New Matches</Button>
+          <Button iconDescription="View" on:click={() => (generateMatches())} type="submit" style="float: right">Generate New Matches</Button>
           <!-- </form> -->
+
         </Column>
       </Row>
 
-      {#if matchStatus == "Unmatched"}
-          <InlineNotification
-          lowContrast
-          kind="warning"
-          subtitle="Click match button to generate matches."
-        />
-      {/if}
-      
       <div id="container">
           <OverviewMatches {reviewCount} {manualCount} {matchedCount} />
       </div>
@@ -218,7 +260,7 @@
           </div>
         {/if}
       {/if}
-      {#if matchStatus === 'Matched' && setMatchedCount() > 0}
+      {#if matchedCount > 0}
         <div id="container">
           <Accordion size="sm">
             <AccordionItem>
