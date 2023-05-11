@@ -51,7 +51,6 @@
 </script>
 
 <main class="bx--content-main">
-  <Row><h3>Information</h3></Row>
   <DataTable style="justify-text: center;" {headers} {rows} {pageSize} {page} sortable>
     <Toolbar>
       <ToolbarContent>

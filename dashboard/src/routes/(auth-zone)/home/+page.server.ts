@@ -1,7 +1,7 @@
 import type { PageServerLoad } from "./$types";
 
 import { dev } from "$app/environment";
-import { error } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
 
 let FUNCTIONS_KEY: string;
 if (dev) {
@@ -30,7 +30,11 @@ export const load: PageServerLoad = async ({fetch, cookies}) => {
       } 
     }
   } else {
-    throw error(authRes.status, 'An error occurred while fetching data for this page.');
+    if (authRes.status == 500) {
+      throw redirect(303, '/home');
+    } else {
+      throw error(authRes.status, 'An error occurred while fetching data for this page.');
+    }
   }
 
   const res1 = await fetch(`https://nwhofapi.azurewebsites.net/api/nominations`, {headers:{'x-functions-key':FUNCTIONS_KEY}});

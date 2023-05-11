@@ -2,8 +2,6 @@ const utils = require('../utils.js');
 const { makeDb } = require('../asyncdb.js');
 
 module.exports = async function (context, req) {
-    const judgeId = context.bindingData.id;
-
     // Set up a connection to the MySQL database
     const db = makeDb({
         host: process.env.MYSQL_CONNECTION_URL,
@@ -15,22 +13,14 @@ module.exports = async function (context, req) {
     });
     
     try {
-        var rows = await db.query(sqlQuery, judgeId);
-        utils.formatAllData(rows, 'nominee');
-        utils.setMatchingStatus(rows);
-        if (rows.length == 0)
-            rows = [{
-                judgeID: judgeId,
-                judgeStatus: 'No Matches'
-            }];
-            
+        const rows = await db.query("SELECT * FROM Cohort");
         context.res = {
             status: 200,
             body: rows,
             headers: {
                 'Content-Type': 'application/json'
             }
-        };        
+        };
     } catch (err) {
         context.res = {
             status: 500,
@@ -41,26 +31,3 @@ module.exports = async function (context, req) {
         context.done();
     }
 }
-const sqlQuery = `
-SELECT
-    concat(n.firstName,' ',n.lastName) AS fullName, 
-    n.category, 
-    IFNULL(n.subcategory,n.subcategoryOther) AS subcategory,
-    m.matchStatus,
-    m.ID,
-    m.judgeID
-FROM 
-    Nominees as n
-    INNER JOIN 
-        Matches as m 
-            ON 
-                n.ID = m.nomineeID
-WHERE 
-    m.judgeID = ? AND
-    n.cohort = (
-        SELECT 
-          MAX(id) 
-        FROM 
-          Cohort
-      )
-`;

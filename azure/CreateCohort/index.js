@@ -12,13 +12,15 @@ module.exports = async function (context, req) {
     });
     
     try {
-        // Create a Cohort
-		const cohort = new Cohort({
-	    	startDate: req.body.startDate || new Date(),
-	   	});
-		 
-		// end pervious cohort
-        await db.query(sqlQuery1, newCohort.startDate);
+        const startDate = req.body.startDate ? new Date(req.body.startDate) : new Date();
+        const inductionYear = req.body.inductionYear ? req.body.inductionYear : "Unknown";
+
+        // End previous cohort
+        await db.query(endQuery, startDate);
+
+        // Start new cohort
+        const newCohort = { startDate: startDate, endDate: startDate, inductionYear: inductionYear };
+        await db.query("INSERT INTO Cohort SET ?", newCohort);
         context.res = {
             status: 200,
             body: "OK",
@@ -26,21 +28,10 @@ module.exports = async function (context, req) {
                 'Content-Type': 'application/json'
             }
         };
-        
-        // save cohort in database   
-        await db.query("INSERT INTO Cohort SET ?", cohort);
-                context.res = {
-            status: 200,
-            body: "OK",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
-        
     } catch (err) {
         context.res = {
             status: 500,
-            body: "A database error occured."
+            body: err.message
         };
     } finally {
         await db.close();
@@ -48,11 +39,16 @@ module.exports = async function (context, req) {
     }
 }
 
-const sqlQuery1 = `
-UPDATE 
-	Cohort 
-SET 
-	endDate = ? 
-WHERE 
-	id = (SELECT id FROM ( SELECT id FROM Cohort ORDER BY id DESC LIMIT 1) AS t)
+const endQuery = `
+UPDATE Cohort
+SET endDate = ?
+WHERE id = (
+        SELECT id
+        FROM (
+                SELECT id
+                FROM Cohort
+                ORDER BY id DESC
+                LIMIT 1
+            ) AS t
+    )
 `;

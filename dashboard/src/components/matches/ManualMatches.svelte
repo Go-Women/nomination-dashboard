@@ -115,12 +115,12 @@
           href={"nominees/" + cell.value}
         />
       {:else if cell.key === "action"}
-        {#if selectedNomineeId.length !== 0 && selectedJudgeIds.length !== 0 && selectedJudgeIds.length < cell.value.length}
+        {#if (selectedNomineeId.length !== 0 && selectedJudgeIds.length !== 0) && (selectedJudgeIds.length <= cell.value)}
           <div class="action-zone">
               <form method="POST" action="?/match">
                 <input type="hidden" name="nominee" value={selectedNomineeId}>
                 <input type="hidden" name="judges" value={selectedJudgeIds}>
-                <Button type="submit" kind="tertiary">Match</Button>
+                <Button type="submit">Match</Button>
               </form>
           </div>
         {/if}

@@ -7,6 +7,7 @@
   import { signOut } from "firebase/auth";
 
   export let name: string;
+  export let userType: string;
   let isSideNavOpen = false;
 </script>
 
@@ -32,10 +33,12 @@
 <SideNav bind:isOpen={isSideNavOpen} rail>
   <SideNavItems>
     <SideNavLink icon={Home} text="Dashboard" href="/home" isSelected />
-    <SideNavLink icon={Result} text="Nominations" href="/nominations" />
-    <SideNavLink icon={UserCertification} text="Nominees" href="/nominees" />
-    <SideNavLink icon={UserMultiple} text="Judges" href="/judges" />
-    <SideNavLink icon={Compare} text="Matching" href="/matches" />
-    <SideNavLink icon={Save} text="Settings" href="/settings" />
+    {#if userType == 'admin'}
+      <SideNavLink icon={Result} text="Nominations" href="/nominations" />
+      <SideNavLink icon={UserCertification} text="Nominees" href="/nominees" />
+      <SideNavLink icon={UserMultiple} text="Judges" href="/judges" />
+      <SideNavLink icon={Compare} text="Matching" href="/matches" />
+      <SideNavLink icon={Save} text="Settings" href="/settings" />
+    {/if}
   </SideNavItems>
 </SideNav>

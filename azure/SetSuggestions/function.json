@@ -2,7 +2,7 @@
   "bindings": [
     {
       "name": "req",
-      "route": "nominees/review",
+      "route": "matches/review",
       "authLevel": "function",
       "methods": [
         "post"

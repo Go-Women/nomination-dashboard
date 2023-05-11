@@ -54,7 +54,7 @@ SELECT
   JSON_UNQUOTE(JSON_EXTRACT(info, "$.bio")) AS bio, 
   JSON_UNQUOTE(JSON_EXTRACT(info, "$.linkedin")) AS linkedin, 
   JSON_UNQUOTE(JSON_EXTRACT(info, "$.addInfo")) AS addInfo, 
-  JSON_UNQUOTE(JSON_EXTRACT(info, "$.previousJudge")) AS previousJudge 
+  JSON_UNQUOTE(JSON_EXTRACT(info, "$.previousJudge")) AS previousJudge
 FROM 
   Users 
 WHERE 
@@ -71,7 +71,8 @@ SELECT
   subcategory, 
   nomStatus, 
   matchesAssigned, 
-  capacity 
+  capacity,
+  cohort 
 FROM 
   Nominees 
 WHERE 

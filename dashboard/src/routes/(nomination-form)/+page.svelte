@@ -5,15 +5,11 @@
       InlineNotification
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
-  import Login from "carbon-icons-svelte/lib/Login.svelte";
   import "../../css/index.css";
   import { auth } from "$lib/firebase/clientApp";
   import { onMount } from "svelte";
   import { onAuthStateChanged } from "firebase/auth";
   import { loggedInUser } from "../../stores";
-
-  let cohort = "2025";
-  let deadline = "2023/12/31";
 
   // Form sections
   let sec_art = false;
@@ -50,24 +46,12 @@
     });
   })
 
-  const recap = `${"6LcWfZMlAAAAALLZClm5DBoA5mvNRGntmJs6FdCY"}`;
-
   export let form;
-  
+  export let data;
+  export let { currentCohort } = data.props;
 </script>
 
 <main>
-  <!-- <head>
-    <title>reCAPTCHA: Nomination Submission</title>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  </head> -->
-  <!-- <Theme bind:theme persist persistKey="__carbon-theme" />
-
-  <RadioButtonGroup legendText="Color Theme" bind:selected={theme}>
-    <RadioButton labelText="White" value="white" />
-    <RadioButton labelText="Dark" value="g90" />
-  </RadioButtonGroup> -->
-
   <div id="header-box">
     <h1>Nominate a Woman</h1>
     <p>
@@ -75,8 +59,7 @@
         Thank you for your interest in nominating a great American woman to be considered for induction
         into the National Women's Hall of Fame!
       </strong>
-      We are currently collecting nominations in anticipation of an Induction Ceremony in {cohort}.
-      Nominations submitted on or before {deadline} will be considered for Induction {cohort}. 
+      Nominees are currently being accepted for Induction Year {currentCohort.inductionYear}.
     </p>
     <p>
       Below is additional information about our eligibility and judging process. If you have any questions

@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from "./$types";
 
 import { dev } from "$app/environment";
-import { error } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
 
 let FUNCTIONS_KEY: string;
 if (dev) {
@@ -25,20 +25,28 @@ export const load: PageServerLoad = async ({fetch, cookies}) => {
   }
   const res1 = await fetch(`https://nwhofapi.azurewebsites.net/api/nominations`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   const res2 = await fetch(`https://nwhofapi.azurewebsites.net/api/nominees`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+  const res3 = await fetch(`https://nwhofapi.azurewebsites.net/api/settings/cohorts`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+  const res4 = await fetch(`https://nwhofapi.azurewebsites.net/api/settings/cohorts/current`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
 
-  if (res1.ok && res2.ok) {
+  if (res1.ok && res2.ok && res3.ok && res4.ok) {
     const noms = await res1.json();
     const nominees = await res2.json();
+    const cohorts = await res3.json();
+    const currentCohort = await res4.json();
 
     return {
       props: {
         nominations: noms,
-        nominees: nominees
+        nominees: nominees,
+        cohorts: cohorts,
+        currentCohort: currentCohort
       }
     };
   } else {
     if (!res1.ok) throw error(res1.status, 'An error occured while fetching nomination data for this page.');
     if (!res2.ok) throw error(res2.status, 'An error occured while fetching nominee data for this page.');
+    if (!res3.ok) throw error(res3.status, 'An error occured while fetching cohort data for this page.');
+    if (!res4.ok) throw error(res4.status, 'An error occured while fetching cohort data for this page.');
   }
 }
 
@@ -99,6 +107,9 @@ export const actions: Actions = {
           'x-functions-key': FUNCTIONS_KEY
         }
       });
+      if (res.ok) {
+        throw redirect(303, '/nominations');
+      }
     } else {
       const res = await fetch(`https://nwhofapi.azurewebsites.net/api/nominations/review`, {
         method: 'PATCH',
@@ -108,6 +119,9 @@ export const actions: Actions = {
           'x-functions-key': FUNCTIONS_KEY
         }
       });
+      if (res.ok) {
+        throw redirect(303, '/nominations');
+      }
     }
   },
   reject: async ({request, params}) => {
@@ -127,5 +141,8 @@ export const actions: Actions = {
         'x-functions-key': FUNCTIONS_KEY
       }
     });
+    if (res.ok) {
+      throw redirect(303, '/nominations');
+    }
   }
 };

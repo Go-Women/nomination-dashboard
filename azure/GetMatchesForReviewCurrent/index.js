@@ -3,6 +3,8 @@ const matching = require('../matching.js');
 const { makeDb } = require('../asyncdb.js');
 
 module.exports = async function (context, req) {
+    const cohort = context.bindingData.cohort;
+    
     // Set up a connection to the MySQL database
     const db = makeDb({
         host: process.env.MYSQL_CONNECTION_URL,
@@ -14,7 +16,7 @@ module.exports = async function (context, req) {
     });
     
     try {
-        const cohort = req.body.cohort;
+        
         let nominees = await db.query(sqlQuery1, cohort);
         utils.getAllNomineeMatchingData(nominees);
 
@@ -23,6 +25,9 @@ module.exports = async function (context, req) {
 
         let currentMatches = await db.query(sqlQuery3, cohort);
         let result = matching.mainMatching([nominees, judges], currentMatches);
+        for (let m = 0; m < result.length; m++) {
+            result[m]['cohort'] = cohort;
+        }
         if (result.length != 0) {
             utils.formatAllData(result, "nominee");
             utils.formatAllData(result, "judgeMatch");
@@ -108,8 +113,7 @@ INNER JOIN
       m.nomineeID = n.ID
 WHERE 
   n.cohort = ? 
-  AND 
-  m.matchStatus = 'm300'
+  AND m.matchStatus = 'm300'
 GROUP BY 
   m.nomineeID;
 `;

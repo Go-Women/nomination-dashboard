@@ -10,11 +10,11 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"devDependencies": {
-		"@carbon/charts-svelte": "^1.6.8",
-		"@carbon/styles": "^1.24.0",
+		"@carbon/charts-svelte": "^1.7.4",
+		"@carbon/styles": "^1.27.0",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
-		"carbon-components-svelte": "^0.72.1",
+		"carbon-components-svelte": "^0.73.5",
 		"carbon-icons-svelte": "^11.4.0",
 		"d3": "^7.8.2",
 		"svelte": "^3.44.0",

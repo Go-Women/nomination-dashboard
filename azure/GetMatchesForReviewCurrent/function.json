@@ -1,11 +1,11 @@
-{
+﻿{
   "bindings": [
     {
       "name": "req",
-      "route": "matches/undo",
+      "route": "matches/review/current/{cohort:int}",
       "authLevel": "function",
       "methods": [
-        "patch"
+        "get"
       ],
       "direction": "in",
       "type": "httpTrigger"

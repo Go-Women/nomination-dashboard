@@ -13,24 +13,26 @@ module.exports = async function (context, req) {
     });
     
     try {
-        let rows = await db.query(sqlQuery);
+        const rows = await db.query(sqlQuery);
         if (rows.length > 0) {
-            utils.formatAllData(rows, "nominee");
+            const cohort = rows[0];
+            context.res = {
+                status: 200,
+                body: cohort,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
         } else {
-            rows = {"0":{"nomStatus":"None"}};
+            context.res = {
+                status: 404,
+                body: "Cohort not found."
+            };
         }
-
-        context.res = {
-            status: 200,
-            body: rows,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
     } catch (err) {
         context.res = {
             status: 500,
-            body: err.message
+            body: "A database error occured."
         };
     } finally {
         await db.close();
@@ -39,18 +41,15 @@ module.exports = async function (context, req) {
 }
 
 const sqlQuery = `
-SELECT 
-  ID AS nomineeID, 
-  concat(firstName, ' ', lastName) as fullName, 
-  category, 
-  subcategory, 
-  subcategoryOther, 
-  nomStatus, 
-  matchesAssigned, 
-  capacity,
-  cohort 
-FROM 
-  Nominees 
-WHERE 
-  nomStatus = 'm200'
+SELECT *
+from cohort
+WHERE id = (
+        SELECT id
+        FROM (
+                SELECT id
+                FROM Cohort
+                ORDER BY id DESC
+                LIMIT 1
+            ) AS t
+    )
 `;

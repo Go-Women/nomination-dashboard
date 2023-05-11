@@ -2,6 +2,7 @@ const utils = require('../utils.js');
 const { makeDb } = require('../asyncdb.js');
 
 module.exports = async function (context, req) {
+
     // Set up a connection to the MySQL database
     const db = makeDb({
         host: process.env.MYSQL_CONNECTION_URL,
@@ -13,13 +14,8 @@ module.exports = async function (context, req) {
     });
     
     try {
-        let rows = await db.query(sqlQuery);
-        if (rows.length > 0) {
-            utils.formatAllData(rows, "nominee");
-        } else {
-            rows = {"0":{"nomStatus":"None"}};
-        }
-
+        const userId = context.bindingData.id;
+        const rows = await db.query("SELECT * FROM Users WHERE firebaseID = ?", userId);
         context.res = {
             status: 200,
             body: rows,
@@ -37,20 +33,3 @@ module.exports = async function (context, req) {
         context.done();
     }
 }
-
-const sqlQuery = `
-SELECT 
-  ID AS nomineeID, 
-  concat(firstName, ' ', lastName) as fullName, 
-  category, 
-  subcategory, 
-  subcategoryOther, 
-  nomStatus, 
-  matchesAssigned, 
-  capacity,
-  cohort 
-FROM 
-  Nominees 
-WHERE 
-  nomStatus = 'm200'
-`;

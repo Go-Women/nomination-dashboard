@@ -181,7 +181,6 @@ exports.clean = (jsonData) => {
   // TODO: figure out how to handle if BOTH category is chosen without a subcategory and the Other category
   // sets subcategory default to General is if other is not chosen
   // this assumes that the other field requires the user to type something in that field
-  // TODO: support this for judges
   if (jsonData.subcategory == undefined && jsonData.subcategoryOther == undefined) {
     jsonData.subcategory = 's100';
   }

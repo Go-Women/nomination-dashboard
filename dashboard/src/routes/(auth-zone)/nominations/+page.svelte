@@ -2,7 +2,8 @@
   import {
       Accordion,
       AccordionItem, Breadcrumb,
-      BreadcrumbItem, Column
+      BreadcrumbItem, Column, Dropdown
+
   } from "carbon-components-svelte";
   import "carbon-components-svelte/css/all.css";
   import "../../../css/index.css";
@@ -13,9 +14,11 @@
 
   import fuzzysort from "fuzzysort";
   import PleaseSelect from "../../../components/nominations/PleaseSelect.svelte";
+  import { writable } from "svelte/store";
+  import { onDestroy } from "svelte";
 
   export let data;
-  export let { nominations, nominees } = data.props;
+  export let { nominations, nominees, cohorts, currentCohort } = data.props;
   export let reviewCount: number = 0;
   export let artCount: number = 0;
   export let athleticsCount: number = 0;
@@ -26,16 +29,30 @@
   export let stemCount: number = 0;
   export let otherCount: number = 0;
 
+  const selectedLocalCohort = writable(localStorage.getItem("localCohort") || null);
+  const unsubscribe = selectedLocalCohort.subscribe(val => localStorage.setItem("localCohort", val || ''));
+  onDestroy(unsubscribe);
+
   let selectedRowIds: string[] = [];
+  let selectedCohort: string = $selectedLocalCohort || `${currentCohort.ID}`;
+  let cohortList: any[] = [];
+  for (let i = 0; i < cohorts.length; i++) {
+    cohortList.push({ id: `${cohorts[i].ID}`, text: cohorts[i].inductionYear });
+  }
+  $:{
+    selectedLocalCohort.set(selectedCohort);
+    selectedRowIds = [];
+  }
 
-  $: mergeCandidates = generateMergeCandidates(selectedRowIds);
+  $: mergeCandidates = generateMergeCandidates(selectedRowIds, selectedCohort);
 
-  const generateMergeCandidates = (selectedIds: string[]) => {
+  const generateMergeCandidates = (selectedIds: string[], cohortID: string) => {
     if (selectedIds.length === 0) return [];
     const selectedNomination = nominations.find(n => n.ID == selectedRowIds[0].substring(2))
     if (!selectedNomination) return [];
     let fullName: string = `${selectedNomination.nomFirst} ${selectedNomination.nomLast}`;
-    const sorted = fuzzysort.go(fullName, nominees, {
+    let filteredNominees = nominees.filter((n: any) => n.cohort == cohortID);
+    const sorted = fuzzysort.go(fullName, filteredNominees, {
         all: false,
         key: 'fullName',
         threshold: -Infinity
@@ -44,72 +61,84 @@
     return sorted.map(a => a.obj);
   } 
 
-  const populateRows = (nominations: any[]) => {
+  const populateRows = (nominations: any[], cohortID: string) => {
     let rowsReviewed: any[] = [];
     let rowsCreated: any[] = [];
+    artCount = 0;
+    athleticsCount = 0;
+    businessCount = 0;
+    eduCount = 0;
+    humanitiesCount = 0;
+    govCount = 0;
+    stemCount = 0;
+    otherCount = 0;
+    reviewCount = 0;
     Object.entries(nominations).forEach(([key, nomination], index) => {
-      let subCat = nomination.subcategory;
-      if (subCat === null)
-        subCat = `${nomination.subcategoryOther}`;
-        
-      if (nomination.nomStatus == "Created" ){ 
-        rowsCreated.push({
-            id: `a-${nomination.ID}`,
-            nomination: `${nomination.nomFirst} ${nomination.nomLast}`,
-            category: `${nomination.category}`,
-            subcategory: subCat,
-            nominator: `${nomination.authorFirst} ${nomination.authorLast}`,
-            date: new Date(nomination.date).toLocaleDateString('es-pa')
-          });
-      } else if (nomination.nomStatus != "Created") {
-        reviewCount++;
-        rowsReviewed.push(
-          {
-            id: reviewCount,
-            nomID: `a-${nomination.ID}`,
-            nominee: `${nomination.nomFirst} ${nomination.nomLast}`,
-            category: `${nomination.category}`,
-            subcategory: subCat,
-            nominator: `${nomination.authorFirst} ${nomination.authorLast}`,
-            date: new Date(nomination.date).toLocaleDateString('es-pa'),
-            status: `${nomination.nomStatus}`
-          });
-      }
+      if (nomination.cohort == cohortID) {
+        let subCat = nomination.subcategory;
+        if (subCat === null)
+          subCat = `${nomination.subcategoryOther}`;
+          
+        if (nomination.nomStatus == "Created" ){ 
+          rowsCreated.push({
+              id: `a-${nomination.ID}`,
+              nomination: `${nomination.nomFirst} ${nomination.nomLast}`,
+              category: `${nomination.category}`,
+              subcategory: subCat,
+              nominator: `${nomination.authorFirst} ${nomination.authorLast}`,
+              date: new Date(nomination.date).toLocaleDateString('es-pa')
+            });
+        } else if (nomination.nomStatus != "Created") {
+          reviewCount++;
+          rowsReviewed.push(
+            {
+              id: reviewCount,
+              nomID: `a-${nomination.ID}`,
+              nominee: `${nomination.nomFirst} ${nomination.nomLast}`,
+              category: `${nomination.category}`,
+              subcategory: subCat,
+              nominator: `${nomination.authorFirst} ${nomination.authorLast}`,
+              date: new Date(nomination.date).toLocaleDateString('es-pa'),
+              status: `${nomination.nomStatus}`
+            });
+        }
 
-      switch (nomination.category) {
-        case "Art":
-          artCount++;
-          break;
-        case "Athletics":
-          athleticsCount++;
-          break;
-        case "Business":
-          businessCount++;
-          break;
-        case "Education":
-          eduCount++;
-          break;
-        case "Humanities":
-          humanitiesCount++;
-          break;
-        case "Public Service / Government":
-          govCount++;
-          break;
-        case "STEM":
-          stemCount++;
-          break;
-        case "Other":
-          otherCount++;
-          break;
-        default:
-          break;
+        switch (nomination.category) {
+          case "Art":
+            artCount++;
+            break;
+          case "Athletics":
+            athleticsCount++;
+            break;
+          case "Business":
+            businessCount++;
+            break;
+          case "Education":
+            eduCount++;
+            break;
+          case "Humanities":
+            humanitiesCount++;
+            break;
+          case "Public Service / Government":
+            govCount++;
+            break;
+          case "STEM":
+            stemCount++;
+            break;
+          case "Other":
+            otherCount++;
+            break;
+          default:
+            break;
+        }
       }
+      
     });
     var rows = [rowsCreated, rowsReviewed]
     return rows;
   };
 
-  $: rows = populateRows(nominations);
+  $: rows = populateRows(nominations, selectedCohort);
   $: rowsReviewed = rows[1];
   $: rowsCreated = rows[0];
 </script>
@@ -124,6 +153,7 @@
   <div class="half-container">
     <div id="half-left">
       <h3>Submitted Nominations</h3>
+      <Dropdown type="inline" titleText="Selected cohort for Induction Year" bind:selectedId={selectedCohort} items={cohortList} />
       <Accordion size="sm">
         <AccordionItem>
           <svelte:fragment slot="title">

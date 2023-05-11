@@ -72,6 +72,6 @@ export const actions: Actions = {
         'x-functions-key': FUNCTIONS_KEY
       }
     });
-    throw redirect(301, '/login');
+    throw redirect(303, '/login');
   } 
 };
