@@ -78,11 +78,14 @@
   export let matchedCount: number = 0;
   // export let unmatchedCount: number = 0;
 
-  var getMatchesSuggestions = (suggestions: JSON) => {
+  let generatedMatches = false;
+
+  var getMatchesSuggestions = (suggestions: JSON, cohortID: string) => {
+    generatedMatches = true;
     let rows = new Array();
     reviewCount = 0;
     Object.entries(suggestions).forEach(([key, match], index) => {
-      // if (match.cohort == cohortID) {
+      if (match.cohort == cohortID) {
         let subCat = match.subcategory;
         if (subCat == "" || subCat == null) {
           subCat = match.subcategoryOther;
@@ -108,14 +111,15 @@
         //   reviewCount++;
 
         rows.push(data);
-      // }
+      }
       reviewCount = rows.length;
     });
+    console.log('rows', rows);
     return rows;
   };
-  $: suggestedMatches = getMatchesSuggestions(suggestions);
+  $: suggestedMatches = getMatchesSuggestions(suggestions, selectedCohort);
 
-  var getManualInformation = (manual: JSON, cohortID:string) => {
+  var getManualInformation = (manual: JSON, cohortID: string) => {
     let rows = new Array();
     Object.entries(manual).forEach(([key, nominee], index) => {
       if (nominee.cohort == cohortID) {
@@ -170,12 +174,6 @@
   }
 
   export const judgesAvailable = getJudgesAvailable(judges);
-
-  var generatedMatches = false;   // todo how to make this not reset on refresh maybe using local storage
-  function generateMatches() {
-    generatedMatches = true;
-    getMatchesSuggestions(suggestions);
-  };
 
   $: reviewStatus = suggestions[0].matchStatus;  // default 'Unmatched' otherwise 'Review'
   $: manualStatus = (manualCount > 0) ? "Manual Review" : "Unmatched"; // this is automatically updated when a nominee has a subcategory of other default 'None' otherwise 'Manual Review'

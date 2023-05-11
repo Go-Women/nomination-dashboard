@@ -22,13 +22,13 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
   } else {
     throw error(authRes.status, 'An error occured while fetching data for this page.');
   }
+  
   const res1 = await fetch(`https://nwhofapi.azurewebsites.net/api/matches`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   // const res2 = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/review`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   const res2 = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/candidates`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   const res3 = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/manual`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   const res4 = await fetch(`https://nwhofapi.azurewebsites.net/api/settings/cohorts`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
   const res5 = await fetch(`https://nwhofapi.azurewebsites.net/api/settings/cohorts/current`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
-
 
   if (res1.ok && res2.ok && res3.ok && res4.ok && res5.ok) {
     const matches = await res1.json();
@@ -40,14 +40,15 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
     const cohorts = await res4.json();
     const currentCohort = await res5.json();
     var review;
-    const id = `${currentCohort.ID}`
-    const res6 = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/review/current/${id}`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
+
+    const localCohort = cookies.get('localCohort');
+    const selectedCohort = localCohort ? localCohort : `${currentCohort.ID}`;
+    const res6 = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/review/current/${selectedCohort}`, {headers:{'x-functions-key':FUNCTIONS_KEY}});
     if (res6.ok) {
       review = await res6.json();
     } else {
       if (!res6.ok) throw error(res6.status, 'An error occurred while fetching suggestions data for this page.');
     }
-      
 
     return {
       props: { 
@@ -114,19 +115,19 @@ export const actions: Actions = {
     });
 
   },
-  generate: async ({request}) => {
+  generate: async ({request, cookies}) => {
     const formData = await request.formData();
     const data: { [name: string]: any } = {};
     for (let field of formData) {
       const [key, value] = field;
       data[key] = value;
     }
-
-    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/review`, {
-      method: 'POST',
-      body: JSON.stringify(data),
+    cookies.set('localCohort', data['cohort'], { path: '/', secure: false });
+    const res = await fetch(`https://nwhofapi.azurewebsites.net/api/matches/review/current/${data['cohort']}`, {
+      method: 'GET',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
+        'x-functions-key': FUNCTIONS_KEY
       }
     });
   },
