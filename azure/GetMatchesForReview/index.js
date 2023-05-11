@@ -14,13 +14,14 @@ module.exports = async function (context, req) {
     });
     
     try {
+        const cohort = req.body.cohort;
         let nominees = await db.query(sqlQuery1);
         utils.getAllNomineeMatchingData(nominees);
 
         let judges = await db.query(sqlQuery2);
         utils.getAllJudgesMatchingData(judges, "data");
 
-        let currentMatches = await db.query(sqlQuery3);
+        let currentMatches = await db.query(sqlQuery3, cohort);
         let result = matching.mainMatching([nominees, judges], currentMatches);
         if (result.length != 0) {
             utils.formatAllData(result, "nominee");
@@ -105,7 +106,7 @@ INNER JOIN
     ON 
       m.nomineeID = n.ID
 WHERE 
-  n.Cohort = (SELECT MAX(id) FROM Cohort) 
+  n.Cohort = ? 
   AND 
   m.matchStatus = 'm300'
 GROUP BY 

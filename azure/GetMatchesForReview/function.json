@@ -2,7 +2,7 @@
   "bindings": [
     {
       "name": "req",
-      "route": "matches/review",
+      "route": "matches/review/{cohort: int}",
       "authLevel": "function",
       "methods": [
         "get"

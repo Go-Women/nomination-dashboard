@@ -27,6 +27,7 @@
   // nominees --> that can be selected to match
   // manual --> any nominees with an other category or ones marked for manual review/unmatched
   export let { matches, suggestions, judges, nominees, manual, cohorts, currentCohort } = data.props;
+  // export let { matches, judges, nominees, manual, cohorts, currentCohort } = data.props;
 
   const selectedLocalCohort = writable(localStorage.getItem("localCohort") || null);
   const unsubscribe = selectedLocalCohort.subscribe(val => localStorage.setItem("localCohort", val || ''));
@@ -81,35 +82,38 @@
     let rows = new Array();
     reviewCount = 0;
     Object.entries(suggestions).forEach(([key, match], index) => {
-      let subCat = match.subcategory;
-      if (subCat == "" || subCat == null) {
-        subCat = match.subcategoryOther;
-      }
+      // if (match.cohort == cohortID) {
+        let subCat = match.subcategory;
+        if (subCat == "" || subCat == null) {
+          subCat = match.subcategoryOther;
+        }
 
-      let data = {
-        id: index + 1,
-        matchID: match.ID,
-        matchStatus: match.matchStatus,
-        nomineeID: match.nomID,
-        judgeID: match.judgeID,
-        nomineeName: match.nomFullName,
-        nomineeCategory: match.category,
-        nomineeSubcategory: subCat,
-        judgeName: match.judgeFullName,
-        judgeCategory: match.judgeCategory,
-        judgeSubcategory: match.judgeSubcategory,
-        judgeCapacity: match.judgeMatchesAssigned + "/" + match.judgeCapacity,
-        action: [match.nomID, match.judgeID]
-      };
+        let data = {
+          id: index + 1,
+          matchID: match.ID,
+          matchStatus: match.matchStatus,
+          nomineeID: match.nomID,
+          judgeID: match.judgeID,
+          nomineeName: match.nomFullName,
+          nomineeCategory: match.category,
+          nomineeSubcategory: subCat,
+          judgeName: match.judgeFullName,
+          judgeCategory: match.judgeCategory,
+          judgeSubcategory: match.judgeSubcategory,
+          judgeCapacity: match.judgeMatchesAssigned + "/" + match.judgeCapacity,
+          action: [match.nomID, match.judgeID]
+        };
 
-      if (generatedMatches)
-        reviewCount++;
+        // if (generatedMatches)
+        //   reviewCount++;
 
-      rows.push(data);
+        rows.push(data);
+      // }
+      reviewCount = rows.length;
     });
     return rows;
   };
-  export const suggestedMatches = getMatchesSuggestions(suggestions);
+  $: suggestedMatches = getMatchesSuggestions(suggestions);
 
   var getManualInformation = (manual: JSON, cohortID:string) => {
     let rows = new Array();
@@ -173,7 +177,7 @@
     getMatchesSuggestions(suggestions);
   };
 
-  const reviewStatus = suggestions[0].matchStatus;  // default 'Unmatched' otherwise 'Review'
+  $: reviewStatus = suggestions[0].matchStatus;  // default 'Unmatched' otherwise 'Review'
   $: manualStatus = (manualCount > 0) ? "Manual Review" : "Unmatched"; // this is automatically updated when a nominee has a subcategory of other default 'None' otherwise 'Manual Review'
   $: matchStatus = (matchedCount > 0) ? "Matched" : "Unmatched";
 </script>
@@ -190,7 +194,7 @@
           <h1>Matches</h1>
           <Dropdown type="inline" titleText="Selected cohort for Induction Year" bind:selectedId={selectedCohort} items={cohortList} />
         </Column>
-        {#if matchStatus === "Unmatched"}
+        {#if reviewStatus === "Unmatched"}
           <InlineNotification
             lowContrast
             kind="warning"
@@ -198,10 +202,10 @@
           />
         {/if}
         <Column style="margin: auto">
-          <!-- <form method="POST" action="?/generate"> -->
-            <!-- <input name="judgeStatus" type="hidden" value='m100' /> -->
-          <Button iconDescription="View" on:click={() => (generateMatches())} type="submit" style="float: right">Generate New Matches</Button>
-          <!-- </form> -->
+          <form method="POST" action="?/generate">
+            <input name="cohort" type="hidden" bind:value={selectedCohort} />
+            <Button iconDescription="View" type="submit" style="float: right">Generate New Matches</Button>
+          </form>
 
         </Column>
       </Row>
@@ -211,7 +215,7 @@
       </div>
       
       {#if generatedMatches}
-        {#if reviewStatus === 'Review'}
+        {#if reviewStatus === 'Review' && reviewCount > 0}
           <div id="container">
             <Accordion size="sm">
               <AccordionItem open>
